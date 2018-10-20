@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 import es.urjc.jjve.spaceinvaders.entities.Bullet;
 import es.urjc.jjve.spaceinvaders.entities.DefenceBrick;
 import es.urjc.jjve.spaceinvaders.entities.Invader;
@@ -28,10 +29,12 @@ import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
  * Clase utilizada para mostrar la interfaz del juego y manejar eventos dentro del juego, movimiento y disparo
  */
 
-public class SpaceInvadersView extends SurfaceView {
+public class SpaceInvadersView extends SurfaceView implements Runnable{
 
     Context context;
 
+
+    private boolean playing;
 
     // Our SurfaceHolder to lock the surface before we draw our graphics
     private SurfaceHolder ourHolder;
@@ -48,6 +51,7 @@ public class SpaceInvadersView extends SurfaceView {
 
 
     private ViewObservable eventObservable;
+    private ViewController controlador;
 
 
 
@@ -69,13 +73,14 @@ public class SpaceInvadersView extends SurfaceView {
     // When did we last play a menacing sound
     private long lastMenaceTime = System.currentTimeMillis();
 
-    public SpaceInvadersView(Context context, int x, int y) {
+    public SpaceInvadersView(Context context, int x, int y,ViewController controlador) {
 
 
         super(context);
         // The next line of code asks the
         // SurfaceView class to set up our object.
         this.eventObservable= new ViewObservable();
+        this.controlador = controlador;  //Asigna el controlador a la vista
 
 
         // Make a globally available copy of the context so we can use it in another method
@@ -127,6 +132,67 @@ public class SpaceInvadersView extends SurfaceView {
 
 
     }
+
+    @Override
+    public void run() {
+
+
+        while (playing) {
+
+            // Capture the current time in milliseconds in startFrameTime
+            long startFrameTime = System.nanoTime();
+
+            if (!controlador.isPaused()) {
+                if (!controlador.updateEntities()) {
+                    controlador.initGame(this.context);
+                }
+
+            }
+
+            controlador.updateGame();
+
+            //ToDo show start again button if updateEntities returns false
+
+
+            // Calculate the fps this frame
+            // We can then use the result to
+            // time animations and more.
+            controlador.setTimeThisFrame(System.currentTimeMillis() - startFrameTime);
+            if (controlador.getTimeThisFrame() >= 1) {
+                controlador.setFps(1000 / controlador.getTimeThisFrame());
+            }
+
+            // We will do something new here towards the end of the project
+            // Play a sound based on the menace level
+//            if(!paused) {
+//                if ((startFrameTime - lastMenaceTime) > menaceInterval) {
+//                    if (uhOrOh) {
+//                        // Play Uh
+//                        soundPool.play(uhID, 1, 1, 0, 0, 1);
+//
+//                    } else {
+//                        // Play Oh
+//                        soundPool.play(ohID, 1, 1, 0, 0, 1);
+//                    }
+//
+//                    // Reset the last menace time
+//                    lastMenaceTime = System.currentTimeMillis();
+//                    // Alter value of uhOrOh
+//                    uhOrOh = !uhOrOh;
+//                }
+//            }
+//            // Reset the menace level
+//            menaceInterval = 1000;
+
+
+        }
+    }
+
+
+    /**
+     * This method is used every game tick to update the positions of every entity and the score
+     * Should be called when the entity is modified only, ToDo for next sprint, update entities on screen only when they are modified
+     */
 
 //    private void prepareLevel(){
 //

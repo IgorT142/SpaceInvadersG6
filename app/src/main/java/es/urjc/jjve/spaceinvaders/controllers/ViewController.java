@@ -23,10 +23,9 @@ import es.urjc.jjve.spaceinvaders.view.SpaceInvadersView;
  * Created by Christian on 03/10/2018.
  */
 
-public class ViewController implements Runnable, Observer {
+public class ViewController implements Observer {
 
-
-    // For sound FX
+    //For sound FX
 //    private SoundPool soundPool;
 //    private int playerExplodeID = -1;
 //    private int invaderExplodeID = -1;
@@ -35,9 +34,9 @@ public class ViewController implements Runnable, Observer {
 //    private int uhID = -1;
 //    private int ohID = -1;
 //    private long menaceInterval = 1000;
-//    // Which menace sound should play next
+//    Which menace sound should play next
 //    private boolean uhOrOh;
-//    // When did we last play a menacing sound
+//    When did we last play a menacing sound
 //    private long lastMenaceTime = System.currentTimeMillis();
 
 
@@ -110,60 +109,6 @@ public class ViewController implements Runnable, Observer {
     }
 
 
-    @Override
-    public void run() {
-
-
-        while (playing) {
-
-            // Capture the current time in milliseconds in startFrameTime
-            long startFrameTime = System.nanoTime();
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-            if (!paused) {
-                if (!updateEntities()) {
-                    initGame(this.context);
-                }
-
-            }
-
-            updateGame();
-
-            //ToDo show start again button if updateEntities returns false
-
-
-            // Calculate the fps this frame
-            // We can then use the result to
-            // time animations and more.
-            timeThisFrame = System.currentTimeMillis() - startFrameTime;
-            if (timeThisFrame >= 1) {
-                fps = 1000 / timeThisFrame;
-            }
-
-            // We will do something new here towards the end of the project
-            // Play a sound based on the menace level
-//            if(!paused) {
-//                if ((startFrameTime - lastMenaceTime) > menaceInterval) {
-//                    if (uhOrOh) {
-//                        // Play Uh
-//                        soundPool.play(uhID, 1, 1, 0, 0, 1);
-//
-//                    } else {
-//                        // Play Oh
-//                        soundPool.play(ohID, 1, 1, 0, 0, 1);
-//                    }
-//
-//                    // Reset the last menace time
-//                    lastMenaceTime = System.currentTimeMillis();
-//                    // Alter value of uhOrOh
-//                    uhOrOh = !uhOrOh;
-//                }
-//            }
-//            // Reset the menace level
-//            menaceInterval = 1000;
-
-
-        }
-    }
 
 
     /**
@@ -269,6 +214,7 @@ public class ViewController implements Runnable, Observer {
                 // Move all the invaders down and change direction
                 for (Invader inv : invaders) {
                     inv.dropDownAndReverse();
+
                     // Have the invaders landed
                     if (RectF.intersects(i.getRect(), playerShip.getRect())) {
                         return false;
@@ -295,7 +241,7 @@ public class ViewController implements Runnable, Observer {
                         if (inv.getVisibility()) {
                             if (RectF.intersects(currentBull.getRect(), inv.getRect())) { //Has a bullet hit an invader?
                                 inv.setInvisible();
-//                          soundPool.play(invaderExplodeID, 1, 1, 0, 0, 1);
+//                              soundPool.play(invaderExplodeID, 1, 1, 0, 0, 1);
                                 currentBull.setInactive();
                                 score = score + 100;
 
@@ -415,7 +361,7 @@ public class ViewController implements Runnable, Observer {
     // start our thread.
     public void resume() {
         playing = true;
-        gameThread = new Thread(this);
+        gameThread = new Thread(this.view);
         gameThread.start();
     }
 
@@ -583,5 +529,29 @@ public class ViewController implements Runnable, Observer {
 
     public void setUnderage(boolean underage) {
         this.underage = underage;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    public long getTimeThisFrame() {
+        return timeThisFrame;
+    }
+
+    public void setTimeThisFrame(long timeThisFrame) {
+        this.timeThisFrame = timeThisFrame;
+    }
+
+    public long getFps() {
+        return fps;
+    }
+
+    public void setFps(long fps) {
+        this.fps = fps;
     }
 }
