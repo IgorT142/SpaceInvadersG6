@@ -10,11 +10,14 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Button;
+
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
@@ -35,6 +38,11 @@ public class SpaceInvadersView extends SurfaceView {
 
     // Our SurfaceHolder to lock the surface before we draw our graphics
     private SurfaceHolder ourHolder;
+
+    private Button upBtn;
+    private Button dwnBtn;
+    private Button lftBtn;
+    private Button rgtBtn;
 
 
     // A Canvas and a Paint object
@@ -76,6 +84,11 @@ public class SpaceInvadersView extends SurfaceView {
         // The next line of code asks the
         // SurfaceView class to set up our object.
         this.eventObservable= new ViewObservable();
+
+        this.rgtBtn= new Button(context);
+        this.lftBtn = new Button(context);
+        this.upBtn  = new Button(context);
+        this.dwnBtn = new Button(context);
 
 
         // Make a globally available copy of the context so we can use it in another method
@@ -302,6 +315,13 @@ public class SpaceInvadersView extends SurfaceView {
 
     // The SurfaceView class implements onTouchListener
     // So we can override this method and detect screen touches.
+
+    @Override
+    public boolean onHoverEvent(MotionEvent motionEvent){
+
+        return true;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
