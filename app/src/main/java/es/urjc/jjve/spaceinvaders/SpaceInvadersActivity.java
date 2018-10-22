@@ -74,13 +74,13 @@ public class SpaceInvadersActivity extends Activity  {
 
     public void moveUp(View view){
         if(view instanceof SpaceInvadersView){
-            this.spaceView.moveShip(3);
+            this.spaceView.moveship(3);
         }
     }
 
     public void moveLeft(View view){
         if(view instanceof SpaceInvadersView){
-            this.spaceView.moveShip(1);
+            this.spaceView.moveship(1);
         }
     }
 
