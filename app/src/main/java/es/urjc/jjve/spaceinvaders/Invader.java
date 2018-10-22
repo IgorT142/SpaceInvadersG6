@@ -1,4 +1,4 @@
-package es.urjc.jjve.spaceinvaders.entities;
+package es.urjc.jjve.spaceinvaders;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,8 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 
 import java.util.Random;
-
-import es.urjc.jjve.spaceinvaders.R;
 
 public class Invader {
     RectF rect;
@@ -42,7 +40,7 @@ public class Invader {
     public Invader(Context context, int row, int column, int screenX, int screenY) {
 
         // Inicializa un RectF vacío
-               rect = new RectF();
+        rect = new RectF();
 
         length = screenX / 20;
         height = screenY / 20;

@@ -1,4 +1,4 @@
-package es.urjc.jjve.spaceinvaders.entities;
+package es.urjc.jjve.spaceinvaders;
 
 import android.graphics.RectF;
 

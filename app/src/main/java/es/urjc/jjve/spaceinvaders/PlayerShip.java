@@ -1,30 +1,15 @@
-package es.urjc.jjve.spaceinvaders.entities;
+package es.urjc.jjve.spaceinvaders;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import es.urjc.jjve.spaceinvaders.R;
-
 public class PlayerShip {
-
     RectF rect;
-
-    // En qué direcciones se puede mover la nave espacial
-    public final int STOPPED = 0;
-    public final int LEFT = 1;
-    public final int RIGHT = 2;
-
-    public final int CANTIDAD_DISPAROS = 1;  //Cantidad de disparos con los que cuenta la nave a la vez
 
     // La nave espacial del jugador será representada por un Bitmap
     private Bitmap bitmap;
-
-    private List<Bullet> activeBullets= new ArrayList<>();
 
     // Que tan ancho y alto puede llegar nuestra nave espacial
     private float length;
@@ -38,6 +23,11 @@ public class PlayerShip {
 
     // Esto va a mantener la rapidez de los pixeles por segundo a la que la nave espacial se moverá
     private float shipSpeed;
+
+    // En qué direcciones se puede mover la nave espacial
+    public final int STOPPED = 0;
+    public final int LEFT = 1;
+    public final int RIGHT = 2;
 
     // Se esta moviendo la nave espacial y en que dirección
     private int shipMoving = STOPPED;
@@ -96,19 +86,6 @@ public class PlayerShip {
         shipMoving = state;
     }
 
-    public boolean addBullet(Bullet b){
-        if(this.activeBullets.size()< CANTIDAD_DISPAROS){
-            this.activeBullets.add(b);
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    public List<Bullet> getActiveBullets(){
-        return activeBullets;
-    }
-
     // Este método de update será llamado desde el update en SpaceInvadersView
     // Determina si la nave espacial del jugador necesita moverse y cambiar las coordenadas
     // que están en x si es necesario
@@ -127,9 +104,5 @@ public class PlayerShip {
         rect.left = x;
         rect.right = x + length;
 
-    }
-
-    public void removeBullet(Bullet shipBull) {
-        this.activeBullets.remove(shipBull);
     }
 }
