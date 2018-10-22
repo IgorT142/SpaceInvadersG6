@@ -16,12 +16,14 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Button;
 
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 import es.urjc.jjve.spaceinvaders.entities.Bullet;
 import es.urjc.jjve.spaceinvaders.entities.DefenceBrick;
 import es.urjc.jjve.spaceinvaders.entities.Invader;
@@ -76,6 +78,7 @@ public class SpaceInvadersView extends SurfaceView {
     private boolean uhOrOh;
     // When did we last play a menacing sound
     private long lastMenaceTime = System.currentTimeMillis();
+    private ViewController controller;
 
     public SpaceInvadersView(Context context, int x, int y) {
 
@@ -389,5 +392,11 @@ public class SpaceInvadersView extends SurfaceView {
 
     public void setObserver(Observer obs){
         this.eventObservable.addObserver(obs);
+    }
+
+
+    public void moveship(int i) {
+
+        this.controller.moveShip(i);
     }
 }

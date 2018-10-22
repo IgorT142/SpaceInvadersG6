@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
@@ -15,7 +16,7 @@ import es.urjc.jjve.spaceinvaders.view.SpaceInvadersView;
 /**
  * Clase dedicada a manejar eventos en la aplicación, tales como inicio, pausa y reanudar
  */
-public class SpaceInvadersActivity extends Activity {
+public class SpaceInvadersActivity extends Activity  {
 
     // spaceInvadersView será la visualización del juego
     // También tendrá la lógica del juego → Lógica a través de controladores
@@ -70,4 +71,30 @@ public class SpaceInvadersActivity extends Activity {
     public void bulletsOn(boolean on){
         this.underage = underage;
     }
+
+    public void moveUp(View view){
+        if(view instanceof SpaceInvadersView){
+            this.spaceView.moveShip(3);
+        }
+    }
+
+    public void moveLeft(View view){
+        if(view instanceof SpaceInvadersView){
+            this.spaceView.moveShip(1);
+        }
+    }
+
+    public void moveRight(View view){
+        if(view instanceof SpaceInvadersView){
+            this.spaceView.moveship(2);
+        }
+    }
+
+    public void moveDown(View view){
+        if(view instanceof SpaceInvadersView){
+            this.spaceView.moveship(3);
+        }
+    }
+
+
 }

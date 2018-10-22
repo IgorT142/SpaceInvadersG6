@@ -18,6 +18,8 @@ public class PlayerShip {
     public final int STOPPED = 0;
     public final int LEFT = 1;
     public final int RIGHT = 2;
+    public final int DOWN = 3;
+    public final int UP=4;
 
     public final int CANTIDAD_DISPAROS = 1;  //Cantidad de disparos con los que cuenta la nave a la vez
 
@@ -119,6 +121,13 @@ public class PlayerShip {
 
         if(shipMoving == RIGHT){
             x = x + shipSpeed / fps;
+        }
+
+        if(shipMoving == DOWN){
+            y = y + shipSpeed / fps;
+        }
+        if (shipMoving ==UP){
+            y=y + shipSpeed / fps;
         }
 
         // Actualiza rect el cual es usado para detectar impactos

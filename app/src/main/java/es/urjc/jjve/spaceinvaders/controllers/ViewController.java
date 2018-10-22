@@ -584,4 +584,8 @@ public class ViewController implements Runnable, Observer {
     public void setUnderage(boolean underage) {
         this.underage = underage;
     }
+
+    public void moveShip(int i) {
+        this.playerShip.setMovementState(i);
+    }
 }
