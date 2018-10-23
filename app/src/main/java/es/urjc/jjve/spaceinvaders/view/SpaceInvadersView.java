@@ -35,6 +35,7 @@ import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
 
 public class SpaceInvadersView extends SurfaceView implements Runnable {
 
+
     Context context;
 
     private Thread gameThread = null;
@@ -91,7 +92,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private long lastMenaceTime = System.currentTimeMillis();
 
 
-    public SpaceInvadersView(Context context, int x, int y) {
+    public SpaceInvadersView(Context context, int x, int y,boolean underage) {
 
 
         super(context);
@@ -116,7 +117,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
         screenX = x;
         screenY = y;
-
+        controller = new ViewController(this.context, screenX, screenY,this);
+        controller.setUnderage(underage);
         // This SoundPool is deprecated but don't worry
 //        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC,0);
 //
@@ -433,10 +435,10 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 if (!controller.updateEntities(fps)) {
                     controller.initGame(this.context);
                 }
-
+                controller.updateGame();
             }
 
-            controller.updateGame();
+
 
             //ToDo show start again button if updateEntities returns false
 

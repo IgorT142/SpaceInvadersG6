@@ -38,9 +38,8 @@ public class SpaceInvadersActivity extends Activity  {
         display.getSize(size);
 
         //Inicializar gameView y lo establece como la visualización
-        spaceView = new SpaceInvadersView(this,size.x,size.y);
-        spaceInvadersController = new ViewController(this, size.x, size.y,spaceView);
-        spaceInvadersController.setUnderage(getIntent().getExtras().getBoolean("underage"));
+        spaceView = new SpaceInvadersView(this,size.x,size.y,getIntent().getExtras().getBoolean("underage"));
+
 
 
 
