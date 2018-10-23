@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -40,10 +41,26 @@ public class SpaceInvadersActivity extends Activity  {
         spaceView = new SpaceInvadersView(this,size.x,size.y);
         spaceInvadersController = new ViewController(this, size.x, size.y,spaceView);
         spaceInvadersController.setUnderage(getIntent().getExtras().getBoolean("underage"));
-        spaceView.setObserver(spaceInvadersController);
+
 
 
         setContentView(spaceView);
+        this.spaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                spaceView.unpause();
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+
+            }
+        });
 
 
     }
@@ -56,7 +73,7 @@ public class SpaceInvadersActivity extends Activity  {
         super.onResume();
 
         // Le dice al método de reanudar del gameView que se ejecute
-        spaceInvadersController.resume();
+        spaceView.resume();
     }
 
     // Este método se ejecuta cuando el jugador se sale del juego
@@ -65,7 +82,7 @@ public class SpaceInvadersActivity extends Activity  {
         super.onPause();
 
         // Le dice al método de pausa del gameView que se ejecute
-        spaceInvadersController.pause();
+        spaceView.pause();
     }
 
     public void bulletsOn(boolean on){

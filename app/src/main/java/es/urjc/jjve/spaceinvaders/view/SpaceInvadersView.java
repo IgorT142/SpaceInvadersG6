@@ -33,9 +33,20 @@ import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
  * Clase utilizada para mostrar la interfaz del juego y manejar eventos dentro del juego, movimiento y disparo
  */
 
-public class SpaceInvadersView extends SurfaceView {
+public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     Context context;
+
+    private Thread gameThread = null;
+
+
+    private boolean paused = true;
+    private volatile boolean playing;
+
+    private long timeThisFrame;
+
+    private long fps = 20;
+
 
 
     // Our SurfaceHolder to lock the surface before we draw our graphics
@@ -57,7 +68,7 @@ public class SpaceInvadersView extends SurfaceView {
     private int screenY;
 
 
-    private ViewObservable eventObservable;
+    private ViewController controller;
 
 
 
@@ -78,7 +89,7 @@ public class SpaceInvadersView extends SurfaceView {
     private boolean uhOrOh;
     // When did we last play a menacing sound
     private long lastMenaceTime = System.currentTimeMillis();
-    private ViewController controller;
+
 
     public SpaceInvadersView(Context context, int x, int y) {
 
@@ -86,7 +97,7 @@ public class SpaceInvadersView extends SurfaceView {
         super(context);
         // The next line of code asks the
         // SurfaceView class to set up our object.
-        this.eventObservable= new ViewObservable();
+
 
         this.rgtBtn= new Button(context);
         this.lftBtn = new Button(context);
@@ -339,29 +350,45 @@ public class SpaceInvadersView extends SurfaceView {
                 if(motionEvent.getY() > screenY - screenY / 8) {
 
                     if (motionEvent.getX() > screenX / 2) {
-                        eventObservable.notifyMovement(2);
+                        controller.notifyMovement(2);
                     } else {
-                        eventObservable.notifyMovement(1);
+                        controller.notifyMovement(1);
 
 
                     }
 
                 }else {
                     // Shots fired
-                   eventObservable.notifyShoot();
+                   controller.notifyShoot();
                 }
                 break;
 
             // Player has removed finger from screen
             case MotionEvent.ACTION_UP:
 
-                eventObservable.notifyMovement(0);
+                controller.notifyMovement(0);
 
                 break;
 
         }
 
         return true;
+    }
+
+    public void pause() {
+        playing = false;
+        try {
+            gameThread.join();
+        } catch (InterruptedException e) {
+            Log.e("Error:", "joining thread");
+        }
+
+    }
+
+    public void resume() {
+        playing = true;
+        gameThread = new Thread(this);
+        gameThread.start();
     }
 
 
@@ -390,13 +417,65 @@ public class SpaceInvadersView extends SurfaceView {
     }
 
 
-    public void setObserver(Observer obs){
-        this.eventObservable.addObserver(obs);
-    }
-
-
     public void moveship(int i) {
 
         this.controller.moveShip(i);
+    }
+
+    @Override
+    public void run() {
+        while (playing) {
+
+            // Capture the current time in milliseconds in startFrameTime
+            long startFrameTime = System.nanoTime();
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+            if (!paused) {
+                if (!controller.updateEntities(fps)) {
+                    controller.initGame(this.context);
+                }
+
+            }
+
+            controller.updateGame();
+
+            //ToDo show start again button if updateEntities returns false
+
+
+            // Calculate the fps this frame
+            // We can then use the result to
+            // time animations and more.
+            timeThisFrame = System.currentTimeMillis() - startFrameTime;
+            if (timeThisFrame >= 1) {
+                fps = 1000 / timeThisFrame;
+            }
+
+            // We will do something new here towards the end of the project
+            // Play a sound based on the menace level
+//            if(!paused) {
+//                if ((startFrameTime - lastMenaceTime) > menaceInterval) {
+//                    if (uhOrOh) {
+//                        // Play Uh
+//                        soundPool.play(uhID, 1, 1, 0, 0, 1);
+//
+//                    } else {
+//                        // Play Oh
+//                        soundPool.play(ohID, 1, 1, 0, 0, 1);
+//                    }
+//
+//                    // Reset the last menace time
+//                    lastMenaceTime = System.currentTimeMillis();
+//                    // Alter value of uhOrOh
+//                    uhOrOh = !uhOrOh;
+//                }
+//            }
+//            // Reset the menace level
+//            menaceInterval = 1000;
+
+
+        }
+    }
+
+    public void unpause() {
+        this.paused=false;
     }
 }
