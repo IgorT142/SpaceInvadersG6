@@ -7,6 +7,7 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
+import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
 import es.urjc.jjve.spaceinvaders.view.SpaceInvadersView;
 // SpaceInvadersActivity es el punto de entrada al juego.
 // Se va a encargar del ciclo de vida del juego al llamar
@@ -65,6 +66,10 @@ public class SpaceInvadersActivity extends Activity {
 
         // Le dice al método de pausa del gameView que se ejecute
         spaceInvadersController.pause();
+    }
+
+    public void moveUp(){
+        this.spaceView.setShip(3);
     }
 
     public void bulletsOn(boolean on){

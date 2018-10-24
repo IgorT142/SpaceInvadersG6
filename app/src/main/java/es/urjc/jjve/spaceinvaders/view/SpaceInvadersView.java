@@ -390,4 +390,8 @@ public class SpaceInvadersView extends SurfaceView {
     public void setObserver(Observer obs){
         this.eventObservable.addObserver(obs);
     }
+
+    public void setShip(int i) {
+        this.controller.setShip(i);
+    }
 }
