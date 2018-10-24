@@ -546,4 +546,17 @@ public class ViewController  {
     public void notifyShoot() {
         //ToDo add player bullets
     }
+
+    public void removeBullets() {
+
+        List<Bullet> inactive = new ArrayList<>();
+        for(Bullet b:playerBullets){
+            if (!b.getStatus()){
+                inactive.add(b);
+            }
+        }
+        for(Bullet b:inactive){
+            playerBullets.remove(b);
+        }
+    }
 }

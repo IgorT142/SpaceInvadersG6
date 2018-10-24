@@ -436,6 +436,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                     controller.initGame(this.context);
                 }
                 controller.updateGame();
+                controller.removeBullets();
             }
 
 
