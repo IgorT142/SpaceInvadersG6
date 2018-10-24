@@ -173,7 +173,6 @@ public class ViewController  {
         view.lockCanvas();
         view.drawBackground();
 
-        view.setPaintGameObject();
 
         paintInvaders();
 
@@ -539,12 +538,12 @@ public class ViewController  {
         this.playerShip.setMovementState(i);
     }
 
-    public void notifyMovement(int i) {
-        this.playerShip.setMovementState(i);
-    }
+    
 
     public void notifyShoot() {
-        //ToDo add player bullets
+        Bullet newBull = new Bullet(screenY);
+        this.playerBullets.add(newBull);
+        newBull.shoot(playerShip.getX(),playerShip.getY(),0);
     }
 
     public void removeBullets() {

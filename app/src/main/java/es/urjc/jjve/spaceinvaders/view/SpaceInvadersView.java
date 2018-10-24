@@ -119,6 +119,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         screenY = y;
         controller = new ViewController(this.context, screenX, screenY,this);
         controller.setUnderage(underage);
+
+        this.initPaintGameObject();
         // This SoundPool is deprecated but don't worry
 //        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC,0);
 //
@@ -409,7 +411,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     }
 
-    public void setPaintGameObject(){
+    public void initPaintGameObject(){
          paint.setColor(Color.argb(255,  249, 129, 0));
     }
 
@@ -476,6 +478,10 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
 
         }
+    }
+
+    public void changeColor(){
+        //ToDo Add random paint generation to be called when a bullet impacts a screen limit
     }
 
     public void unpause() {

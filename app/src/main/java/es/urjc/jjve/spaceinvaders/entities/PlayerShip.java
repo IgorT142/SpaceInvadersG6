@@ -141,4 +141,8 @@ public class PlayerShip {
     public void removeBullet(Bullet shipBull) {
         this.activeBullets.remove(shipBull);
     }
+
+    public float getY() {
+        return y;
+    }
 }
