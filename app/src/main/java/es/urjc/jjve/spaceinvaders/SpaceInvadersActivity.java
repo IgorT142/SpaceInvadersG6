@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.SurfaceHolder;
+import android.view.View;
 import android.view.WindowManager;
 
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
@@ -16,7 +18,7 @@ import es.urjc.jjve.spaceinvaders.view.SpaceInvadersView;
 /**
  * Clase dedicada a manejar eventos en la aplicación, tales como inicio, pausa y reanudar
  */
-public class SpaceInvadersActivity extends Activity {
+public class SpaceInvadersActivity extends Activity  {
 
     // spaceInvadersView será la visualización del juego
     // También tendrá la lógica del juego → Lógica a través de controladores
@@ -37,13 +39,28 @@ public class SpaceInvadersActivity extends Activity {
         display.getSize(size);
 
         //Inicializar gameView y lo establece como la visualización
-        spaceView = new SpaceInvadersView(this,size.x,size.y);
-        spaceInvadersController = new ViewController(this, size.x, size.y,spaceView);
-        spaceInvadersController.setUnderage(getIntent().getExtras().getBoolean("underage"));
-        spaceView.setObserver(spaceInvadersController);
+        spaceView = new SpaceInvadersView(this,size.x,size.y,getIntent().getExtras().getBoolean("underage"));
+
+
 
 
         setContentView(spaceView);
+        this.spaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                spaceView.unpause();
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+
+            }
+        });
 
 
     }
@@ -56,7 +73,7 @@ public class SpaceInvadersActivity extends Activity {
         super.onResume();
 
         // Le dice al método de reanudar del gameView que se ejecute
-        spaceInvadersController.resume();
+        spaceView.resume();
     }
 
     // Este método se ejecuta cuando el jugador se sale del juego
@@ -65,7 +82,7 @@ public class SpaceInvadersActivity extends Activity {
         super.onPause();
 
         // Le dice al método de pausa del gameView que se ejecute
-        spaceInvadersController.pause();
+        spaceView.pause();
     }
 
     public void moveUp(){
@@ -75,4 +92,30 @@ public class SpaceInvadersActivity extends Activity {
     public void bulletsOn(boolean on){
         this.underage = underage;
     }
+
+    public void moveUp(View view){
+        if(view instanceof SpaceInvadersView){
+            this.spaceView.moveship(3);
+        }
+    }
+
+    public void moveLeft(View view){
+        if(view instanceof SpaceInvadersView){
+            this.spaceView.moveship(1);
+        }
+    }
+
+    public void moveRight(View view){
+        if(view instanceof SpaceInvadersView){
+            this.spaceView.moveship(2);
+        }
+    }
+
+    public void moveDown(View view){
+        if(view instanceof SpaceInvadersView){
+            this.spaceView.moveship(3);
+        }
+    }
+
+
 }

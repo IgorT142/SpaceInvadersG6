@@ -23,7 +23,7 @@ import es.urjc.jjve.spaceinvaders.view.SpaceInvadersView;
  * Created by Christian on 03/10/2018.
  */
 
-public class ViewController implements Runnable, Observer {
+public class ViewController  {
 
 
     // For sound FX
@@ -47,17 +47,14 @@ public class ViewController implements Runnable, Observer {
 
 
     // This is used to help calculate the fps
-    private long timeThisFrame;
     // This variable tracks the game frame rate
 
-    private long fps = 20;
 
     // Game is paused at the start
-    private boolean paused = true;
+
 
     // A boolean which we will set and unset
     // when the game is running- or not.
-    private volatile boolean playing;
 
     private SpaceInvadersView view;
 
@@ -85,13 +82,12 @@ public class ViewController implements Runnable, Observer {
     private List<DefenceBrick> bricks;
     private int numBricks;
 
-    private Thread gameThread = null;
 
     //Determines the game bounds
     private int screenX;
     private int screenY;
 
-    private Context context;
+
 
     public ViewController(Context context, int x, int y, SpaceInvadersView view) {
 
@@ -103,30 +99,30 @@ public class ViewController implements Runnable, Observer {
         this.playerBullets= new ArrayList<>();
 
 
-        this.context = context;
+       // this.context = context;
         this.initGame(context);
 
 
     }
 
 
-    @Override
+
     public void run() {
 
 
-        while (playing) {
+        //while (playing) {
 
             // Capture the current time in milliseconds in startFrameTime
             long startFrameTime = System.nanoTime();
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-            if (!paused) {
-                if (!updateEntities()) {
-                    initGame(this.context);
-                }
+          //  if (!paused) {
+              //  if (!updateEntities()) {
+            //        initGame(this.context);
+             //   }
 
-            }
+            //}
 
-            updateGame();
+            //updateGame();
 
             //ToDo show start again button if updateEntities returns false
 
@@ -134,10 +130,10 @@ public class ViewController implements Runnable, Observer {
             // Calculate the fps this frame
             // We can then use the result to
             // time animations and more.
-            timeThisFrame = System.currentTimeMillis() - startFrameTime;
-            if (timeThisFrame >= 1) {
-                fps = 1000 / timeThisFrame;
-            }
+           // timeThisFrame = System.currentTimeMillis() - startFrameTime;
+            //if (timeThisFrame >= 1) {
+              //  fps = 1000 / timeThisFrame;
+            //}
 
             // We will do something new here towards the end of the project
             // Play a sound based on the menace level
@@ -162,7 +158,7 @@ public class ViewController implements Runnable, Observer {
 //            menaceInterval = 1000;
 
 
-        }
+        //}
     }
 
 
@@ -177,7 +173,6 @@ public class ViewController implements Runnable, Observer {
         view.lockCanvas();
         view.drawBackground();
 
-        view.setPaintGameObject();
 
         paintInvaders();
 
@@ -216,7 +211,7 @@ public class ViewController implements Runnable, Observer {
      * also it checks if the invader has the opportunity to shoot
      * updates the bullet possition depending on the fps attribute
      */
-    public boolean updateEntities() {
+    public boolean updateEntities(long fps) {
 
         //checks if any entity has reached a limit or another entity
         boolean bumpedEntity = false;
@@ -301,9 +296,9 @@ public class ViewController implements Runnable, Observer {
 
                                 // Has the player won
                                 if (score == numInvaders * 100) {
-                                    paused = true;
+                                  //  paused = true;
                                     score = 0;
-                                    initGame(this.context);
+                                    //initGame(this.context);
                                 }
                             }
                         }
@@ -413,21 +408,9 @@ public class ViewController implements Runnable, Observer {
 
     // If SpaceInvadersActivity is started then
     // start our thread.
-    public void resume() {
-        playing = true;
-        gameThread = new Thread(this);
-        gameThread.start();
-    }
 
-    public void pause() {
-        playing = false;
-        try {
-            gameThread.join();
-        } catch (InterruptedException e) {
-            Log.e("Error:", "joining thread");
-        }
 
-    }
+
 
     public void initGame(Context context) {
         // Make a new player space ship
@@ -540,42 +523,8 @@ public class ViewController implements Runnable, Observer {
         this.view = view;
     }
 
-    @Override
-    public void update(Observable observable, Object o) {
 
 
-        String splitter = Pattern.quote("|");
-        String[] split = ((String) o).split(splitter);
-
-        switch (split[0]) {
-
-            case "mov":
-
-                if (paused) {
-                    paused = false;
-
-                }
-                playerShip.setMovementState(Integer.parseInt(split[1]));
-
-                playerShip.update(fps);
-
-                break;
-            case "sht":
-
-                if (!underage) {
-                    //Instance a new bullet and shoot it
-                    Bullet bullet = new Bullet(screenY);
-                    if (this.playerBullets.size()<5) {
-                        this.playerBullets.add(bullet);
-                        bullet.shoot(playerShip.getX() + playerShip.getLength() / 2, screenY - 100, bullet.UP);
-                    }
-                }
-
-                break;
-        }
-        //parsea o y decide que modifica
-
-    }
 
     public boolean isUnderage() {
         return underage;
@@ -583,5 +532,30 @@ public class ViewController implements Runnable, Observer {
 
     public void setUnderage(boolean underage) {
         this.underage = underage;
+    }
+
+    public void moveShip(int i) {
+        this.playerShip.setMovementState(i);
+    }
+
+    
+
+    public void notifyShoot() {
+        Bullet newBull = new Bullet(screenY);
+        this.playerBullets.add(newBull);
+        newBull.shoot(playerShip.getX(),playerShip.getY(),0);
+    }
+
+    public void removeBullets() {
+
+        List<Bullet> inactive = new ArrayList<>();
+        for(Bullet b:playerBullets){
+            if (!b.getStatus()){
+                inactive.add(b);
+            }
+        }
+        for(Bullet b:inactive){
+            playerBullets.remove(b);
+        }
     }
 }
