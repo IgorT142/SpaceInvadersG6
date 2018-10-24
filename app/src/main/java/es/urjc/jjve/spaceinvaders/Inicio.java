@@ -29,11 +29,13 @@ public class Inicio extends AppCompatActivity implements OnClickListener {
             Intent i = new Intent(getApplicationContext(),SpaceInvadersActivity.class);
             i.putExtra("underage",false);
             startActivity(i);
+            //finish();
         }
         if(v.getId()== findViewById(R.id.no).getId()){
             Intent i = new Intent(getApplicationContext(),SpaceInvadersActivity.class);
             i.putExtra("underage",true);
             startActivity(i);
+            //finish();
         }
     }
 }

@@ -57,7 +57,7 @@ public class SpaceInvadersActivity extends Activity  {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-
+                finish();
             }
         });
 
