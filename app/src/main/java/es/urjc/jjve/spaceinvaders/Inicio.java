@@ -2,10 +2,17 @@ package es.urjc.jjve.spaceinvaders;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+import java.io.IOException;
 
 import es.urjc.jjve.spaceinvaders.R;
 
@@ -20,6 +27,13 @@ public class Inicio extends AppCompatActivity implements OnClickListener {
         View no = findViewById(R.id.no);
         si.setOnClickListener(this);
         no.setOnClickListener(this);
+
+        /*
+            OPCIONAL
+         */
+        //Para la música de introducción
+        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.tauhubballad);
+        mediaPlayer.start();
     }
 
 
