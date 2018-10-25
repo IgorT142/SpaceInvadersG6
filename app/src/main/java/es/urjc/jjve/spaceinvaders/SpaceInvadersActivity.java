@@ -49,6 +49,7 @@ public class SpaceInvadersActivity extends Activity  {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 spaceView.unpause();
+                spaceView.drawJoystick();
             }
 
             @Override

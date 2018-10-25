@@ -10,6 +10,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.media.AudioManager;
@@ -33,13 +34,14 @@ import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 import es.urjc.jjve.spaceinvaders.entities.Bullet;
 import es.urjc.jjve.spaceinvaders.entities.DefenceBrick;
 import es.urjc.jjve.spaceinvaders.entities.Invader;
+import es.urjc.jjve.spaceinvaders.entities.Joystick;
 import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
 
 /**
  * Clase utilizada para mostrar la interfaz del juego y manejar eventos dentro del juego, movimiento y disparo
  */
 
-public class SpaceInvadersView extends SurfaceView implements Runnable {
+public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTouchListener {
 
 
     Context context;
@@ -96,6 +98,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private boolean uhOrOh;
     // When did we last play a menacing sound
     private long lastMenaceTime = System.currentTimeMillis();
+    private Joystick joystick;
 
 
     public SpaceInvadersView(Context context, int x, int y,boolean underage) {
@@ -104,7 +107,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         super(context);
         // The next line of code asks the
         // SurfaceView class to set up our object.
-
+        this.joystick = new Joystick(0+10,screenY-10,5);
 
         this.rgtBtn= new Button(context);
         this.lftBtn = new Button(context);
@@ -127,6 +130,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         controller.setUnderage(underage);
 
         this.initPaintGameObject();
+
         // This SoundPool is deprecated but don't worry
 //        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC,0);
 //
@@ -500,5 +504,32 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     public void setShip(int i) {
         //this.controller.setShip(i);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        if(v.equals(this)){
+            if(event.getAction()!=event.ACTION_UP){
+                drawJoystick(event.getX(), event.getY());
+            }else{
+                drawJoystick(joystick.getX(),joystick.getY());
+            }
+        }
+        return true;
+    }
+
+    public void drawJoystick(float x, float y) {
+        canvas=ourHolder.lockCanvas();
+        canvas.drawCircle(x,y,joystick.getBaseRadius(),joystick.getBaseColor());
+        canvas.drawCircle(joystick.getX(),joystick.getY(),joystick.getHatRadius(),joystick.getHatColor());
+        ourHolder.unlockCanvasAndPost(canvas);
+    }
+
+    public void drawJoystick() {
+        canvas= ourHolder.lockCanvas();
+        canvas.drawCircle(joystick.getX(),joystick.getY(),joystick.getBaseRadius(),joystick.getBaseColor());
+        canvas.drawCircle(joystick.getX(),joystick.getY(),joystick.getHatRadius(),joystick.getHatColor());
+        ourHolder.unlockCanvasAndPost(canvas);
     }
 }
