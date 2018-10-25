@@ -1,6 +1,7 @@
 package es.urjc.jjve.spaceinvaders.controllers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.RectF;
 import android.media.SoundPool;
 import android.util.Log;
@@ -391,7 +392,6 @@ public class ViewController  {
                 if (bullet.getStatus()) {
                     if (RectF.intersects(playerShip.getRect(), bullet.getRect())) {
                         bullet.setInactive();
-
                         return false;
 //                  soundPool.play(playerExplodeID, 1, 1, 0, 0, 1);
 

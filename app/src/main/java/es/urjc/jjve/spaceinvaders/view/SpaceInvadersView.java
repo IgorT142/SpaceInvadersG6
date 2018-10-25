@@ -1,6 +1,10 @@
 package es.urjc.jjve.spaceinvaders.view;
+import es.urjc.jjve.spaceinvaders.HighScoreActivity;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -10,6 +14,8 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -435,7 +441,11 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
             if (!paused) {
                 if (!controller.updateEntities(fps)) {
-                    controller.initGame(this.context);
+
+                    Intent i = new Intent(context.getApplicationContext(),HighScoreActivity.class); //Intenta acceder al highscore si se ha perdido
+                    i.putExtra("score",100);
+                    context.startActivity(i);
+                    //controller.initGame(this.context);
                 }
                 controller.updateGame();
                 controller.removeBullets();
