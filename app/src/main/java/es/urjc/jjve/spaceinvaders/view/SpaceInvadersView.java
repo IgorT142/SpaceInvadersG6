@@ -340,44 +340,44 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         return true;
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent motionEvent) {
-
-        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-
-            // Player has touched the screen
-            case MotionEvent.ACTION_DOWN:
-
-                /**
-                 * Checks if the touch event happened in the upper half of the screen
-                 */
-                if(motionEvent.getY() > screenY - screenY / 8) {
-
-                    if (motionEvent.getX() > screenX / 2) {
-                        controller.notifyMovement(2);
-                    } else {
-                        controller.notifyMovement(1);
-
-
-                    }
-
-                }else {
-                    // Shots fired
-                   controller.notifyShoot();
-                }
-                break;
-
-            // Player has removed finger from screen
-            case MotionEvent.ACTION_UP:
-
-                controller.notifyMovement(0);
-
-                break;
-
-        }
-
-        return true;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent motionEvent) {
+//
+//        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+//
+//            // Player has touched the screen
+//            case MotionEvent.ACTION_DOWN:
+//
+//                /**
+//                 * Checks if the touch event happened in the upper half of the screen
+//                 */
+//                if(motionEvent.getY() > screenY - screenY / 8) {
+//
+//                    if (motionEvent.getX() > screenX / 2) {
+//                        controller.notifyMovement(2);
+//                    } else {
+//                        controller.notifyMovement(1);
+//
+//
+//                    }
+//
+//                }else {
+//                    // Shots fired
+//                   controller.notifyShoot();
+//                }
+//                break;
+//
+//            // Player has removed finger from screen
+//            case MotionEvent.ACTION_UP:
+//
+//                controller.notifyMovement(0);
+//
+//                break;
+//
+//        }
+//
+//        return true;
+//    }
 
     public void pause() {
         playing = false;
@@ -489,6 +489,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     public void setShip(int i) {
-        this.controller.setShip(i);
+        //this.controller.setShip(i);
     }
 }
