@@ -21,6 +21,9 @@ public class PlayerShip {
     public final int DOWN = 3;
     public final int UP=4;
 
+    public int dirX;
+    public int dirY;
+
     public final int CANTIDAD_DISPAROS = 1;  //Cantidad de disparos con los que cuenta la nave a la vez
 
     // La nave espacial del jugador será representada por un Bitmap
@@ -94,8 +97,10 @@ public class PlayerShip {
 
     // Este método será usado para cambiar/establecer si la nave
     // espacial va a la izquierda, la derecha o no se mueve
-    public void setMovementState(int state){
-        shipMoving = state;
+    public void setMovementState(int targetX, int targetY){
+
+        dirX = targetX/targetY; //Calculates the proportion of direction x
+        dirY = targetY/targetX; //Calculates the proportion of direction y
     }
 
     public boolean addBullet(Bullet b){
@@ -115,20 +120,11 @@ public class PlayerShip {
     // Determina si la nave espacial del jugador necesita moverse y cambiar las coordenadas
     // que están en x si es necesario
     public void update(long fps){
-        if(shipMoving == LEFT){
-            x = x - shipSpeed / fps;
-        }
 
-        if(shipMoving == RIGHT){
-            x = x + shipSpeed / fps;
-        }
+            x = x + dirX * shipSpeed / fps; //Calculates new xPos for the ship depending on the direction proportion of the x, if dir 0, does not move on x
+            y = y + dirY * shipSpeed / fps; //Calculates new ypos for the ship depending on the direection proportion of the y, if dir is 0 does not move on y
 
-        if(shipMoving == DOWN){
-            y = y + shipSpeed / fps;
-        }
-        if (shipMoving ==UP){
-            y=y + shipSpeed / fps;
-        }
+
 
         // Actualiza rect el cual es usado para detectar impactos
         rect.top = y;
