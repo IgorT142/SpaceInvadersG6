@@ -78,6 +78,6 @@ public class Joystick {
     }
 
     public float getHatX() {
-        return this.getX();
+        return this.hatX;
     }
 }

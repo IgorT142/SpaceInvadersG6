@@ -48,7 +48,7 @@ import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
 /**
  * Clase utilizada para mostrar la interfaz del juego y manejar eventos dentro del juego, movimiento y disparo
  */
-public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTouchListener {
+public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     Context context;
 
@@ -157,17 +157,18 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
      * EVENT MANAGEMENT
      */
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
+    public boolean onTouchEvent( MotionEvent event) {
 
-        if (v.equals(this)) {
+
 
             if (event.getAction() != event.ACTION_UP) {
-                this.joystick.initHat();
-            } else {
                 this.joystick.setHatX(event.getX());
                 this.joystick.setHatY(event.getY());
+            } else {
+                this.joystick.initHat();
+
             }
-        }
+
         return true;
     }
 
