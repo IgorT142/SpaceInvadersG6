@@ -27,8 +27,9 @@ public class Joystick {
 
         this.centerX = x;
         this.centerY = y;
-        this.hatRadius = radius;
-        this.baseRadius = radius + 200;
+        double porcentaje = radius * 0.4;
+        this.hatRadius = radius - (int) porcentaje;
+        this.baseRadius = radius;
     }
 
 

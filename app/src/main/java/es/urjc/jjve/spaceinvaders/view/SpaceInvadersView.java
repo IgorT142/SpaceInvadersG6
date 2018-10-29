@@ -1,4 +1,5 @@
 package es.urjc.jjve.spaceinvaders.view;
+
 import es.urjc.jjve.spaceinvaders.HighScoreActivity;
 
 import android.app.Activity;
@@ -48,7 +49,7 @@ import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
  * Clase utilizada para mostrar la interfaz del juego y manejar eventos dentro del juego, movimiento y disparo
  */
 
-public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTouchListener {
+public class SpaceInvadersView extends SurfaceView implements Runnable, View.OnTouchListener {
 
 
     Context context;
@@ -62,7 +63,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
     private long timeThisFrame;
 
     private long fps = 20;
-
 
 
     // Our SurfaceHolder to lock the surface before we draw our graphics
@@ -86,19 +86,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
 
     private ViewController controller;
 
-
-
-//    // For sound FX
-//    private SoundPool soundPool;
-//    private int playerExplodeID = -1;
-//    private int invaderExplodeID = -1;
-//    private int shootID = -1;
-//    private int damageShelterID = -1;
-//    private int uhID = -1;
-//    private int ohID = -1;
-
-
-
     // How menacing should the sound be?
     private long menaceInterval = 1000;
     // Which menace sound should play next
@@ -108,7 +95,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
     private Joystick joystick;
 
 
-    public SpaceInvadersView(Context context, int x, int y,boolean underage) {
+    public SpaceInvadersView(Context context, int x, int y, boolean underage) {
 
 
         super(context);
@@ -126,7 +113,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
         screenY = y;
         // The next line of code asks the
         // SurfaceView class to set up our object.
-        this.joystick = new Joystick(screenX/2,screenY/2,screenX / 4);
+        this.joystick = new Joystick(screenX / 10, screenY - (screenY / 8), screenX / 14);
 
         controller = new ViewController(this.context, screenX, screenY, this);
         controller.setUnderage(underage);
@@ -135,22 +122,20 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
     }
 
 
-    public void drawBackground(){
+    public void drawBackground() {
 
 
-            // Lock the canvas ready to draw
-            // Draw the background color
+        // Lock the canvas ready to draw
+        // Draw the background color
         try {
-            if(canvas != null)
+            if (canvas != null)
                 canvas.drawColor(Color.argb(255, 0, 0, 0));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void drawGameObject(RectF rect) {
-
-
 
 
         canvas.drawRect(rect, paint);
@@ -159,8 +144,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
     }
 
 
-
-    public void drawGameObject(Bitmap bitmap, float x, float y){
+    public void drawGameObject(Bitmap bitmap, float x, float y) {
         // Make sure our drawing surface is valid or we crash
         Surface surface = ourHolder.getSurface();
 
@@ -173,21 +157,19 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
             // Choose the brush color for drawing
 
             // Now draw the Game Object
-            canvas.drawBitmap(bitmap, x, y , paint);
+            canvas.drawBitmap(bitmap, x, y, paint);
 
 
             // Draw everything to the screen
         }
     }
 
-    public void drawGameObject(String text, int x, int y){
-
+    public void drawGameObject(String text, int x, int y) {
 
 
         paint.setTextSize(40);
 
-        canvas.drawText(text,x,y,paint);
-
+        canvas.drawText(text, x, y, paint);
 
 
     }
@@ -217,7 +199,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
     // So we can override this method and detect screen touches.
 
     @Override
-    public boolean onHoverEvent(MotionEvent motionEvent){
+    public boolean onHoverEvent(MotionEvent motionEvent) {
 
         return true;
     }
@@ -278,27 +260,27 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
     }
 
 
-    public void lockCanvas(){
+    public void lockCanvas() {
 
         try {
-            if(ourHolder.getSurface().isValid()){
+            if (ourHolder.getSurface().isValid()) {
                 canvas = ourHolder.lockCanvas();
-            }else{
+            } else {
                 System.out.println(ourHolder.getSurface().isValid());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
     }
 
-    public void initPaintGameObject(){
-         paint.setColor(Color.argb(255,  249, 129, 0));
+    public void initPaintGameObject() {
+        paint.setColor(Color.argb(255, 249, 129, 0));
     }
 
 
-    public void unlockCanvas(){
+    public void unlockCanvas() {
         ourHolder.unlockCanvasAndPost(canvas);
     }
 
@@ -318,15 +300,14 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
             if (!paused) {
                 if (!controller.updateEntities(fps)) {
 
-                    Intent i = new Intent(context.getApplicationContext(),HighScoreActivity.class); //Intenta acceder al highscore si se ha perdido
-                    i.putExtra("score",100);
+                    Intent i = new Intent(context.getApplicationContext(), HighScoreActivity.class); //Intenta acceder al highscore si se ha perdido
+                    i.putExtra("score", 100);
                     context.startActivity(i);
                     //controller.initGame(this.context);
                 }
                 controller.updateGame();
                 controller.removeBullets();
             }
-
 
 
             //ToDo show start again button if updateEntities returns false
@@ -366,12 +347,12 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
         }
     }
 
-    public void changeColor(){
+    public void changeColor() {
         //ToDo Add random paint generation to be called when a bullet impacts a screen limit
     }
 
     public void unpause() {
-        this.paused=false;
+        this.paused = false;
     }
 
     public void setShip(int i) {
@@ -381,10 +362,10 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        if(v.equals(this)){
-            if(event.getAction()!=event.ACTION_UP){
+        if (v.equals(this)) {
+            if (event.getAction() != event.ACTION_UP) {
                 //drawJoystick(event.getX(), event.getY());
-            }else{
+            } else {
                 //drawJoystick(joystick.getX(),joystick.getY());
             }
         }
@@ -393,13 +374,13 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
 
     public void drawJoystick(float x, float y) {
         //canvas=ourHolder.lockCanvas();
-        canvas.drawCircle(x,y,joystick.getBaseRadius(),joystick.getBaseColor());
-        canvas.drawCircle(joystick.getX(),joystick.getY(),joystick.getHatRadius(),joystick.getHatColor());
+        canvas.drawCircle(x, y, joystick.getBaseRadius(), joystick.getBaseColor());
+        canvas.drawCircle(joystick.getX(), joystick.getY(), joystick.getHatRadius(), joystick.getHatColor());
         //ourHolder.unlockCanvasAndPost(canvas);
     }
 
     public void drawJoystick() {
-        canvas.drawCircle(joystick.getX(),joystick.getY(),joystick.getHatRadius(),joystick.getHatColor());
-        canvas.drawCircle(joystick.getX(),joystick.getY(),joystick.getBaseRadius(),joystick.getBaseColor());
+        canvas.drawCircle(joystick.getX(), joystick.getY(), joystick.getHatRadius(), joystick.getHatColor());
+        canvas.drawCircle(joystick.getX(), joystick.getY(), joystick.getBaseRadius(), joystick.getBaseColor());
     }
 }
