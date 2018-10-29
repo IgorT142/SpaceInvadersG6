@@ -535,7 +535,7 @@ public class ViewController  {
     }
 
     public void moveShip(int i) {
-        this.playerShip.setMovementState(i);
+
     }
 
     
