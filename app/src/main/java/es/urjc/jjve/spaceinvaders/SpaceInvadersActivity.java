@@ -61,12 +61,10 @@ public class SpaceInvadersActivity extends Activity {
         });
     }
 
-
     // Este método se ejecuta cuando el jugador empieza el juego
     @Override
     protected void onResume() {
         super.onResume();
-
         // Le dice al método de reanudar del gameView que se ejecute
         spaceView.resume();
     }
@@ -79,11 +77,5 @@ public class SpaceInvadersActivity extends Activity {
         // Le dice al método de pausa del gameView que se ejecute
         spaceView.pause();
     }
-
-    public void bulletsOn(boolean on) {
-        this.underage = underage;
-    }
-
-
-
+    
 }

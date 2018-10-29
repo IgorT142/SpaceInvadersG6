@@ -11,7 +11,6 @@ public class DefenceBrick {
 
         int width = screenX / 90;
         int height = screenY / 40;
-
         isVisible = true;
 
         // A veces una bala atraviesa este relleno

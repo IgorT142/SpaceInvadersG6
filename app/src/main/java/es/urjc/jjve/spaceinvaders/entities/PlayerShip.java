@@ -121,17 +121,13 @@ public class PlayerShip {
     // que están en x si es necesario
     public void update(long fps){
 
-            x = x + dirX * shipSpeed / fps; //Calculates new xPos for the ship depending on the direction proportion of the x, if dir 0, does not move on x
-            y = y + dirY * shipSpeed / fps; //Calculates new ypos for the ship depending on the direection proportion of the y, if dir is 0 does not move on y
-
-
-
+        x = x + dirX * shipSpeed / fps; //Calculates new xPos for the ship depending on the direction proportion of the x, if dir 0, does not move on x
+        y = y + dirY * shipSpeed / fps; //Calculates new ypos for the ship depending on the direection proportion of the y, if dir is 0 does not move on y
         // Actualiza rect el cual es usado para detectar impactos
         rect.top = y;
         rect.bottom = y + height;
         rect.left = x;
         rect.right = x + length;
-
     }
 
     public void removeBullet(Bullet shipBull) {

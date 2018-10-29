@@ -19,7 +19,6 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
     private int score;
     private String fileScores;
 
-
     @Override   //Este método se carga el primero en cuanto se llama a la activity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +39,6 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
 
         //Se agregan el OnClickListener para que el botón funcione al pulsarlo
         exit.setOnClickListener(this);
-
     }
 
     @Override   //Permite agregar funcionalidad de click a los objeto que tenga agregados
