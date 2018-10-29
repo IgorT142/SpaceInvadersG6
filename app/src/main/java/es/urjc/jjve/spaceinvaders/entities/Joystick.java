@@ -18,6 +18,7 @@ public class Joystick {
     private Paint baseColor = new Paint(); //Color del joystick exterior
     private float hatY;
     private float hatX;
+    private float distance;
 
     public Joystick(int x, int y, int radius) {
 
@@ -66,6 +67,20 @@ public class Joystick {
 
     public void setHatX(float x) {
         this.hatX=x;
+    }
+
+    public void setHat(float x, float y){
+        this.distance = (float) Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+
+        if(distance<baseRadius){
+            this.setHatX(x);
+            this.setHatY(y);
+        }else{
+            float ratio = baseRadius / distance;
+            hatX = centerX + (x - centerX) * ratio;
+
+            hatY = centerY + (y - centerY) * ratio;
+        }
     }
 
     public void initHat(){
