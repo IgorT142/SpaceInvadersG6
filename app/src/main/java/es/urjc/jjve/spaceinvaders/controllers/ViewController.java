@@ -184,10 +184,11 @@ public class ViewController  {
 
         paintShip();
 
-        view.unlockCanvas();
 
 
         view.drawGameObject("Score: " + score, 10, 50);
+        view.drawJoystick();
+        view.unlockCanvas();
 
 
     }
