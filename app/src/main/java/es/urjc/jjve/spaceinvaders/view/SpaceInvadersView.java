@@ -48,7 +48,7 @@ import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
 /**
  * Clase utilizada para mostrar la interfaz del juego y manejar eventos dentro del juego, movimiento y disparo
  */
-public class SpaceInvadersView extends SurfaceView implements Runnable, View.OnTouchListener {
+public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTouchListener {
 
     Context context;
 
@@ -160,8 +160,12 @@ public class SpaceInvadersView extends SurfaceView implements Runnable, View.OnT
     public boolean onTouch(View v, MotionEvent event) {
 
         if (v.equals(this)) {
+
             if (event.getAction() != event.ACTION_UP) {
+                this.joystick.initHat();
             } else {
+                this.joystick.setHatX(event.getX());
+                this.joystick.setHatY(event.getY());
             }
         }
         return true;
@@ -199,7 +203,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable, View.OnT
     }
 
     public void drawJoystick() {
-        canvas.drawCircle(joystick.getX(), joystick.getY(), joystick.getHatRadius(), joystick.getHatColor());
+        canvas.drawCircle(joystick.getHatX(), joystick.getHatY(), joystick.getHatRadius(), joystick.getHatColor());
         canvas.drawCircle(joystick.getX(), joystick.getY(), joystick.getBaseRadius(), joystick.getBaseColor());
     }
 

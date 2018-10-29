@@ -16,6 +16,8 @@ public class Joystick {
 
     private Paint hatColor = new Paint(); //Color del joystick interior
     private Paint baseColor = new Paint(); //Color del joystick exterior
+    private float hatY;
+    private float hatX;
 
     public Joystick(int x, int y, int radius) {
 
@@ -30,6 +32,7 @@ public class Joystick {
         double porcentaje = radius * 0.4;
         this.hatRadius = radius - (int) porcentaje;
         this.baseRadius = radius;
+        initHat();
     }
 
 
@@ -55,5 +58,26 @@ public class Joystick {
 
     public Paint getHatColor() {
         return hatColor;
+    }
+
+    public void setHatY(float y) {
+        this.hatY=y;
+    }
+
+    public void setHatX(float x) {
+        this.hatX=x;
+    }
+
+    public void initHat(){
+        this.hatX= centerX;
+        this.hatY= centerY;
+    }
+
+    public float getHatY() {
+        return this.hatY;
+    }
+
+    public float getHatX() {
+        return this.getX();
     }
 }
