@@ -7,15 +7,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Outline;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.style.ClickableSpan;
 import android.util.Log;
@@ -25,11 +30,13 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+import es.urjc.jjve.spaceinvaders.R;
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 import es.urjc.jjve.spaceinvaders.entities.Bullet;
 import es.urjc.jjve.spaceinvaders.entities.DefenceBrick;
@@ -261,6 +268,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
 //        }
 //
 //    }
+
+
 
 
     public void drawBackground(){
@@ -520,16 +529,20 @@ public class SpaceInvadersView extends SurfaceView implements Runnable,View.OnTo
     }
 
     public void drawJoystick(float x, float y) {
-        canvas=ourHolder.lockCanvas();
+        //canvas=ourHolder.lockCanvas();
         canvas.drawCircle(x,y,joystick.getBaseRadius(),joystick.getBaseColor());
         canvas.drawCircle(joystick.getX(),joystick.getY(),joystick.getHatRadius(),joystick.getHatColor());
-        ourHolder.unlockCanvasAndPost(canvas);
+        //ourHolder.unlockCanvasAndPost(canvas);
     }
 
     public void drawJoystick() {
-        canvas= ourHolder.lockCanvas();
-        canvas.drawCircle(joystick.getX(),joystick.getY(),joystick.getBaseRadius(),joystick.getBaseColor());
-        canvas.drawCircle(joystick.getX(),joystick.getY(),joystick.getHatRadius(),joystick.getHatColor());
-        ourHolder.unlockCanvasAndPost(canvas);
+        Paint pintura = new Paint();
+        pintura.setColor(Color.RED);
+        pintura.setStyle(Paint.Style.FILL);
+        //canvas.drawRect(new Rect(0,0,50,50),pintura);
+        //canvas= ourHolder.lockCanvas();
+        canvas.drawCircle(10,10,joystick.getBaseRadius(),pintura);
+        //canvas.drawCircle(joystick.getX(),joystick.getY(),joystick.getHatRadius(),joystick.getHatColor());
+        //ourHolder.unlockCanvasAndPost(canvas);
     }
 }
