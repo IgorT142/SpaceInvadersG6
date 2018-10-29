@@ -59,8 +59,6 @@ public class SpaceInvadersActivity extends Activity {
                 finish();
             }
         });
-
-
     }
 
 
@@ -82,37 +80,10 @@ public class SpaceInvadersActivity extends Activity {
         spaceView.pause();
     }
 
-    public void moveUp() {
-        this.spaceView.setShip(3);
-    }
-
     public void bulletsOn(boolean on) {
         this.underage = underage;
     }
 
-    public void moveUp(View view) {
-        if (view instanceof SpaceInvadersView) {
-            this.spaceView.moveship(3);
-        }
-    }
-
-    public void moveLeft(View view) {
-        if (view instanceof SpaceInvadersView) {
-            this.spaceView.moveship(1);
-        }
-    }
-
-    public void moveRight(View view) {
-        if (view instanceof SpaceInvadersView) {
-            this.spaceView.moveship(2);
-        }
-    }
-
-    public void moveDown(View view) {
-        if (view instanceof SpaceInvadersView) {
-            this.spaceView.moveship(3);
-        }
-    }
 
 
 }

@@ -259,8 +259,8 @@ public class ViewController  {
                     for (Invader inv : invaders) {
                         if (inv.getVisibility()) {
                             if (RectF.intersects(currentBull.getRect(), inv.getRect())) { //Has a bullet hit an invader?
+
                                 inv.setInvisible();
-//                          soundPool.play(invaderExplodeID, 1, 1, 0, 0, 1);
                                 currentBull.setInactive();
                                 score = score + 100;
 
@@ -281,7 +281,6 @@ public class ViewController  {
                                 // A collision has occurred
                                 currentBull.setInactive();
                                 brick.setInvisible();
-//                          soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
                             }
                         }
                     }
@@ -340,7 +339,6 @@ public class ViewController  {
                                 // A collision has occurred
                                 bullet.setInactive();
                                 brick.setInvisible();
-//                            soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
                             }
                         }
                     }
@@ -362,8 +360,6 @@ public class ViewController  {
                     if (RectF.intersects(playerShip.getRect(), bullet.getRect())) {
                         bullet.setInactive();
                         return false;
-//                  soundPool.play(playerExplodeID, 1, 1, 0, 0, 1);
-
 
                     }
                 }

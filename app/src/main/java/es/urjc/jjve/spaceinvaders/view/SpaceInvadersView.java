@@ -195,6 +195,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable, View.OnT
 
     public void changeColor() {
         //ToDo Add random paint generation to be called when a bullet impacts a screen limit
+
     }
 
     public void drawJoystick() {
