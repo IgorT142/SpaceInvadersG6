@@ -48,58 +48,37 @@ import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
 /**
  * Clase utilizada para mostrar la interfaz del juego y manejar eventos dentro del juego, movimiento y disparo
  */
-
 public class SpaceInvadersView extends SurfaceView implements Runnable, View.OnTouchListener {
-
 
     Context context;
 
     private Thread gameThread = null;
-
-
     private boolean paused = true;
     private volatile boolean playing;
-
     private long timeThisFrame;
-
     private long fps = 20;
-
 
     // Our SurfaceHolder to lock the surface before we draw our graphics
     private SurfaceHolder ourHolder;
 
-    private Button upBtn;
-    private Button dwnBtn;
-    private Button lftBtn;
-    private Button rgtBtn;
-
-
-    // A Canvas and a Paint object
+    // Draw variables
     private Canvas canvas;
     private Paint paint;
-
 
     // The size of the screen in pixels
     private int screenX;
     private int screenY;
 
+    private Joystick joystick;  //Joystick gameObjetct that we will draw later
 
     private ViewController controller;
 
-    // How menacing should the sound be?
-    private long menaceInterval = 1000;
-    // Which menace sound should play next
-    private boolean uhOrOh;
-    // When did we last play a menacing sound
-    private long lastMenaceTime = System.currentTimeMillis();
-    private Joystick joystick;
-
-
+    /*
+     * CONTRUCTOR
+     */
     public SpaceInvadersView(Context context, int x, int y, boolean underage) {
 
-
         super(context);
-
 
         // Make a globally available copy of the context so we can use it in another method
         this.context = context;
@@ -108,9 +87,9 @@ public class SpaceInvadersView extends SurfaceView implements Runnable, View.OnT
         ourHolder = this.getHolder();
         paint = new Paint();
 
-
         screenX = x;
         screenY = y;
+
         // The next line of code asks the
         // SurfaceView class to set up our object.
         this.joystick = new Joystick(screenX / 10, screenY - (screenY / 8), screenX / 14);
@@ -121,6 +100,107 @@ public class SpaceInvadersView extends SurfaceView implements Runnable, View.OnT
         this.initPaintGameObject();
     }
 
+    /*
+     * THREAD MANAGEMENT
+     */
+    @Override
+    public void run() {
+        while (playing) {
+
+            // Capture the current time in milliseconds in startFrameTime
+            long startFrameTime = System.nanoTime();
+
+            if (!paused) {
+                if (!controller.updateEntities(fps)) {
+
+                    //Intenta acceder al highscore si se ha perdido
+                    Intent i = new Intent(context.getApplicationContext(), HighScoreActivity.class);
+                    i.putExtra("score", 100);
+                    context.startActivity(i);
+
+                }
+                controller.updateGame();
+                controller.removeBullets();
+            }
+
+            // Calculate the fps this frame.
+            // We can then use the result to time animations and more.
+            timeThisFrame = System.currentTimeMillis() - startFrameTime;
+            if (timeThisFrame >= 1) {
+                fps = 1000 / timeThisFrame;
+            }
+
+        }
+    }
+
+    public void pause() {
+        playing = false;
+        try {
+            gameThread.join();
+        } catch (InterruptedException e) {
+            Log.e("Error:", "joining thread");
+        }
+
+    }
+
+    public void resume() {
+        playing = true;
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
+
+    public void unpause() {
+        this.paused = false;
+    }
+
+    /*
+     * EVENT MANAGEMENT
+     */
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        if (v.equals(this)) {
+            if (event.getAction() != event.ACTION_UP) {
+            } else {
+            }
+        }
+        return true;
+    }
+
+    /*
+     * DRAW MANAGEMENT
+     */
+
+    public void lockCanvas() {
+
+        try {
+            if (ourHolder.getSurface().isValid()) {
+                canvas = ourHolder.lockCanvas();
+            } else {
+                System.out.println(ourHolder.getSurface().isValid());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void unlockCanvas() {
+        ourHolder.unlockCanvasAndPost(canvas);
+    }
+
+    public void initPaintGameObject() {
+        paint.setColor(Color.argb(255, 249, 129, 0));
+    }
+
+    public void changeColor() {
+        //ToDo Add random paint generation to be called when a bullet impacts a screen limit
+    }
+
+    public void drawJoystick() {
+        canvas.drawCircle(joystick.getX(), joystick.getY(), joystick.getHatRadius(), joystick.getHatColor());
+        canvas.drawCircle(joystick.getX(), joystick.getY(), joystick.getBaseRadius(), joystick.getBaseColor());
+    }
 
     public void drawBackground() {
 
@@ -142,7 +222,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable, View.OnT
 
 
     }
-
 
     public void drawGameObject(Bitmap bitmap, float x, float y) {
         // Make sure our drawing surface is valid or we crash
@@ -172,215 +251,5 @@ public class SpaceInvadersView extends SurfaceView implements Runnable, View.OnT
         canvas.drawText(text, x, y, paint);
 
 
-    }
-
-
-    // If SpaceInvadersActivity is paused/stopped
-    // shutdown our thread.
-//    public void pause() {
-//        playing = false;
-//        try {
-//            gameThread.join();
-//        } catch (InterruptedException e) {
-//            Log.e("Error:", "joining thread");
-//        }
-//
-//    }
-
-//    // If SpaceInvadersActivity is started then
-//    // start our thread.
-//    public void resume() {
-//        playing = true;
-//        gameThread = new Thread(this);
-//        gameThread.start();
-//    }
-
-    // The SurfaceView class implements onTouchListener
-    // So we can override this method and detect screen touches.
-
-    @Override
-    public boolean onHoverEvent(MotionEvent motionEvent) {
-
-        return true;
-    }
-
-//    @Override
-//    public boolean onTouchEvent(MotionEvent motionEvent) {
-//
-//        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-//
-//            // Player has touched the screen
-//            case MotionEvent.ACTION_DOWN:
-//
-//                /**
-//                 * Checks if the touch event happened in the upper half of the screen
-//                 */
-//                if(motionEvent.getY() > screenY - screenY / 8) {
-//
-//                    if (motionEvent.getX() > screenX / 2) {
-//                        controller.notifyMovement(2);
-//                    } else {
-//                        controller.notifyMovement(1);
-//
-//
-//                    }
-//
-//                }else {
-//                    // Shots fired
-//                   controller.notifyShoot();
-//                }
-//                break;
-//
-//            // Player has removed finger from screen
-//            case MotionEvent.ACTION_UP:
-//
-//                controller.notifyMovement(0);
-//
-//                break;
-//
-//        }
-//
-//        return true;
-//    }
-
-    public void pause() {
-        playing = false;
-        try {
-            gameThread.join();
-        } catch (InterruptedException e) {
-            Log.e("Error:", "joining thread");
-        }
-
-    }
-
-    public void resume() {
-        playing = true;
-        gameThread = new Thread(this);
-        gameThread.start();
-    }
-
-
-    public void lockCanvas() {
-
-        try {
-            if (ourHolder.getSurface().isValid()) {
-                canvas = ourHolder.lockCanvas();
-            } else {
-                System.out.println(ourHolder.getSurface().isValid());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public void initPaintGameObject() {
-        paint.setColor(Color.argb(255, 249, 129, 0));
-    }
-
-
-    public void unlockCanvas() {
-        ourHolder.unlockCanvasAndPost(canvas);
-    }
-
-
-    public void moveship(int i) {
-
-        this.controller.moveShip(i);
-    }
-
-    @Override
-    public void run() {
-        while (playing) {
-
-            // Capture the current time in milliseconds in startFrameTime
-            long startFrameTime = System.nanoTime();
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-            if (!paused) {
-                if (!controller.updateEntities(fps)) {
-
-                    Intent i = new Intent(context.getApplicationContext(), HighScoreActivity.class); //Intenta acceder al highscore si se ha perdido
-                    i.putExtra("score", 100);
-                    context.startActivity(i);
-                    //controller.initGame(this.context);
-                }
-                controller.updateGame();
-                controller.removeBullets();
-            }
-
-
-            //ToDo show start again button if updateEntities returns false
-
-
-            // Calculate the fps this frame
-            // We can then use the result to
-            // time animations and more.
-            timeThisFrame = System.currentTimeMillis() - startFrameTime;
-            if (timeThisFrame >= 1) {
-                fps = 1000 / timeThisFrame;
-            }
-
-            // We will do something new here towards the end of the project
-            // Play a sound based on the menace level
-//            if(!paused) {
-//                if ((startFrameTime - lastMenaceTime) > menaceInterval) {
-//                    if (uhOrOh) {
-//                        // Play Uh
-//                        soundPool.play(uhID, 1, 1, 0, 0, 1);
-//
-//                    } else {
-//                        // Play Oh
-//                        soundPool.play(ohID, 1, 1, 0, 0, 1);
-//                    }
-//
-//                    // Reset the last menace time
-//                    lastMenaceTime = System.currentTimeMillis();
-//                    // Alter value of uhOrOh
-//                    uhOrOh = !uhOrOh;
-//                }
-//            }
-//            // Reset the menace level
-//            menaceInterval = 1000;
-
-
-        }
-    }
-
-    public void changeColor() {
-        //ToDo Add random paint generation to be called when a bullet impacts a screen limit
-    }
-
-    public void unpause() {
-        this.paused = false;
-    }
-
-    public void setShip(int i) {
-        //this.controller.setShip(i);
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-
-        if (v.equals(this)) {
-            if (event.getAction() != event.ACTION_UP) {
-                //drawJoystick(event.getX(), event.getY());
-            } else {
-                //drawJoystick(joystick.getX(),joystick.getY());
-            }
-        }
-        return true;
-    }
-
-    public void drawJoystick(float x, float y) {
-        //canvas=ourHolder.lockCanvas();
-        canvas.drawCircle(x, y, joystick.getBaseRadius(), joystick.getBaseColor());
-        canvas.drawCircle(joystick.getX(), joystick.getY(), joystick.getHatRadius(), joystick.getHatColor());
-        //ourHolder.unlockCanvasAndPost(canvas);
-    }
-
-    public void drawJoystick() {
-        canvas.drawCircle(joystick.getX(), joystick.getY(), joystick.getHatRadius(), joystick.getHatColor());
-        canvas.drawCircle(joystick.getX(), joystick.getY(), joystick.getBaseRadius(), joystick.getBaseColor());
     }
 }
