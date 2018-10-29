@@ -81,7 +81,7 @@ public class ViewController {
         view.lockCanvas();
         view.drawBackground();
         view.drawJoystick();
-
+        view.drawButton();
         paintInvaders();
         paintBricks();
         paintBullets();

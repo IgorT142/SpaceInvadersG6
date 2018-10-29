@@ -71,6 +71,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     private Joystick joystick;  //Joystick gameObjetct that we will draw later
 
+    private Rect BotonDisparo;
+
     private ViewController controller;
 
     /*
@@ -106,30 +108,25 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while (playing) {
-
             // Capture the current time in milliseconds in startFrameTime
             long startFrameTime = System.nanoTime();
 
             if (!paused) {
                 if (!controller.updateEntities(fps)) {
-
                     //Intenta acceder al highscore si se ha perdido
                     Intent i = new Intent(context.getApplicationContext(), HighScoreActivity.class);
                     i.putExtra("score", 100);
                     context.startActivity(i);
-
                 }
                 controller.updateGame();
                 controller.removeBullets();
             }
-
             // Calculate the fps this frame.
             // We can then use the result to time animations and more.
             timeThisFrame = System.currentTimeMillis() - startFrameTime;
             if (timeThisFrame >= 1) {
                 fps = 1000 / timeThisFrame;
             }
-
         }
     }
 
@@ -140,9 +137,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         } catch (InterruptedException e) {
             Log.e("Error:", "joining thread");
         }
-
     }
-
     public void resume() {
         playing = true;
         gameThread = new Thread(this);
@@ -152,15 +147,14 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     public void unpause() {
         this.paused = false;
     }
-
     /*
      * EVENT MANAGEMENT
      */
     @Override
     public boolean onTouchEvent( MotionEvent event) {
-
-
-
+            if(BotonDisparo.contains((int) event.getX(),(int) event.getY())){   //Comprueba el jugador pulsa el boton de disparo
+                controller.notifyShoot();
+            }
             if (event.getAction() != event.ACTION_UP) {
                 if(event.getX()<screenX/2) {
                     this.joystick.setHat(event.getX(),event.getY());
@@ -170,9 +164,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 }
             } else {
                 this.joystick.initHat();
-
             }
-
         return true;
     }
 
@@ -181,7 +173,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
      */
 
     public void lockCanvas() {
-
         try {
             if (ourHolder.getSurface().isValid()) {
                 canvas = ourHolder.lockCanvas();
@@ -191,7 +182,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void unlockCanvas() {
@@ -213,10 +203,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     public void drawBackground() {
-
-
-        // Lock the canvas ready to draw
-        // Draw the background color
         try {
             if (canvas != null)
                 canvas.drawColor(Color.argb(255, 0, 0, 0));
@@ -226,40 +212,37 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     public void drawGameObject(RectF rect) {
-
-
         canvas.drawRect(rect, paint);
-
-
     }
 
     public void drawGameObject(Bitmap bitmap, float x, float y) {
         // Make sure our drawing surface is valid or we crash
         Surface surface = ourHolder.getSurface();
-
         boolean surfValid = surface.isValid();
 
         if (surfValid) { // ITS FALSE ALWAYS why?????????????
-            // Lock the canvas ready to draw
-
-
-            // Choose the brush color for drawing
-
             // Now draw the Game Object
             canvas.drawBitmap(bitmap, x, y, paint);
-
-
             // Draw everything to the screen
         }
     }
 
     public void drawGameObject(String text, int x, int y) {
-
-
         paint.setTextSize(40);
-
         canvas.drawText(text, x, y, paint);
 
-
+    }
+    public void drawButton(){       //Crea un rect para el boton de disparo y lo pone como atributo de la clase para las comprobaciones.
+        Rect rectangle;
+        Paint color;
+        rectangle = new Rect(getWidth()-110,getHeight()-150,getWidth()-10,getHeight()-90);  //Rectangulo por coordenadas
+        color = new Paint();
+        color.setARGB(120,102,102,102);
+        Paint colorTexto = new Paint();
+        colorTexto.setTextSize(15);
+        colorTexto.setARGB(150,255,255,255);
+        canvas.drawRect(rectangle,color);
+        canvas.drawText("O",getWidth()-60,getHeight()-120,colorTexto);
+        this.BotonDisparo = rectangle;
     }
 }

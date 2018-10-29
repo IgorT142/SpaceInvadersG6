@@ -7,6 +7,8 @@ import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.Space;
 
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
@@ -40,8 +42,6 @@ public class SpaceInvadersActivity extends Activity {
 
         //Inicializar gameView y lo establece como la visualización
         spaceView = new SpaceInvadersView(this, size.x, size.y, getIntent().getExtras().getBoolean("underage"));
-
-
         setContentView(spaceView);
         this.spaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -77,5 +77,5 @@ public class SpaceInvadersActivity extends Activity {
         // Le dice al método de pausa del gameView que se ejecute
         spaceView.pause();
     }
-    
+
 }
