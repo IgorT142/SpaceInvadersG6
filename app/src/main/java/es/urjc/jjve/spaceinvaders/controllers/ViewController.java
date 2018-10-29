@@ -27,35 +27,10 @@ import es.urjc.jjve.spaceinvaders.view.SpaceInvadersView;
 public class ViewController  {
 
 
-    // For sound FX
-//    private SoundPool soundPool;
-//    private int playerExplodeID = -1;
-//    private int invaderExplodeID = -1;
-//    private int shootID = -1;
-//    private int damageShelterID = -1;
-//    private int uhID = -1;
-//    private int ohID = -1;
-//    private long menaceInterval = 1000;
-//    // Which menace sound should play next
-//    private boolean uhOrOh;
-//    // When did we last play a menacing sound
-//    private long lastMenaceTime = System.currentTimeMillis();
-
-
     private static final int MAX_INVADER_BULLETS = 300;
 
     private boolean underage;
 
-
-    // This is used to help calculate the fps
-    // This variable tracks the game frame rate
-
-
-    // Game is paused at the start
-
-
-    // A boolean which we will set and unset
-    // when the game is running- or not.
 
     private SpaceInvadersView view;
 
@@ -173,24 +148,17 @@ public class ViewController  {
 
         view.lockCanvas();
         view.drawBackground();
-
+        view.drawJoystick();
 
         paintInvaders();
-
-
         paintBricks();
-
         paintBullets();
-
         paintShip();
 
-
-
         view.drawGameObject("Score: " + score, 10, 50);
-        view.drawJoystick();
+
+
         view.unlockCanvas();
-
-
     }
 
     private void paintBullets() {

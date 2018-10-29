@@ -5,7 +5,7 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class Joystick  {
+public class Joystick {
 
 
     private float centerX;
@@ -13,15 +13,22 @@ public class Joystick  {
 
     private int hatRadius;
     private int baseRadius;
-    private static final Paint HAT_COLOR= new Paint(Color.argb(60,193, 197, 204)) ;
 
-    private static final Paint BASE_COLOR= new Paint(Color.argb(30,193, 197, 204)) ;
+    private Paint hatColor = new Paint(); //Color del joystick interior
+    private Paint baseColor = new Paint(); //Color del joystick exterior
 
     public Joystick(int x, int y, int radius) {
+
+        hatColor.setColor(Color.argb(125, 193, 34, 36));
+        hatColor.setStyle(Paint.Style.FILL);
+
+        baseColor.setColor(Color.argb(105, 193, 197, 204));
+        baseColor.setStyle(Paint.Style.FILL);
+
         this.centerX = x;
-        this.centerY=y;
-        this.hatRadius=radius;
-        this.baseRadius = radius +2;
+        this.centerY = y;
+        this.hatRadius = radius;
+        this.baseRadius = radius + 200;
     }
 
 
@@ -29,7 +36,7 @@ public class Joystick  {
         return centerX;
     }
 
-    public float getY(){
+    public float getY() {
         return centerY;
     }
 
@@ -38,7 +45,7 @@ public class Joystick  {
     }
 
     public Paint getBaseColor() {
-        return BASE_COLOR;
+        return baseColor;
     }
 
     public float getHatRadius() {
@@ -46,6 +53,6 @@ public class Joystick  {
     }
 
     public Paint getHatColor() {
-        return HAT_COLOR;
+        return hatColor;
     }
 }
