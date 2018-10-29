@@ -18,7 +18,7 @@ import es.urjc.jjve.spaceinvaders.view.SpaceInvadersView;
 /**
  * Clase dedicada a manejar eventos en la aplicación, tales como inicio, pausa y reanudar
  */
-public class SpaceInvadersActivity extends Activity  {
+public class SpaceInvadersActivity extends Activity {
 
     // spaceInvadersView será la visualización del juego
     // También tendrá la lógica del juego → Lógica a través de controladores
@@ -39,9 +39,7 @@ public class SpaceInvadersActivity extends Activity  {
         display.getSize(size);
 
         //Inicializar gameView y lo establece como la visualización
-        spaceView = new SpaceInvadersView(this,size.x,size.y,getIntent().getExtras().getBoolean("underage"));
-
-
+        spaceView = new SpaceInvadersView(this, size.x, size.y, getIntent().getExtras().getBoolean("underage"));
 
 
         setContentView(spaceView);
@@ -49,7 +47,6 @@ public class SpaceInvadersActivity extends Activity  {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 spaceView.unpause();
-                spaceView.drawJoystick();
             }
 
             @Override
@@ -62,10 +59,7 @@ public class SpaceInvadersActivity extends Activity  {
                 finish();
             }
         });
-
-
     }
-
 
 
     // Este método se ejecuta cuando el jugador empieza el juego
@@ -86,37 +80,10 @@ public class SpaceInvadersActivity extends Activity  {
         spaceView.pause();
     }
 
-    public void moveUp(){
-        this.spaceView.setShip(3);
-    }
-
-    public void bulletsOn(boolean on){
+    public void bulletsOn(boolean on) {
         this.underage = underage;
     }
 
-    public void moveUp(View view){
-        if(view instanceof SpaceInvadersView){
-            this.spaceView.moveship(3);
-        }
-    }
-
-    public void moveLeft(View view){
-        if(view instanceof SpaceInvadersView){
-            this.spaceView.moveship(1);
-        }
-    }
-
-    public void moveRight(View view){
-        if(view instanceof SpaceInvadersView){
-            this.spaceView.moveship(2);
-        }
-    }
-
-    public void moveDown(View view){
-        if(view instanceof SpaceInvadersView){
-            this.spaceView.moveship(3);
-        }
-    }
 
 
 }

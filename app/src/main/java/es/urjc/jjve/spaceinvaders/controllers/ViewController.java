@@ -27,35 +27,10 @@ import es.urjc.jjve.spaceinvaders.view.SpaceInvadersView;
 public class ViewController  {
 
 
-    // For sound FX
-//    private SoundPool soundPool;
-//    private int playerExplodeID = -1;
-//    private int invaderExplodeID = -1;
-//    private int shootID = -1;
-//    private int damageShelterID = -1;
-//    private int uhID = -1;
-//    private int ohID = -1;
-//    private long menaceInterval = 1000;
-//    // Which menace sound should play next
-//    private boolean uhOrOh;
-//    // When did we last play a menacing sound
-//    private long lastMenaceTime = System.currentTimeMillis();
-
-
     private static final int MAX_INVADER_BULLETS = 300;
 
     private boolean underage;
 
-
-    // This is used to help calculate the fps
-    // This variable tracks the game frame rate
-
-
-    // Game is paused at the start
-
-
-    // A boolean which we will set and unset
-    // when the game is running- or not.
 
     private SpaceInvadersView view;
 
@@ -173,23 +148,17 @@ public class ViewController  {
 
         view.lockCanvas();
         view.drawBackground();
-
+        view.drawJoystick();
 
         paintInvaders();
-
-
         paintBricks();
-
         paintBullets();
-
         paintShip();
-
-        view.unlockCanvas();
-
 
         view.drawGameObject("Score: " + score, 10, 50);
 
 
+        view.unlockCanvas();
     }
 
     private void paintBullets() {
@@ -290,8 +259,8 @@ public class ViewController  {
                     for (Invader inv : invaders) {
                         if (inv.getVisibility()) {
                             if (RectF.intersects(currentBull.getRect(), inv.getRect())) { //Has a bullet hit an invader?
+
                                 inv.setInvisible();
-//                          soundPool.play(invaderExplodeID, 1, 1, 0, 0, 1);
                                 currentBull.setInactive();
                                 score = score + 100;
 
@@ -312,7 +281,6 @@ public class ViewController  {
                                 // A collision has occurred
                                 currentBull.setInactive();
                                 brick.setInvisible();
-//                          soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
                             }
                         }
                     }
@@ -371,7 +339,6 @@ public class ViewController  {
                                 // A collision has occurred
                                 bullet.setInactive();
                                 brick.setInvisible();
-//                            soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
                             }
                         }
                     }
@@ -393,8 +360,6 @@ public class ViewController  {
                     if (RectF.intersects(playerShip.getRect(), bullet.getRect())) {
                         bullet.setInactive();
                         return false;
-//                  soundPool.play(playerExplodeID, 1, 1, 0, 0, 1);
-
 
                     }
                 }
