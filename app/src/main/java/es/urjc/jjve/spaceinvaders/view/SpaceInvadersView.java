@@ -38,6 +38,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import es.urjc.jjve.spaceinvaders.R;
+import es.urjc.jjve.spaceinvaders.controllers.ScoreManager;
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 import es.urjc.jjve.spaceinvaders.entities.Bullet;
 import es.urjc.jjve.spaceinvaders.entities.DefenceBrick;
@@ -115,7 +116,9 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 if (!controller.updateEntities(fps)) {
                     //Intenta acceder al highscore si se ha perdido
                     Intent i = new Intent(context.getApplicationContext(), HighScoreActivity.class);
-                    i.putExtra("score", 100);
+                    i.putExtra("score", controller.getScore());
+                    ScoreManager sm = new ScoreManager(context);
+                    sm.saveScore(controller.getScore());
                     context.startActivity(i);
                 }
                 controller.updateGame();
@@ -222,10 +225,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         Surface surface = ourHolder.getSurface();
         boolean surfValid = surface.isValid();
 
-        if (surfValid) { // ITS FALSE ALWAYS why?????????????
-            // Now draw the Game Object
+        if (surfValid) {
             canvas.drawBitmap(bitmap, x, y, paint);
-            // Draw everything to the screen
         }
     }
 

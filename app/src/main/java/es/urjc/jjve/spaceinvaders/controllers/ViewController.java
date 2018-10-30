@@ -80,16 +80,15 @@ public class ViewController {
 
         view.lockCanvas();
         view.drawBackground();
-        view.drawJoystick();
-        view.drawButton();
+        view.drawJoystick();    //Botón de Joystick
+        view.drawButton();      //Botón disparo
+
         paintInvaders();
         paintBricks();
         paintBullets();
         paintShip();
 
         view.drawGameObject("Score: " + score, 10, 50);
-
-
         view.unlockCanvas();
     }
 
@@ -406,5 +405,9 @@ public class ViewController {
             playerShip.setMovementState(0);
         }
 
+    }
+
+    public int getScore() {
+        return score;
     }
 }
