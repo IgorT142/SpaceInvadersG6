@@ -326,7 +326,7 @@ public class ViewController {
     }
 
     private void paintShip() {
-        view.drawGameObject(playerShip.getBitmap(), playerShip.getX(), screenY - 50);
+        view.drawGameObject(playerShip.getBitmap(), playerShip.getX(), playerShip.getY());
     }
 
     public void paintInvaders() {
