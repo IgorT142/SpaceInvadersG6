@@ -367,9 +367,11 @@ public class ViewController {
     }
 
     public void notifyShoot() {
-        Bullet newBull = new Bullet(screenY);
-        this.playerBullets.add(newBull);
-        newBull.shoot(playerShip.getX(), playerShip.getY(), 0);
+        if(playerBullets.size()<5) {
+            Bullet newBull = new Bullet(screenY);
+            this.playerBullets.add(newBull);
+            newBull.shoot(playerShip.getX(), playerShip.getY(), 0);
+        }
     }
 
     public void removeBullets() {
@@ -382,5 +384,27 @@ public class ViewController {
         for (Bullet b : inactive) {
             playerBullets.remove(b);
         }
+    }
+
+    public void shipMovement(float x, float y) {
+        if((x!=0 && y!=0)) {
+            if (Math.abs(x) > Math.abs(y)) {
+                if (x > 0) {
+                    playerShip.setMovementState(2);
+                } else {
+                    playerShip.setMovementState(1);
+                }
+
+            } else {
+                if (y > 0) {
+                    playerShip.setMovementState(4);
+                } else {
+                    playerShip.setMovementState(3);
+                }
+            }
+        }else{
+            playerShip.setMovementState(0);
+        }
+
     }
 }

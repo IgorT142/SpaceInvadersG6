@@ -158,12 +158,14 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             if (event.getAction() != event.ACTION_UP) {
                 if(event.getX()<screenX/2) {
                     this.joystick.setHat(event.getX(),event.getY());
+                    this.controller.shipMovement(event.getX()-joystick.getX(),event.getY()-joystick.getY());
 
                 }else{
                     this.joystick.initHat();
                 }
             } else {
                 this.joystick.initHat();
+                this.controller.shipMovement(0,0);
             }
         return true;
     }

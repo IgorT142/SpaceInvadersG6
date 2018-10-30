@@ -21,10 +21,12 @@ public class PlayerShip {
     public final int DOWN = 3;
     public final int UP=4;
 
-    public int dirX;
-    public int dirY;
+    public float dirX;
+    public float dirY;
 
-    public final int CANTIDAD_DISPAROS = 1;  //Cantidad de disparos con los que cuenta la nave a la vez
+
+    private int movement;
+   //Cantidad de disparos con los que cuenta la nave a la vez
 
     // La nave espacial del jugador será representada por un Bitmap
     private Bitmap bitmap;
@@ -97,20 +99,14 @@ public class PlayerShip {
 
     // Este método será usado para cambiar/establecer si la nave
     // espacial va a la izquierda, la derecha o no se mueve
-    public void setMovementState(int targetX, int targetY){
+    public void setMovementState(int movement){
 
-        dirX = targetX/targetY; //Calculates the proportion of direction x
-        dirY = targetY/targetX; //Calculates the proportion of direction y
+        this.movement=movement;
+        //dirX = targetX/targetY; //Calculates the proportion of direction x
+        //dirY = targetY/targetX; //Calculates the proportion of direction y
     }
 
-    public boolean addBullet(Bullet b){
-        if(this.activeBullets.size()< CANTIDAD_DISPAROS){
-            this.activeBullets.add(b);
-            return true;
-        }else{
-            return false;
-        }
-    }
+
 
     public List<Bullet> getActiveBullets(){
         return activeBullets;
@@ -121,8 +117,25 @@ public class PlayerShip {
     // que están en x si es necesario
     public void update(long fps){
 
-        x = x + dirX * shipSpeed / fps; //Calculates new xPos for the ship depending on the direction proportion of the x, if dir 0, does not move on x
-        y = y + dirY * shipSpeed / fps; //Calculates new ypos for the ship depending on the direection proportion of the y, if dir is 0 does not move on y
+        switch (this.movement){
+            case LEFT:
+                x = x - shipSpeed/fps;
+                break;
+            case RIGHT:
+                x = x + shipSpeed/fps;
+                break;
+            case UP:
+                y = y + shipSpeed/fps;
+                break;
+            case DOWN:
+                y = y - shipSpeed/fps;
+                break;
+            default:
+                break;
+
+        }
+        //x = x + dirX * shipSpeed / fps; //Calculates new xPos for the ship depending on the direction proportion of the x, if dir 0, does not move on x
+        //y = y + dirY * shipSpeed / fps; //Calculates new ypos for the ship depending on the direection proportion of the y, if dir is 0 does not move on y
         // Actualiza rect el cual es usado para detectar impactos
         rect.top = y;
         rect.bottom = y + height;
