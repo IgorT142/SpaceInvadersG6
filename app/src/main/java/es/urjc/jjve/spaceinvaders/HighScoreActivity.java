@@ -55,11 +55,11 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
     public String cargarScores() {
         ScoreManager sm = new ScoreManager(this.getApplicationContext());
         int[] puntuaciones = sm.getScores();
-
+        String scores = "";
         for(int i = 0; i < puntuaciones.length; i++){
-
+            scores += puntuaciones[i] + "\n";
         }
 
-        return "";
+        return scores;
     }
 }

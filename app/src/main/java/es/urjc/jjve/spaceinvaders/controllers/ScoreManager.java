@@ -69,8 +69,8 @@ public class ScoreManager {
             puntFichero[i] = puntConActual[i];
         }
 
-        saveFile(puntFichero);
         scores = puntFichero;
+        saveFile(scores);
     }
 
     public int[] getScores() {
@@ -82,12 +82,14 @@ public class ScoreManager {
         try {
 
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("puntuaciones.txt", Context.MODE_PRIVATE));
-            Writer out = new BufferedWriter(outputStreamWriter);
+            BufferedWriter out = new BufferedWriter(outputStreamWriter);
 
             for (int i = 0; i < MAX_SCORES; i++) {
-                out.append(scores[i] + "\n");
+                out.write(scores[i]);
+                out.newLine();
             }
-            outputStreamWriter.close();
+
+            out.close();
 
 
         } catch (IOException e) {
