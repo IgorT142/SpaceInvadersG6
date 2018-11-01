@@ -18,6 +18,17 @@ public class Invader {
     private Bitmap bitmap1;
     private Bitmap bitmap2;
 
+    // Creamos otros dos bitmaps para hacer el cambio de colores
+    private Bitmap bitmap3;
+    private Bitmap bitmap4;
+
+    // Establecemos los esquemas de colores que vamos a usar
+    private final int ESQUEMA_1 = 1;
+    private final int ESQUEMA_2 = 2;
+
+    // Variable para guardar el esquema actual, por defecto el primero de ellos.
+    private int seleccionado = ESQUEMA_1;
+
     // Qué tan largo y ancho será nuestro Invader
     private float length;
     private float height;
@@ -57,6 +68,8 @@ public class Invader {
         // Inicializa el bitmap
         bitmap1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.invader1);
         bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.invader2);
+        bitmap3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.invader12);
+        bitmap4 = BitmapFactory.decodeResource(context.getResources(), R.drawable.invader22);
 
         // Ajusta el primer bitmap a un tamaño apropiado para la resolución de la pantalla
         bitmap1 = Bitmap.createScaledBitmap(bitmap1,
@@ -66,6 +79,18 @@ public class Invader {
 
         // Ajusta el segundo bitmap a un tamaño apropiado para la resolución de la pantalla
         bitmap2 = Bitmap.createScaledBitmap(bitmap2,
+                (int) (length),
+                (int) (height),
+                false);
+
+        // Ajusta el tercer bitmap a un tamaño apropiado para la resolución de la pantalla
+        bitmap3 = Bitmap.createScaledBitmap(bitmap3,
+                (int) (length),
+                (int) (height),
+                false);
+
+        // Ajusta el cuarto bitmap a un tamaño apropiado para la resolución de la pantalla
+        bitmap4 = Bitmap.createScaledBitmap(bitmap4,
                 (int) (length),
                 (int) (height),
                 false);
@@ -87,11 +112,27 @@ public class Invader {
     }
 
     public Bitmap getBitmap(){
-        return bitmap1;
+        if (seleccionado == ESQUEMA_1) {
+            return bitmap1;
+        } else {
+            return bitmap3;
+        }
     }
 
     public Bitmap getBitmap2(){
-        return bitmap2;
+        if (seleccionado == ESQUEMA_1) {
+            return bitmap2;
+        } else {
+            return bitmap4;
+        }
+    }
+
+    public void chColour(){
+        if (seleccionado == ESQUEMA_1){
+            seleccionado = ESQUEMA_2;
+        } else {
+            seleccionado = ESQUEMA_1;
+        }
     }
 
     public float getX(){
