@@ -75,9 +75,7 @@ public class ViewController {
      * This method is used every game tick to update the positions of every entity and the score
      * Should be called when the entity is modified only, ToDo for next sprint, update entities on screen only when they are modified
      */
-
     public void updateGame() {
-
 
         view.lockCanvas();
         view.drawBackground();
@@ -106,14 +104,12 @@ public class ViewController {
         }
     }
 
-
     /**
      * This method is used to update the entity position and the actions they are going to take
      * it checks if the invaders have reached the screen limit, and if they bumped into a brick barrier
      * also it checks if the invader has the opportunity to shoot
      * updates the bullet possition depending on the fps attribute
      */
-
     public boolean updateEntities(long fps) {
 
         //checks if any entity has reached a limit or another entity
@@ -125,20 +121,12 @@ public class ViewController {
         //For each invader, we check if its an active one and then we check if it has the opportunity to shoot
         //if the invader has reached the screen limit, it reverses the direction and goes down
         for (Invader i : invaders) {
-
             if (i.getVisibility()) {
-                // Move the next invader
-                i.update(fps);
+                i.update(fps); // Move the next invader
+                if (i.takeAim(playerShip.getX(), playerShip.getLength())) { // Does he want to take a shot?
+                    if (invadersBullets.get(nextBullet).shoot(i.getX() + i.getLength() / 2, i.getY(), bullet.DOWN)) { // If so try and spawn a bullet
 
-                // Does he want to take a shot?
-                if (i.takeAim(playerShip.getX(), playerShip.getLength())) {
-
-                    // If so try and spawn a bullet
-                    if (invadersBullets.get(nextBullet).shoot(i.getX() + i.getLength() / 2, i.getY(), bullet.DOWN)) {
-
-                        // Shot fired
-                        // Prepare for the next shot
-                        nextBullet++;
+                        nextBullet++;// Shot fired, Prepare for the next shot
 
                         // Loop back to the first one if we have reached the last
                         if (nextBullet == maxInvaderBullets) {
@@ -168,11 +156,10 @@ public class ViewController {
             }
         }
 
-        if(!underage){ //aqui
+        if(!underage){
 
             // Update the players bullet
             updatePlayerBullet(fps);
-
 
             // Has the player's bullet hit the top of the screen
 
@@ -192,7 +179,6 @@ public class ViewController {
                                     invaders.get(x).chColour();
                                 }
                                 playerShip.chColour();
-                                //                            soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
                             }
                         }
                     }
@@ -201,9 +187,21 @@ public class ViewController {
             }
 
             // Has a player bullet hit a shelter brick
-
             for (Bullet bullet : this.playerBullets) {
                 if (bullet.getStatus()) {
+                    for (DefenceBrick brick : bricks) {
+                        if (brick.getVisibility()) {
+                            if (RectF.intersects(bullet.getRect(), brick.getRect())) {
+                                // A collision has occurred
+                                bullet.setInactive();
+                                brick.setInvisible();
+                                for (int x = 0; x < numInvaders; x++) {
+                                    invaders.get(x).chColour();
+                                }
+                                playerShip.chColour();
+                            }
+                        }
+                    }
 
                 }
             }
@@ -237,7 +235,6 @@ public class ViewController {
                 // A collision has occurred
                 currentBull.setInactive();
                 brick.setInvisible();
-//                          soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
             }
         }
     }
@@ -262,7 +259,6 @@ public class ViewController {
                 for (Invader inv : invaders) {
                     bulletCollisionInvader(inv, currentBull);
                 }
-
                 //Colisión de bala con muros
                 for (DefenceBrick brick : bricks) {
                     bulletColisionBrick(brick, currentBull);
