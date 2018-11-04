@@ -386,7 +386,9 @@ public class ViewController {
                 this.view.drawGameObject(i.getBitmap(), i.getX(), i.getY());
             }
         }
-        this.view.drawGameObject(specialInvader.getBitmap(),specialInvader.getX(),specialInvader.getY());
+        if(specialInvader!=null) {
+            this.view.drawGameObject(specialInvader.getBitmap(), specialInvader.getX(), specialInvader.getY());
+        }
     }
 
     public void paintBricks() {
