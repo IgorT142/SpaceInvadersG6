@@ -75,7 +75,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     private ViewController controller;
 
-    private final static int SPECIAL_TIMER = 10;
+    private final static int SPECIAL_TIMER = 550;
     int currentTime =0;
 
 
@@ -137,7 +137,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             if (timeThisFrame >= 1) {
                 fps = 1000 / timeThisFrame;
             }
-            currentTime+=System.currentTimeMillis()-startFrameTime;
+            currentTime += 1;
         }
     }
 

@@ -38,25 +38,15 @@ public class Inicio extends AppCompatActivity implements OnClickListener {
         MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.tauhubballad);
         mediaPlayer.start();
 
-        // Here, thisActivity is the current activity
+        // Esto permite permisos de escritura de la app
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-
             } else {
-
-                // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
     }
