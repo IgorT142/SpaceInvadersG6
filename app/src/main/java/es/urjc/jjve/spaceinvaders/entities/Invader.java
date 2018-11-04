@@ -228,7 +228,7 @@ public class Invader {
                 (int) (length),
                 (int) (height),
                 false);
-        this.shipSpeed=60;
+        this.shipSpeed=75;
         this.shipMoving=RIGHT;
 
     }

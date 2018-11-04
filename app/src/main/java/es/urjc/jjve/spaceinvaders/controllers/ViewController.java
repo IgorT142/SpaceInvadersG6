@@ -90,6 +90,7 @@ public class ViewController {
         paintBullets();
         paintShip();
 
+
         view.drawGameObject("Score: " + score, 10, 50);
         view.unlockCanvas();
     }
@@ -120,6 +121,7 @@ public class ViewController {
 
         //moves the spaceship
         playerShip.update(fps);
+
         if(specialInvader!= null) {
             specialInvader.update(fps);
         }
@@ -398,6 +400,7 @@ public class ViewController {
         }
         this.view.drawGameObject(specialInvader.getBitmap(),specialInvader.getX(),specialInvader.getY());
     }
+
     public void paintBricks() {
         for (DefenceBrick b : bricks) {
             try {
