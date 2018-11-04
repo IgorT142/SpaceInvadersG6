@@ -8,7 +8,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -81,8 +83,12 @@ public class ScoreManager {
     private void saveFile(int[] scores) {
         try {
 
+            File archivo = new File(Environment.getExternalStorageDirectory(),"puntuaciones.txt");
+            if(!archivo.exists()){
+                archivo.createNewFile();
+            }
 
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("puntuaciones.txt", Context.MODE_PRIVATE));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(archivo));
             BufferedWriter out = new BufferedWriter(outputStreamWriter);
 
             String puntos = "";
@@ -103,16 +109,13 @@ public class ScoreManager {
 
         int[] puntuaciones = null;
 
-
         try {
-            if(context.openFileInput("puntuaciones.txt") == null){
-                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("puntuaciones.txt", Context.MODE_PRIVATE));
-                BufferedWriter out = new BufferedWriter(outputStreamWriter);
-                out.write("");
-                out.close();
+            File archivo = new File(Environment.getExternalStorageDirectory(),"puntuaciones.txt");
+            if(!archivo.exists()){
+                archivo.createNewFile();
             }
 
-            InputStreamReader inputStream = new InputStreamReader(context.openFileInput("puntuaciones.txt"));
+            InputStreamReader inputStream = new InputStreamReader(new FileInputStream(archivo));
             br = new BufferedReader(inputStream);
 
             List<String> listaPuntuaciones = new LinkedList<>();
@@ -121,6 +124,7 @@ public class ScoreManager {
             while ((linea = br.readLine()) != null) {
                 listaPuntuaciones.add(linea);
             }
+
 
             puntuaciones = new int[MAX_SCORES];
             Iterator<String> it = listaPuntuaciones.iterator();
