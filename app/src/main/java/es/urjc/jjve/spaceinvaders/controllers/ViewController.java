@@ -235,6 +235,11 @@ public class ViewController {
                                 // A collision has occurred
                                 bullet.setInactive();
                                 brick.setInvisible();
+                                for (int x = 0; x < numInvaders; x++) {
+                                    invaders.get(x).chColour();
+                                }
+                                playerShip.chColour();
+                                //                            soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
                             }
                         }
                     }

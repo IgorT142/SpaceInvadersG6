@@ -31,6 +31,16 @@ public class PlayerShip {
     // La nave espacial del jugador será representada por un Bitmap
     private Bitmap bitmap;
 
+    // Más otro para cambiar el esquema de color
+    private Bitmap bitmap2;
+
+    // Establecemos los esquemas de colores que vamos a usar
+    private final int ESQUEMA_1 = 1;
+    private final int ESQUEMA_2 = 2;
+
+    // Variable para guardar el esquema actual, por defecto el primero de ellos.
+    private int seleccionado = ESQUEMA_1;
+
     private List<Bullet> activeBullets= new ArrayList<>();
 
     // Que tan ancho y alto puede llegar nuestra nave espacial
@@ -69,8 +79,19 @@ public class PlayerShip {
                 context.getResources(),
                 R.drawable.playership);
 
+        // Y otro para el color!!!!
+        bitmap2 = BitmapFactory.decodeResource(
+                context.getResources(),
+                R.drawable.playership2);
+
         // ajusta el bitmap a un tamaño proporcionado a la resolución de la pantalla
         bitmap = Bitmap.createScaledBitmap(bitmap,
+                (int) (length),
+                (int) (height),
+                false);
+
+        // ajusta el bitmap a un tamaño proporcionado a la resolución de la pantalla
+        bitmap2 = Bitmap.createScaledBitmap(bitmap2,
                 (int) (length),
                 (int) (height),
                 false);
@@ -86,7 +107,11 @@ public class PlayerShip {
     // Este es un método de "get" para hacer el rectángulo que
     // define nuestra nave espacial disponible en la clase de SpaceInvadersView
     public Bitmap getBitmap(){
-        return bitmap;
+        if (seleccionado == ESQUEMA_1) {
+            return bitmap;
+        } else {
+            return bitmap2;
+        }
     }
 
     public float getX(){
@@ -106,6 +131,14 @@ public class PlayerShip {
         //dirY = targetY/targetX; //Calculates the proportion of direction y
     }
 
+
+    public void chColour(){
+        if (seleccionado == ESQUEMA_1){
+            seleccionado = ESQUEMA_2;
+        } else {
+            seleccionado = ESQUEMA_1;
+        }
+    }
 
 
     public List<Bullet> getActiveBullets(){
