@@ -49,6 +49,9 @@ public class ViewController {
     private int numBricks;
 
 
+    private Invader specialInvader;
+
+
     //Determines the game bounds
     private int screenX;
     private int screenY;
@@ -117,6 +120,9 @@ public class ViewController {
 
         //moves the spaceship
         playerShip.update(fps);
+        if(specialInvader!= null) {
+            specialInvader.update(fps);
+        }
 
         //For each invader, we check if its an active one and then we check if it has the opportunity to shoot
         //if the invader has reached the screen limit, it reverses the direction and goes down
@@ -390,6 +396,7 @@ public class ViewController {
                 this.view.drawGameObject(i.getBitmap(), i.getX(), i.getY());
             }
         }
+        this.view.drawGameObject(specialInvader.getBitmap(),specialInvader.getX(),specialInvader.getY());
     }
     public void paintBricks() {
         for (DefenceBrick b : bricks) {
@@ -465,5 +472,10 @@ public class ViewController {
 
     public int getScore() {
         return score;
+    }
+
+    public void specialInvader(Context context) {
+        this.specialInvader = new Invader(context,0,0,screenX,screenY);
+        this.specialInvader.setInvaderSpecial(context);
     }
 }

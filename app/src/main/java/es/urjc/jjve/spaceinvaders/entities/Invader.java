@@ -200,4 +200,36 @@ public class Invader {
 
         return false;
     }
+
+    public void setInvaderSpecial(Context context){
+        this.bitmap1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.special_invader);
+        this.bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.special_invader);
+        this.bitmap3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.special_invader);
+        this.bitmap4 = BitmapFactory.decodeResource(context.getResources(), R.drawable.special_invader);
+        bitmap1 = Bitmap.createScaledBitmap(bitmap1,
+                (int) (length),
+                (int) (height),
+                false);
+
+        // Ajusta el segundo bitmap a un tamaño apropiado para la resolución de la pantalla
+        bitmap2 = Bitmap.createScaledBitmap(bitmap2,
+                (int) (length),
+                (int) (height),
+                false);
+
+        // Ajusta el tercer bitmap a un tamaño apropiado para la resolución de la pantalla
+        bitmap3 = Bitmap.createScaledBitmap(bitmap3,
+                (int) (length),
+                (int) (height),
+                false);
+
+        // Ajusta el cuarto bitmap a un tamaño apropiado para la resolución de la pantalla
+        bitmap4 = Bitmap.createScaledBitmap(bitmap4,
+                (int) (length),
+                (int) (height),
+                false);
+        this.shipSpeed=60;
+        this.shipMoving=RIGHT;
+
+    }
 }
