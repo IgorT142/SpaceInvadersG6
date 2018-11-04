@@ -132,16 +132,12 @@ public class ViewController {
         for (Invader i : invaders) {
             if (i.getVisibility()) {
                 i.update(fps); // Move the next invader
-                if (i.takeAim(playerShip.getX(), playerShip.getLength())) { // Does he want to take a shot?
-                    if (invadersBullets.get(nextBullet).shoot(i.getX() + i.getLength() / 2, i.getY(), bullet.DOWN)) { // If so try and spawn a bullet
+                if(invadersBullets.size()<maxInvaderBullets) {
 
-                        nextBullet++;// Shot fired, Prepare for the next shot
-
-                        // Loop back to the first one if we have reached the last
-                        if (nextBullet == maxInvaderBullets) {
-                            // This stops the firing of another bullet until one completes its journey
-                            // Because if bullet 0 is still active shoot returns false.
-                            nextBullet = 0;
+                    if (i.takeAim(playerShip.getX(), playerShip.getLength())) { // Does he want to take a shot?
+                        Bullet newBullet = new Bullet(screenY);
+                        if (newBullet.shoot(i.getX() + i.getLength() / 2, i.getY(), bullet.DOWN)) { // If so try and spawn a bullet// Shot fired, Prepare for the next shot
+                            // Loop back to the first one if we have reached the last
                         }
                     }
                 }
@@ -213,6 +209,7 @@ public class ViewController {
                                 for (int x = 0; x < numInvaders; x++) {
                                     invaders.get(x).chColour();
                                 }
+                                invader.setInvisible();
                                 playerShip.chColour();
                             }
                         }
@@ -434,6 +431,11 @@ public class ViewController {
         List<Bullet> inactive = new ArrayList<>();
         for (Bullet b : playerBullets) {
             if (!b.getStatus()) {
+                inactive.add(b);
+            }
+        }
+        for(Bullet b:invadersBullets){
+            if(!b.getStatus()){
                 inactive.add(b);
             }
         }
