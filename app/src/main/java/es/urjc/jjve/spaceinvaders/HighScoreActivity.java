@@ -13,12 +13,12 @@ import org.w3c.dom.Text;
 
 import es.urjc.jjve.spaceinvaders.R;
 import es.urjc.jjve.spaceinvaders.SpaceInvadersActivity;
+import es.urjc.jjve.spaceinvaders.controllers.ScoreManager;
 
 public class HighScoreActivity extends AppCompatActivity implements OnClickListener  {
 
     private int score;
     private String fileScores;
-
 
     @Override   //Este método se carga el primero en cuanto se llama a la activity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +40,6 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
 
         //Se agregan el OnClickListener para que el botón funcione al pulsarlo
         exit.setOnClickListener(this);
-
     }
 
     @Override   //Permite agregar funcionalidad de click a los objeto que tenga agregados
@@ -53,8 +52,14 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         }
     }
 
-    //TODO Hacer el método para poder cargar los scores anteriores
     public String cargarScores() {
-        return "";
+        ScoreManager sm = new ScoreManager(this.getApplicationContext());
+        int[] puntuaciones = sm.getScores();
+        String scores = "";
+        for(int i = 0; i < puntuaciones.length; i++){
+            scores += puntuaciones[i] + "\n";
+        }
+
+        return scores;
     }
 }

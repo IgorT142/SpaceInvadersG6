@@ -12,7 +12,6 @@ public class Bullet {
     public final int UP = 0;
     public final int DOWN = 1;
 
-    // No vas a ningún lado
     int heading = -1;
     float speed =  350;
 
@@ -58,7 +57,6 @@ public class Bullet {
             isActive = true;
             return true;
         }
-
         // La bala ya está activa
         return false;
     }
@@ -71,19 +69,14 @@ public class Bullet {
         }else{
             y = y + speed / fps;
         }
-
         // Actualiza rect
         rect.left = x;
         rect.right = x + width;
         rect.top = y;
         rect.bottom = y + height;
-
     }
 
-
     public void changeDir() {
-
         this.heading = 1-this.heading;
-
     }
 }

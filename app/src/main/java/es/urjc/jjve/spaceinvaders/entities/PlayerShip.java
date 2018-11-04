@@ -21,7 +21,12 @@ public class PlayerShip {
     public final int DOWN = 3;
     public final int UP=4;
 
-    public final int CANTIDAD_DISPAROS = 1;  //Cantidad de disparos con los que cuenta la nave a la vez
+    public float dirX;
+    public float dirY;
+
+
+    private int movement;
+   //Cantidad de disparos con los que cuenta la nave a la vez
 
     // La nave espacial del jugador será representada por un Bitmap
     private Bitmap bitmap;
@@ -119,25 +124,11 @@ public class PlayerShip {
 
     // Este método será usado para cambiar/establecer si la nave
     // espacial va a la izquierda, la derecha o no se mueve
-    public void setMovementState(int state){
-        shipMoving = state;
-    }
+    public void setMovementState(int movement){
 
-    public boolean addBullet(Bullet b){
-        if(this.activeBullets.size()< CANTIDAD_DISPAROS){
-            this.activeBullets.add(b);
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    public void chColour(){
-        if (seleccionado == ESQUEMA_1){
-            seleccionado = ESQUEMA_2;
-        } else {
-            seleccionado = ESQUEMA_1;
-        }
+        this.movement=movement;
+        //dirX = targetX/targetY; //Calculates the proportion of direction x
+        //dirY = targetY/targetX; //Calculates the proportion of direction y
     }
 
     public List<Bullet> getActiveBullets(){
@@ -148,27 +139,31 @@ public class PlayerShip {
     // Determina si la nave espacial del jugador necesita moverse y cambiar las coordenadas
     // que están en x si es necesario
     public void update(long fps){
-        if(shipMoving == LEFT){
-            x = x - shipSpeed / fps;
-        }
 
-        if(shipMoving == RIGHT){
-            x = x + shipSpeed / fps;
-        }
+        switch (this.movement){
+            case LEFT:
+                x = x - shipSpeed/fps;
+                break;
+            case RIGHT:
+                x = x + shipSpeed/fps;
+                break;
+            case UP:
+                y = y + shipSpeed/fps;
+                break;
+            case DOWN:
+                y = y - shipSpeed/fps;
+                break;
+            default:
+                break;
 
-        if(shipMoving == DOWN){
-            y = y + shipSpeed / fps;
         }
-        if (shipMoving ==UP){
-            y=y + shipSpeed / fps;
-        }
-
+        //x = x + dirX * shipSpeed / fps; //Calculates new xPos for the ship depending on the direction proportion of the x, if dir 0, does not move on x
+        //y = y + dirY * shipSpeed / fps; //Calculates new ypos for the ship depending on the direection proportion of the y, if dir is 0 does not move on y
         // Actualiza rect el cual es usado para detectar impactos
         rect.top = y;
         rect.bottom = y + height;
         rect.left = x;
         rect.right = x + length;
-
     }
 
     public void removeBullet(Bullet shipBull) {
