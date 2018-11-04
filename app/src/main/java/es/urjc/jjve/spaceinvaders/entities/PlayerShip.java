@@ -131,6 +131,8 @@ public class PlayerShip {
         //dirY = targetY/targetX; //Calculates the proportion of direction y
     }
 
+
+
     public List<Bullet> getActiveBullets(){
         return activeBullets;
     }
@@ -166,11 +168,19 @@ public class PlayerShip {
         rect.right = x + length;
     }
 
+
     public void removeBullet(Bullet shipBull) {
         this.activeBullets.remove(shipBull);
     }
 
     public float getY() {
         return y;
+    }
+    public void chColour() {
+        if (seleccionado == ESQUEMA_1) {
+            seleccionado = ESQUEMA_2;
+        } else {
+            seleccionado = ESQUEMA_1;
+        }
     }
 }
