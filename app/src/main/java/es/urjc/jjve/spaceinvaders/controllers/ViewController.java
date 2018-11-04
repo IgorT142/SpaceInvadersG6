@@ -31,6 +31,7 @@ public class ViewController {
     // Up to 60 invaders
     List<Invader> invaders;
     int numInvaders = 0;
+    int killedInvaders = 0;
     private boolean underage;
     private SpaceInvadersView view;
     private PlayerShip playerShip;
@@ -218,6 +219,11 @@ public class ViewController {
                 }
             }
 
+            // Has the player won
+            if (killedInvaders == numInvaders) {
+                return false;
+            }
+
         }
         return true;
 
@@ -243,13 +249,7 @@ public class ViewController {
                 inv.setInvisible();
                 currentBull.setInactive();
                 score = score + 100;
-
-                // Has the player won
-                if (score == numInvaders * 100) {
-
-                    score = 0;
-
-                }
+                killedInvaders++;
             }
         }
     }

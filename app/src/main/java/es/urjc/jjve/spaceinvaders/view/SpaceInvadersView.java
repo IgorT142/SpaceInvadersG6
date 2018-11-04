@@ -71,7 +71,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private int screenY;
 
     private Joystick joystick;  //Joystick gameObjetct that we will draw later
-
     private Rect BotonDisparo;
 
     private ViewController controller;
