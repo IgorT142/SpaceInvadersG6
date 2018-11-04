@@ -206,6 +206,34 @@ public class ViewController {
                 }
             }
 
+            // Has an alien hit a shelter brick
+            for (Invader invader : this.invaders){
+                if(invader.getVisibility()){
+                    for (DefenceBrick brick : bricks) {
+                        if (brick.getVisibility()) {
+                            if (RectF.intersects(invader.getRect(), brick.getRect())) {
+                                // A collision has occurred
+                                brick.setInvisible();
+                                for (int x = 0; x < numInvaders; x++) {
+                                    invaders.get(x).chColour();
+                                }
+                                playerShip.chColour();
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Has the player hit a shelter brick
+            for(DefenceBrick brick: bricks){
+                if(brick.getVisibility()){
+                    if(RectF.intersects(playerShip.getRect(),brick.getRect())){
+                        brick.setInvisible();
+                        playerShip.chColour();
+                    }
+                }
+            }
+
             // Has an invader bullet hit the player ship
             for (Bullet bullet : invadersBullets) {
                 if (bullet.getStatus()) {
