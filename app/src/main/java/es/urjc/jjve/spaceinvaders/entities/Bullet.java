@@ -5,7 +5,7 @@ import android.graphics.RectF;
 public class Bullet {
     private float x;
     private float y;
-    private boolean godBullet;
+    private boolean godBullet = false;
 
     private RectF rect;
 
@@ -42,8 +42,8 @@ public class Bullet {
         isActive = false;
     }
 
-    public void setGodBullet(boolean b) {
-        this.godBullet = b;
+    public void setGodBullet() {
+        this.godBullet = true;
     }
     public boolean getGodBullet(){
         return this.godBullet;

@@ -310,11 +310,11 @@ public class ViewController {
             }
             if (bullet.getImpactPointY() > screenY) {
                 bullet.changeDir();
-                bullet.setGodBullet(true);
+                bullet.setGodBullet();
             }
             if (bullet.getImpactPointY() < 0) {
                 bullet.changeDir();
-                bullet.setGodBullet(true);
+                bullet.setGodBullet();
             }
         }
     }
