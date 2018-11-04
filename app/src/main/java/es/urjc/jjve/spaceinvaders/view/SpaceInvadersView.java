@@ -124,13 +124,14 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                     sm.saveScore(controller.getScore());
                     context.startActivity(i);
                 }
-                if(currentTime>SPECIAL_TIMER*10000){
+                if(currentTime>SPECIAL_TIMER){
                     currentTime=0;
                     this.controller.specialInvader(context);
                 }
                 controller.updateGame();
                 controller.removeBullets();
             }
+
             // Calculate the fps this frame.
             // We can then use the result to time animations and more.
             timeThisFrame = System.currentTimeMillis() - startFrameTime;
