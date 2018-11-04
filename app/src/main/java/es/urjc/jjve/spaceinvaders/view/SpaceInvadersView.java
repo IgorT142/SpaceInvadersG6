@@ -124,7 +124,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                     sm.saveScore(controller.getScore());
                     context.startActivity(i);
                 }
-                if(currentTime>SPECIAL_TIMER){
+                if(currentTime>SPECIAL_TIMER*10000){
                     currentTime=0;
                     this.controller.specialInvader(context);
                 }
