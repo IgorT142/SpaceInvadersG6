@@ -81,16 +81,18 @@ public class ScoreManager {
     private void saveFile(int[] scores) {
         try {
 
+
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("puntuaciones.txt", Context.MODE_PRIVATE));
             BufferedWriter out = new BufferedWriter(outputStreamWriter);
 
+            String puntos = "";
             for (int i = 0; i < MAX_SCORES; i++) {
-                out.write(scores[i]);
-                out.newLine();
+                puntos += scores[i] + "\n";
             }
 
+            out.write(puntos);
+            out.newLine();
             out.close();
-
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -103,11 +105,12 @@ public class ScoreManager {
 
         try {
 
-            InputStream inputStream = context.getResources().getAssets().open("puntuaciones.txt");
-            br = new BufferedReader(new InputStreamReader(inputStream));
+            InputStreamReader inputStream = new InputStreamReader(context.openFileInput("puntuaciones.txt"));
+            br = new BufferedReader(inputStream);
 
             List<String> listaPuntuaciones = new LinkedList<>();
             String linea = null;
+
             while ((linea = br.readLine()) != null) {
                 listaPuntuaciones.add(linea);
             }
