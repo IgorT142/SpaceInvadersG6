@@ -13,6 +13,7 @@ import org.w3c.dom.Text;
 
 import es.urjc.jjve.spaceinvaders.R;
 import es.urjc.jjve.spaceinvaders.SpaceInvadersActivity;
+import es.urjc.jjve.spaceinvaders.controllers.ScoreManager;
 
 public class HighScoreActivity extends AppCompatActivity implements OnClickListener  {
 
@@ -51,8 +52,14 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         }
     }
 
-    //TODO Hacer el método para poder cargar los scores anteriores
     public String cargarScores() {
-        return "";
+        ScoreManager sm = new ScoreManager(this.getApplicationContext());
+        int[] puntuaciones = sm.getScores();
+        String scores = "";
+        for(int i = 0; i < puntuaciones.length; i++){
+            scores += puntuaciones[i] + "\n";
+        }
+
+        return scores;
     }
 }
