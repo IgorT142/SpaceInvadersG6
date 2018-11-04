@@ -132,18 +132,18 @@ public class PlayerShip {
     }
 
 
-    public void chColour(){
-        if (seleccionado == ESQUEMA_1){
+
+    public void chColour() {
+        if (seleccionado == ESQUEMA_1) {
             seleccionado = ESQUEMA_2;
         } else {
             seleccionado = ESQUEMA_1;
+
         }
     }
 
 
-    public List<Bullet> getActiveBullets(){
-        return activeBullets;
-    }
+
 
     // Este método de update será llamado desde el update en SpaceInvadersView
     // Determina si la nave espacial del jugador necesita moverse y cambiar las coordenadas
@@ -176,9 +176,7 @@ public class PlayerShip {
         rect.right = x + length;
     }
 
-    public void removeBullet(Bullet shipBull) {
-        this.activeBullets.remove(shipBull);
-    }
+
 
     public float getY() {
         return y;

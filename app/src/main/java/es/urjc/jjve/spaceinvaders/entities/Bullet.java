@@ -5,6 +5,7 @@ import android.graphics.RectF;
 public class Bullet {
     private float x;
     private float y;
+    private boolean godBullet;
 
     private RectF rect;
 
@@ -24,6 +25,7 @@ public class Bullet {
 
         height = screenY / 20;
         isActive = false;
+        godBullet = false;
 
         rect = new RectF();
     }
@@ -38,6 +40,13 @@ public class Bullet {
 
     public void setInactive(){
         isActive = false;
+    }
+
+    public void setGodBullet(boolean b) {
+        this.godBullet = b;
+    }
+    public boolean getGodBullet(){
+        return this.godBullet;
     }
 
     public float getImpactPointY(){

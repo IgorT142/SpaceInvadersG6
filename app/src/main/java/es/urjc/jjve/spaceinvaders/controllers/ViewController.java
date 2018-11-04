@@ -113,6 +113,7 @@ public class ViewController {
      * also it checks if the invader has the opportunity to shoot
      * updates the bullet possition depending on the fps attribute
      */
+
     public boolean updateEntities(long fps) {
 
         //checks if any entity has reached a limit or another entity
@@ -130,13 +131,10 @@ public class ViewController {
                 i.update(fps);
 
                 // Does he want to take a shot?
-                if (i.takeAim(playerShip.getX(),
-                        playerShip.getLength())) {
+                if (i.takeAim(playerShip.getX(), playerShip.getLength())) {
 
                     // If so try and spawn a bullet
-                    if (invadersBullets.get(nextBullet).shoot(i.getX()
-                                    + i.getLength() / 2,
-                            i.getY(), bullet.DOWN)) {
+                    if (invadersBullets.get(nextBullet).shoot(i.getX() + i.getLength() / 2, i.getY(), bullet.DOWN)) {
 
                         // Shot fired
                         // Prepare for the next shot
@@ -169,62 +167,17 @@ public class ViewController {
                 return true;
             }
         }
-        if (!underage) {
+
+        if(!underage){ //aqui
 
             // Update the players bullet
+            updatePlayerBullet(fps);
 
-            for (int i = 0; i < playerBullets.size(); i++) {
-                Bullet currentBull = playerBullets.get(i);
-                currentBull.update(fps);
-                //Colisión de bala con invader
-                if (currentBull.getStatus()) {
-                    for (Invader inv : invaders) {
-                        if (inv.getVisibility()) {
-                            if (RectF.intersects(currentBull.getRect(), inv.getRect())) { //Has a bullet hit an invader?
 
-                                inv.setInvisible();
-                                currentBull.setInactive();
-                                score = score + 100;
-
-                                // Has the player won
-                                if (score == numInvaders * 100) {
-                                    //  paused = true;
-                                    score = 0;
-                                    //initGame(this.context);
-                                }
-                            }
-                        }
-                    }
-
-                    //Colisión de bala con muros
-                    for (DefenceBrick brick : bricks) {
-                        if (brick.getVisibility()) {
-                            if (RectF.intersects(bullet.getRect(), brick.getRect())) {
-                                // A collision has occurred
-                                currentBull.setInactive();
-                                brick.setInvisible();
-                            }
-                        }
-                    }
-                    //Colisión de bala con borde de pantalla
-                    if (currentBull.getImpactPointY() < 0) {
-                        currentBull.changeDir();
-                    }
-                } else {
-                    playerShip.removeBullet(currentBull);
-                }
-            }
             // Has the player's bullet hit the top of the screen
 
             // Update all the invaders bullets if active
-            for (Bullet bullet : invadersBullets) {
-                if (bullet.getStatus()) {
-                    bullet.update(fps);
-                }
-                if (bullet.getImpactPointY() > screenY) {
-                    bullet.setInactive();
-                }
-            }
+            updateInvadersBullet(fps);
 
             // Has an alien bullet hit a shelter brick
             for (Bullet bullet : invadersBullets) {
@@ -265,9 +218,84 @@ public class ViewController {
                     }
                 }
             }
-        }
 
+        }
         return true;
+
+
+    }
+
+    // colision bala con barrera
+    public void bulletColisionBrick (DefenceBrick brick, Bullet currentBull) {
+        if (brick.getVisibility()) {
+            if (RectF.intersects(bullet.getRect(), brick.getRect())) {
+                // A collision has occurred
+                currentBull.setInactive();
+                brick.setInvisible();
+//                          soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
+            }
+        }
+    }
+
+    //colision bala con invader
+    public void bulletCollisionInvader(Invader inv, Bullet currentBull){
+        if (inv.getVisibility()) {
+            if (RectF.intersects(currentBull.getRect(), inv.getRect())) { //Has a bullet hit an invader?
+                inv.setInvisible();
+                currentBull.setInactive();
+                score = score + 100;
+
+                // Has the player won
+                if (score == numInvaders * 100) {
+
+                    score = 0;
+
+                }
+            }
+        }
+    }
+    public void updatePlayerBullet(long fps){
+        for (int i=0;i<playerBullets.size();i++) {
+            Bullet currentBull = playerBullets.get(i);
+            currentBull.update(fps);
+            //Colisión de bala con invader
+            if(currentBull.getStatus()) {
+                for (Invader inv : invaders) {
+                    bulletCollisionInvader(inv, currentBull);
+                }
+
+                //Colisión de bala con muros
+                for (DefenceBrick brick : bricks) {
+                    bulletColisionBrick(brick, currentBull);
+                }
+                //Colisión de bala con borde de pantalla
+                if (currentBull.getImpactPointY() < 0) {
+                    currentBull.changeDir();
+                }
+                if (currentBull.getImpactPointY() > screenY){
+                    currentBull.changeDir();
+                }
+            }
+        }
+    }
+
+    public void updateInvadersBullet(long fps){
+        for (Bullet bullet : invadersBullets) {
+            if (bullet.getStatus()) {
+                bullet.update(fps);
+            }
+            if (bullet.getImpactPointY() > screenY) {
+                bullet.changeDir();
+                bullet.setGodBullet(true);
+            }
+            if (bullet.getImpactPointY() < 0) {
+                bullet.changeDir();
+                bullet.setGodBullet(true);
+            }
+        }
+    }
+
+    public void alienBulletHitShelterBrick(){
 
     }
 
