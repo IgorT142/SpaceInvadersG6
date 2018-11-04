@@ -212,7 +212,6 @@ public class ViewController {
                     if (RectF.intersects(playerShip.getRect(), bullet.getRect())) {
                         bullet.setInactive();
                         return false;
-
                     }
                 }
             }

@@ -103,7 +103,14 @@ public class ScoreManager {
 
         int[] puntuaciones = null;
 
+
         try {
+            if(context.openFileInput("puntuaciones.txt") == null){
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("puntuaciones.txt", Context.MODE_PRIVATE));
+                BufferedWriter out = new BufferedWriter(outputStreamWriter);
+                out.write("");
+                out.close();
+            }
 
             InputStreamReader inputStream = new InputStreamReader(context.openFileInput("puntuaciones.txt"));
             br = new BufferedReader(inputStream);
