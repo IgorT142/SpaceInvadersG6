@@ -2,6 +2,7 @@ package es.urjc.jjve.spaceinvaders.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.SoundPool;
 import android.util.Log;
@@ -167,13 +168,12 @@ public class ViewController {
         if(!underage){
 
             // Update the players bullet
-            updatePlayerBullet(fps);
-
+            if(!updatePlayerBullet(fps)){
+                return false;
+            }
             // Has the player's bullet hit the top of the screen
-
             // Update all the invaders bullets if active
             updateInvadersBullet(fps);
-
             // Has an alien bullet hit a shelter brick
             for (Bullet bullet : invadersBullets) {
                 if (bullet.getStatus()) {
@@ -190,29 +190,17 @@ public class ViewController {
                             }
                         }
                     }
-                }
+                    if(bullet.getGodBullet()){
+                        for(Invader inv:invaders){
+                            bulletCollisionInvader(inv,bullet);
 
-            }
-
-            // Has a player bullet hit a shelter brick
-            for (Bullet bullet : this.playerBullets) {
-                if (bullet.getStatus()) {
-                    for (DefenceBrick brick : bricks) {
-                        if (brick.getVisibility()) {
-                            if (RectF.intersects(bullet.getRect(), brick.getRect())) {
-                                // A collision has occurred
-                                bullet.setInactive();
-                                brick.setInvisible();
-                                for (int x = 0; x < numInvaders; x++) {
-                                    invaders.get(x).chColour();
-                                }
-                                playerShip.chColour();
-                            }
                         }
                     }
-
                 }
+
             }
+
+
 
             // Has an alien hit a shelter brick
             for (Invader invader : this.invaders){
@@ -285,7 +273,7 @@ public class ViewController {
             }
         }
     }
-    public void updatePlayerBullet(long fps){
+    public boolean updatePlayerBullet(long fps){
         for (int i=0;i<playerBullets.size();i++) {
             Bullet currentBull = playerBullets.get(i);
             currentBull.update(fps);
@@ -306,7 +294,13 @@ public class ViewController {
                     currentBull.changeDir();
                 }
             }
+            if(bullet.getGodBullet()){
+                if(RectF.intersects(bullet.getRect(),playerShip.getRect())){
+                    return false;
+                }
+            }
         }
+        return true;
     }
 
     public void updateInvadersBullet(long fps){
@@ -325,9 +319,6 @@ public class ViewController {
         }
     }
 
-    public void alienBulletHitShelterBrick(){
-
-    }
 
     // If SpaceInvadersActivity is started then
     // start our thread.
