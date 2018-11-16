@@ -136,9 +136,9 @@ public class ViewController {
 
                     if (i.takeAim(playerShip.getX(), playerShip.getLength())) { // Does he want to take a shot?
                         Bullet newBullet = new Bullet(screenY);
-                        if (newBullet.shoot(i.getX() + i.getLength() / 2, i.getY(), bullet.DOWN)) { // If so try and spawn a bullet// Shot fired, Prepare for the next shot
+
+                        newBullet.shoot(i.getX() + i.getLength() / 2, i.getY(), bullet.DOWN);  // If so try and spawn a bullet// Shot fired, Prepare for the next shot
                             // Loop back to the first one if we have reached the last
-                        }
                     }
                 }
 
@@ -336,9 +336,7 @@ public class ViewController {
             bullet = new Bullet(screenY);
 
             // Initialize the invadersBullets array
-            for (int i = 0; i < MAX_INVADER_BULLETS; i++) {
-                invadersBullets.add(new Bullet(screenY));
-            }
+
         }
         // Build an army of invaders
         numInvaders = 0;
