@@ -29,11 +29,16 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         //Se inicializan los elementos de la pantalla
         View exit = findViewById(R.id.quitButton);
         View reiniciar = findViewById(R.id.reiniciar);
+        reiniciar.setVisibility(View.INVISIBLE);
+
         TextView highScoreField = findViewById(R.id.highScore);
         TextView yourScore = findViewById(R.id.yourScore);
 
         //Se obtienen las puntuaciones
         score = getIntent().getExtras().getInt("score");
+        if (score>500){
+            reiniciar.setVisibility(View.VISIBLE);
+        }
         fileScores = cargarScores();
 
         //Se pintan las listas de puntuaciones
