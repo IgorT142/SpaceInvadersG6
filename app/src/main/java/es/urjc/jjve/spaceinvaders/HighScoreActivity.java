@@ -2,7 +2,10 @@ package es.urjc.jjve.spaceinvaders;
 
 import android.app.ActivityManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,6 +13,8 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
+
+import java.io.File;
 
 import es.urjc.jjve.spaceinvaders.R;
 import es.urjc.jjve.spaceinvaders.SpaceInvadersActivity;
@@ -61,5 +66,31 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         }
 
         return scores;
+    }
+
+    public void takePicture(){
+        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(takePicture.resolveActivity(getPackageManager())!=null){
+            startActivityForResult(takePicture,1);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //ToDo Reescalar el bitmap segun la pantalla
+            //ToDo Guardar referencia de la imagen en el fichero
+            //ToDo Mostrar el bitmap en la pantalla de puntuaciones
+        }
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
     }
 }
