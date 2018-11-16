@@ -31,12 +31,10 @@ public class Inicio extends AppCompatActivity implements OnClickListener {
         View no = findViewById(R.id.no);
         si.setOnClickListener(this);
         no.setOnClickListener(this);
-        /*
-            OPCIONAL
-        */
-        //Para la música de introducción
-        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.tauhubballad);
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.gotg);
         mediaPlayer.start();
+
 
         // Esto permite permisos de escritura de la app
         if (ContextCompat.checkSelfPermission(this,

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -15,6 +16,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.regex.Pattern;
 
+import es.urjc.jjve.spaceinvaders.R;
 import es.urjc.jjve.spaceinvaders.entities.Bullet;
 import es.urjc.jjve.spaceinvaders.entities.DefenceBrick;
 import es.urjc.jjve.spaceinvaders.entities.Invader;
@@ -48,6 +50,7 @@ public class ViewController {
     // The player's shelters are built from bricks
     private List<DefenceBrick> bricks;
     private int numBricks;
+    private MediaPlayer media;
 
 
     private Invader specialInvader;
@@ -481,5 +484,9 @@ public class ViewController {
     public void specialInvader(Context context) {
         this.specialInvader = new Invader(context,0,0,screenX,screenY);
         this.specialInvader.setInvaderSpecial(context);
+    }
+
+    public void changeTrack(MediaPlayer m){
+        m.selectTrack(m.getAudioSessionId()+1);
     }
 }

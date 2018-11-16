@@ -2,13 +2,21 @@ package es.urjc.jjve.spaceinvaders;
 
 import android.app.Activity;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Space;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.Vector;
 
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
@@ -32,7 +40,8 @@ public class SpaceInvadersActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.swduel);
+        mediaPlayer.start();
         // Obtener un objeto de Display para acceder a los detalles de la pantalla
         Display display = getWindowManager().getDefaultDisplay();
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
