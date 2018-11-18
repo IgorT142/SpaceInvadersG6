@@ -105,12 +105,14 @@ public class ScoreManager {
         }
     }
 
+    //Lee los archivos de puntuaciones
     private int[] readFile() {
 
         int[] puntuaciones = null;
 
         try {
-            File archivo = new File(Environment.getExternalStorageDirectory(),"puntuaciones.txt");
+            //Busca el archivo en el almacenamiento externo del dispositivo
+            File archivo = new File(Environment.getExternalStorageDirectory(),"puntuaciones.scr");
             if(!archivo.exists()){
                 archivo.createNewFile();
             }

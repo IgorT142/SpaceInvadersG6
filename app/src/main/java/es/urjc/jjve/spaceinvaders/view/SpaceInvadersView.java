@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+import es.urjc.jjve.spaceinvaders.PlayerNameActivity;
 import es.urjc.jjve.spaceinvaders.R;
 import es.urjc.jjve.spaceinvaders.controllers.ScoreManager;
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
@@ -118,10 +119,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             if (!paused) {
                 if (!controller.updateEntities(fps)) {
                     //Intenta acceder al highscore si se ha perdido
-                    Intent i = new Intent(context.getApplicationContext(), HighScoreActivity.class);
+                    Intent i = new Intent(context.getApplicationContext(), PlayerNameActivity.class);
                     i.putExtra("score", controller.getScore());
-                    ScoreManager sm = new ScoreManager(context);
-                    sm.saveScore(controller.getScore());
                     context.startActivity(i);
                 }
                 if(currentTime>SPECIAL_TIMER){

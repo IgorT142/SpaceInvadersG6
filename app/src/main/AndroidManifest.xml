@@ -37,7 +37,8 @@
         <activity
             android:name=".PlayerNameActivity"
             android:label="actividadNombre"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
 
     </application>
