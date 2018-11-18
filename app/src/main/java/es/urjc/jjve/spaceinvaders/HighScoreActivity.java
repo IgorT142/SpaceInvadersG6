@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import es.urjc.jjve.spaceinvaders.R;
 import es.urjc.jjve.spaceinvaders.SpaceInvadersActivity;
 import es.urjc.jjve.spaceinvaders.controllers.ScoreManager;
@@ -54,10 +57,10 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
 
     public String cargarScores() {
         ScoreManager sm = new ScoreManager(this.getApplicationContext());
-        int[] puntuaciones = sm.getScores();
+        TreeMap<Integer,String> puntuaciones = sm.getScores();
         String scores = "";
-        for(int i = 0; i < puntuaciones.length; i++){
-            scores += puntuaciones[i] + "\n";
+        for(Map.Entry punts: puntuaciones.entrySet()){
+            scores += punts.getKey() + "-" + punts.getValue() + "\n";
         }
 
         return scores;
