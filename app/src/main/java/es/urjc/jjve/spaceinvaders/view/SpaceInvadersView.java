@@ -243,6 +243,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         canvas.drawText(text, x, y, paint);
 
     }
+
+
     public void drawButton(){       //Crea un rect para el boton de disparo y lo pone como atributo de la clase para las comprobaciones.
         Rect rectangle;
         Paint color;

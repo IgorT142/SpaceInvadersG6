@@ -98,12 +98,12 @@ public class ViewController {
     private void paintBullets() {
 
         for (Bullet shipBull : this.playerBullets) {
-            view.drawGameObject(shipBull.getRect());
+            view.drawGameObject(shipBull.getBitmapBullet(),shipBull.getX(),shipBull.getY());
         }
 
         for (Bullet bullet : invadersBullets) {
             if (bullet.getStatus()) {
-                view.drawGameObject(bullet.getRect());
+                view.drawGameObject(bullet.getBitmapBullet(),bullet.getX(),bullet.getY());
             }
         }
     }
@@ -134,7 +134,7 @@ public class ViewController {
                 if(invadersBullets.size()<maxInvaderBullets) {
 
                     if (i.takeAim(playerShip.getX(), playerShip.getLength())) { // Does he want to take a shot?
-                        Bullet newBullet = new Bullet(screenY);
+                        Bullet newBullet = new Bullet(screenY,this.getView().getContext());
                         invadersBullets.add(newBullet);
                         newBullet.shoot(i.getX() + i.getLength() / 2, i.getY(), bullet.DOWN); // If so try and spawn a bullet// Shot fired, Prepare for the next shot
                             // Loop back to the first one if we have reached the last
@@ -339,7 +339,7 @@ public class ViewController {
 
         if (!underage) {
             // Prepare the players bullet
-            bullet = new Bullet(screenY);
+            bullet = new Bullet(screenY,this.getView().getContext());
 
             // Initialize the invadersBullets array
 
@@ -427,7 +427,7 @@ public class ViewController {
 
     public void notifyShoot() {
         if(playerBullets.size()<5) {
-            Bullet newBull = new Bullet(screenY);
+            Bullet newBull = new Bullet(screenY,this.getView().getContext());
             this.playerBullets.add(newBull);
             newBull.shoot((playerShip.getX() + playerShip.getLength()/2), playerShip.getY(), 0);
         }
