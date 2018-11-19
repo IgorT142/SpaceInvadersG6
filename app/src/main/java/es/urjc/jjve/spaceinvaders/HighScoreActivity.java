@@ -39,7 +39,7 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
 
         //Se obtienen las puntuaciones
         score = getIntent().getExtras().getInt("score");
-        if (score>500){
+        if (score>=500){
             reiniciar.setVisibility(View.VISIBLE);
         }
         fileScores = cargarScores();
@@ -58,15 +58,16 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
 
         //Botón de salir de la aplicación (quizás haya que cambiar de salir de la aplicación a volver a la pantalla de título)
         if(v.getId()== findViewById(R.id.quitButton).getId()) {
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(1);
+            Intent inicio = new Intent(getApplicationContext(),Inicio.class);
+            startActivity(inicio);
+            this.finishActivity(0);
         }
         //Boton para reiniciar el juego
         if(v.getId()== findViewById(R.id.reiniciar).getId()){
             Intent juegoNuevo = new Intent(getApplicationContext(),SpaceInvadersActivity.class);
-            juegoNuevo.putExtra("underage",false);
+            juegoNuevo.putExtra("underage",false); //TODO investigar esto
             startActivity(juegoNuevo);
-
+            this.finishActivity(0);
         }
     }
 
