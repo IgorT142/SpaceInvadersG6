@@ -21,6 +21,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URI;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -87,7 +89,7 @@ public class ScoreManager {
     private TreeMap<Integer,String> readFile() {
 
         //Se inicializa el TreeMap
-        TreeMap<Integer,String> puntuaciones = new TreeMap<>();
+        TreeMap<Integer,String> puntuaciones = new TreeMap<>(Collections.reverseOrder());
         try {
             //Busca el archivo en el almacenamiento externo del dispositivo
             File archivo = new File(Environment.getExternalStorageDirectory(),FILE_PATH);
