@@ -41,6 +41,7 @@ public class PlayerNameActivity extends AppCompatActivity implements OnClickList
             Intent i = new Intent(getApplicationContext(),HighScoreActivity.class);
             i.putExtra("score",score);
             startActivity(i);
+            this.finishActivity(0);
         }
     }
 }
