@@ -67,8 +67,8 @@ public class PlayerShip {
         // Inicializa un RectF vacío
         rect = new RectF();
 
-        length = screenX/10;
-        height = screenY/10;
+        length = screenX/15;
+        height = screenY/15;
 
         // Inicia la nave en el centro de la pantalla aproximadamente
         x = screenX / 2;
