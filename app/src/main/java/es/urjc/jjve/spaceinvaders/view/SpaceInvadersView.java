@@ -19,6 +19,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
@@ -36,6 +37,8 @@ import android.widget.ImageView;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import es.urjc.jjve.spaceinvaders.PlayerNameActivity;
 import es.urjc.jjve.spaceinvaders.R;
@@ -257,5 +260,27 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         canvas.drawRect(rectangle,color);
         canvas.drawText("O",getWidth()-60,getHeight()-120,colorTexto);
         this.BotonDisparo = rectangle;
+    }
+    int songCount = R.raw.doom;
+    public void iniciarMusica(final Activity activityContext){  //Metodo para iniciar la música del juego y cambiarla cada 20 segundos
+        //Declare the timer
+        Timer t = new Timer();
+        //Set the schedule function and rate
+        t.scheduleAtFixedRate(new TimerTask() {
+                                  @Override
+                                  public void run() {
+                                      final int i = songCount++;
+                                      MediaPlayer mediaPlayer = MediaPlayer.create(activityContext.getApplicationContext(), i);
+                                      mediaPlayer.start();
+                                      mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                          @Override
+                                          public void onCompletion(MediaPlayer mediaPlayer) {
+                                              mediaPlayer.release();
+                                          }
+                                      });
+                                  }
+                              },
+                500,
+                21000);
     }
 }

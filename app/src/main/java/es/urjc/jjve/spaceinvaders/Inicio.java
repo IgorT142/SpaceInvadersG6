@@ -9,6 +9,7 @@ import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -17,6 +18,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import es.urjc.jjve.spaceinvaders.R;
 
@@ -31,12 +34,6 @@ public class Inicio extends AppCompatActivity implements OnClickListener {
         View no = findViewById(R.id.no);
         si.setOnClickListener(this);
         no.setOnClickListener(this);
-        /*
-            OPCIONAL
-        */
-        //Para la música de introducción
-        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.tauhubballad);
-        mediaPlayer.start();
 
         // Esto permite permisos de escritura de la app
         if (ContextCompat.checkSelfPermission(this,
@@ -49,6 +46,16 @@ public class Inicio extends AppCompatActivity implements OnClickListener {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
         }
+        MediaPlayer media = new MediaPlayer().create(getApplicationContext(),R.raw.zgotg);
+        media.start();
+        media.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer media) {
+                media.release();
+            }
+        });
+
+
     }
 
 
