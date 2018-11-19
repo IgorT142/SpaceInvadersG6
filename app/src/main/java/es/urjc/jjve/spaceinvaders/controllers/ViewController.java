@@ -49,7 +49,6 @@ public class ViewController {
     private List<DefenceBrick> bricks;
     private int numBricks;
 
-
     private Invader specialInvader;
 
 

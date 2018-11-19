@@ -17,6 +17,7 @@ import java.util.TreeMap;
 import es.urjc.jjve.spaceinvaders.R;
 import es.urjc.jjve.spaceinvaders.SpaceInvadersActivity;
 import es.urjc.jjve.spaceinvaders.controllers.ScoreManager;
+import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 
 public class HighScoreActivity extends AppCompatActivity implements OnClickListener  {
 
@@ -30,11 +31,17 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
 
         //Se inicializan los elementos de la pantalla
         View exit = findViewById(R.id.quitButton);
+        View reiniciar = findViewById(R.id.reiniciar);
+        reiniciar.setVisibility(View.INVISIBLE);
+
         TextView highScoreField = findViewById(R.id.highScore);
         TextView yourScore = findViewById(R.id.yourScore);
 
         //Se obtienen las puntuaciones
         score = getIntent().getExtras().getInt("score");
+        if (score>500){
+            reiniciar.setVisibility(View.VISIBLE);
+        }
         fileScores = cargarScores();
 
         //Se pintan las listas de puntuaciones
@@ -43,6 +50,7 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
 
         //Se agregan el OnClickListener para que el botón funcione al pulsarlo
         exit.setOnClickListener(this);
+        reiniciar.setOnClickListener(this);
     }
 
     @Override   //Permite agregar funcionalidad de click a los objeto que tenga agregados
@@ -52,6 +60,13 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         if(v.getId()== findViewById(R.id.quitButton).getId()) {
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(1);
+        }
+        //Boton para reiniciar el juego
+        if(v.getId()== findViewById(R.id.reiniciar).getId()){
+            Intent juegoNuevo = new Intent(getApplicationContext(),SpaceInvadersActivity.class);
+            juegoNuevo.putExtra("underage",false);
+            startActivity(juegoNuevo);
+
         }
     }
 
