@@ -501,8 +501,8 @@ public class ViewController {
     }
 
     public void posicionRandom(){
-        float x =(float) (Math.random()*(((screenX/2)-0)+1))+0;
-        float y =(float) (Math.random()*(((screenY/2)-0)+1))+0;
+        float x =(float) (Math.random()*(screenX))+0;
+        float y =(float) (Math.random()*(screenY))+0;
         playerShip.setX(x);
         playerShip.setY(y);
         paintShip();
