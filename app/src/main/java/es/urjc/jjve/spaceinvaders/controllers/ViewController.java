@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -14,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import es.urjc.jjve.spaceinvaders.R;
@@ -40,6 +42,7 @@ public class ViewController {
     private PlayerShip playerShip;
     private boolean lost;
     private int score;
+    private int punt;
     // The player's bullet
     private Bullet bullet;
     // The invaders bullets
@@ -51,6 +54,7 @@ public class ViewController {
     private List<DefenceBrick> bricks;
     private int numBricks;
     private MediaPlayer media;
+
 
     private Invader specialInvader;
 
@@ -213,6 +217,7 @@ public class ViewController {
                                 }
                                 invader.setInvisible();
                                 playerShip.chColour();
+
                             }
                         }
                     }
@@ -225,6 +230,7 @@ public class ViewController {
                     if(RectF.intersects(playerShip.getRect(),brick.getRect())){
                         brick.setInvisible();
                         playerShip.chColour();
+
                     }
                 }
             }
@@ -243,6 +249,7 @@ public class ViewController {
             if (killedInvaders == numInvaders) {
                 return false;
             }
+
 
         }
         return true;
@@ -271,6 +278,10 @@ public class ViewController {
                     score = score + 250;
                 }else {
                     score = score + 100;
+                }
+                punt=score;
+                if(punt%500==0){
+                    posicionRandom();
                 }
                 killedInvaders++;
             }
@@ -488,4 +499,13 @@ public class ViewController {
     public void changeTrack(MediaPlayer m){
         m.selectTrack(m.getAudioSessionId()+1);
     }
+
+    public void posicionRandom(){
+        float x =(float) (Math.random()*(((screenX/2)-0)+1))+0;
+        float y =(float) (Math.random()*(((screenY/2)-0)+1))+0;
+        playerShip.setX(x);
+        playerShip.setY(y);
+        paintShip();
+    }
+
 }
