@@ -429,7 +429,7 @@ public class ViewController {
     }
 
     public void notifyShoot() {
-        if(playerBullets.size()<5) {
+        if(playerBullets.size()<1) {
             Bullet newBull = new Bullet(screenY,this.getView().getContext());
             this.playerBullets.add(newBull);
             newBull.shoot((playerShip.getX() + playerShip.getLength()/2), playerShip.getY(), 0);
