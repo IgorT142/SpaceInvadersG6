@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -24,6 +25,7 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
 
     private int score;
     private String fileScores;
+    private Bitmap image;
 
     @Override   //Este método se carga el primero en cuanto se llama a la activity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,17 +82,22 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            this.image = imageBitmap;
+            ImageView foto = findViewById(R.id.fotoLastGame);
+            foto.setImageBitmap(this.image);
+
             //ToDo Reescalar el bitmap segun la pantalla
-            //ToDo Guardar referencia de la imagen en el fichero
+            //ToDo Guardar referencia de la imagen en el fichero de puntos -> galleryAddPic();
             //ToDo Mostrar el bitmap en la pantalla de puntuaciones
         }
     }
 
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(mCurrentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
+        //File f = new File(mCurrentPhotoPath);//ToDo conocer el path the la foto
+        //Uri contentUri = Uri.fromFile(f);
+        //mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
     }
 }

@@ -84,4 +84,14 @@
         app:layout_constraintTop_toBottomOf="@+id/highScore"
         app:layout_constraintVertical_bias="0.652" />
 
+    <ImageView
+        android:id="@+id/fotoLastGame"
+        android:layout_width="71dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="444dp"
+        android:layout_marginTop="140dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
 </android.support.constraint.ConstraintLayout>
