@@ -46,6 +46,7 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         //Se pintan las listas de puntuaciones
         yourScore.setText("Tu puntuación: " + score);
         highScoreField.setText(fileScores);
+        paintPicture();
 
 
         //Se agregan el OnClickListener para que el botón funcione al pulsarlo
@@ -79,7 +80,7 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
             startActivityForResult(takePicture,1);
         }
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -87,13 +88,17 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 
             this.image = imageBitmap;
-            ImageView foto = findViewById(R.id.fotoLastGame);
-            foto.setImageBitmap(this.image);
+
 
             //ToDo Reescalar el bitmap segun la pantalla
             //ToDo Guardar referencia de la imagen en el fichero de puntos -> galleryAddPic();
             //ToDo Mostrar el bitmap en la pantalla de puntuaciones
         }
+    }
+
+    private void paintPicture(){
+        ImageView foto = findViewById(R.id.fotoLastGame);
+        foto.setImageBitmap(this.image);
     }
 
     private void galleryAddPic() {
