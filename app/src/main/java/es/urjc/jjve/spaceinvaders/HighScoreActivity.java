@@ -1,6 +1,7 @@
 package es.urjc.jjve.spaceinvaders;
 
 import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -17,7 +18,10 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 
 import java.io.File;
@@ -32,13 +36,15 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
     private int score;
     private String fileScores;
     private Bitmap image;
+    private Uri playerImageUri;
 
     @Override   //Este método se carga el primero en cuanto se llama a la activity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
 
-        takePicture();
+        takePicture(); //Toma una foto para almacenarla en el fichero de highScores
+        this.playerImageUri = getImageUri(this.getApplicationContext(),image);
 
         //Se inicializan los elementos de la pantalla
         View exit = findViewById(R.id.quitButton);
@@ -58,7 +64,6 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         //Se pintan las listas de puntuaciones
         yourScore.setText("Tu puntuación: " + score);
         highScoreField.setText(fileScores);
-        //paintPicture();
 
 
         //Se agregan el OnClickListener para que el botón funcione al pulsarlo
@@ -84,6 +89,7 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         }
     }
 
+    //Carga las puntuaciones almacenadas en el fichero
     public String cargarScores() {
         ScoreManager sm = new ScoreManager(this.getApplicationContext());
         TreeMap<Integer,String> puntuaciones = sm.getScores();
@@ -95,31 +101,28 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         return scores;
     }
 
+    //Llama al activity para hacer fotos, el resultado se recoge en onActivityResult
     public void takePicture(){
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(takePicture.resolveActivity(getPackageManager())!=null){
             startActivityForResult(takePicture,1);
         }
     }
-
+    //Es el resultado de tomar la foto
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-
+            Uri uri = (Uri) extras.get("data");
             this.image = imageBitmap;
-            paintPicture();
+            ImageView foto = findViewById(R.id.fotoLastGame);
+            foto.setImageBitmap(this.image);
 
             //ToDo Reescalar el bitmap segun la pantalla
             //ToDo Guardar referencia de la imagen en el fichero de puntos -> galleryAddPic();
             //ToDo Mostrar el bitmap en la pantalla de puntuaciones
         }
-    }
-
-    private void paintPicture(){
-        ImageView foto = findViewById(R.id.fotoLastGame);
-        foto.setImageBitmap(this.image);
     }
 
     private void galleryAddPic() {
@@ -142,5 +145,13 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         cursor.close();
         Bitmap bitmap = BitmapFactory.decodeFile(path);
         return bitmap;
+    }
+
+    //Genera un URI a partir de un bitmap
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 }
