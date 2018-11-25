@@ -20,9 +20,15 @@ public class PlayerShip {
     public final int RIGHT = 2;
     public final int DOWN = 3;
     public final int UP=4;
+    public final int D_DL = 5;
+    public final int D_DR = 6;
+    public final int D_UL = 7;
+    public final int D_UR = 8;
+
 
     public float dirX;
     public float dirY;
+    public float dxdy;
 
 
     private int movement;
@@ -67,8 +73,8 @@ public class PlayerShip {
         // Inicializa un RectF vacío
         rect = new RectF();
 
-        length = screenX/15;
-        height = screenY/15;
+        length = screenX/10;
+        height = screenY/10;
 
         // Inicia la nave en el centro de la pantalla aproximadamente
         x = screenX / 2;
@@ -150,18 +156,34 @@ public class PlayerShip {
     // que están en x si es necesario
     public void update(long fps){
 
-        switch (this.movement){
+        switch (this.movement) {
             case LEFT:
-                x = x - shipSpeed/fps;
+                x = x - shipSpeed / fps;
                 break;
             case RIGHT:
-                x = x + shipSpeed/fps;
+                x = x + shipSpeed / fps;
                 break;
             case UP:
-                y = y + shipSpeed/fps;
+                y = y + shipSpeed / fps;
                 break;
             case DOWN:
-                y = y - shipSpeed/fps;
+                y = y - shipSpeed / fps;
+                break;
+            case D_DL:
+                y = y - shipSpeed / fps;
+                x = x - shipSpeed / fps;
+                break;
+            case D_DR:
+                y = y - shipSpeed / fps;
+                x = x + shipSpeed / fps;
+                break;
+            case D_UL:
+                y = y + shipSpeed / fps;
+                x = x - shipSpeed / fps;
+                break;
+            case D_UR:
+                y = y + shipSpeed / fps;
+                x = x + shipSpeed / fps;
                 break;
             default:
                 break;
