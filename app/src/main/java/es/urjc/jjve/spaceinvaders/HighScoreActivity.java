@@ -32,6 +32,8 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
 
+        takePicture();
+
         //Se inicializan los elementos de la pantalla
         View exit = findViewById(R.id.quitButton);
         TextView highScoreField = findViewById(R.id.highScore);
@@ -44,6 +46,7 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         //Se pintan las listas de puntuaciones
         yourScore.setText("Tu puntuación: " + score);
         highScoreField.setText(fileScores);
+
 
         //Se agregan el OnClickListener para que el botón funcione al pulsarlo
         exit.setOnClickListener(this);
@@ -76,7 +79,7 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
             startActivityForResult(takePicture,1);
         }
     }
-
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == 1 && resultCode == RESULT_OK) {
