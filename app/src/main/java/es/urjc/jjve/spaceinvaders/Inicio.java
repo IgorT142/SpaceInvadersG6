@@ -2,6 +2,7 @@ package es.urjc.jjve.spaceinvaders;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
@@ -47,6 +48,14 @@ public class Inicio extends AppCompatActivity implements OnClickListener {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
+        }
+
+        //Esto permite permisos del uso de la cámara de la app
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)){
+            }else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},1);
             }
         }
     }

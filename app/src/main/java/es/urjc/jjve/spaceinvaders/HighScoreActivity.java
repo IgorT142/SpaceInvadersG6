@@ -2,7 +2,9 @@ package es.urjc.jjve.spaceinvaders;
 
 import android.app.ActivityManager;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -46,7 +48,7 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         //Se pintan las listas de puntuaciones
         yourScore.setText("Tu puntuación: " + score);
         highScoreField.setText(fileScores);
-        paintPicture();
+        //paintPicture();
 
 
         //Se agregan el OnClickListener para que el botón funcione al pulsarlo
@@ -88,7 +90,7 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 
             this.image = imageBitmap;
-
+            paintPicture();
 
             //ToDo Reescalar el bitmap segun la pantalla
             //ToDo Guardar referencia de la imagen en el fichero de puntos -> galleryAddPic();
@@ -107,5 +109,19 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         //Uri contentUri = Uri.fromFile(f);
         //mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
+    }
+
+    // Genera un bitmap a partir de un URI
+    private Bitmap getBitmapFromUri(Uri contentUri) {
+        String path = null;
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(contentUri, projection, null, null, null);
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            path = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        return bitmap;
     }
 }
