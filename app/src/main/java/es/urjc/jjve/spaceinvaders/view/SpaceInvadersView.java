@@ -233,14 +233,15 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     public void drawGameObject(Bitmap bitmap, float x, float y) {
-        // Make sure our drawing surface is valid or we crash
-        Surface surface = ourHolder.getSurface();
-        boolean surfValid = surface.isValid();
+      // Make sure our drawing surface is valid or we crash
+      Surface surface = ourHolder.getSurface();
+      boolean surfValid = surface.isValid();
 
-        if (surfValid) {
-            canvas.drawBitmap(bitmap, x, y, paint);
-        }
-    }
+      if (canvas!=null && bitmap!=null && paint!=null){
+      if (surfValid) {
+          canvas.drawBitmap(bitmap, x, y, paint);
+      }}
+  }
 
     public void drawGameObject(String text, int x, int y) {
         paint.setTextSize(40);
