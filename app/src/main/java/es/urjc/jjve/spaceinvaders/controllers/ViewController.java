@@ -42,7 +42,6 @@ public class ViewController {
     private PlayerShip playerShip;
     private boolean lost;
     private int score;
-    private int punt;
     // The player's bullet
     private Bullet bullet;
     // The invaders bullets
@@ -279,8 +278,7 @@ public class ViewController {
                 }else {
                     score = score + 100;
                 }
-                punt=score;
-                if(punt%500==0){
+                if(score%500==0){
                     posicionRandom();
                 }
                 killedInvaders++;
