@@ -33,7 +33,15 @@
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
+
+        <activity
+            android:name=".PlayerNameActivity"
+            android:label="actividadNombre"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+        </activity>
+
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <uses-permission-sdk-23 android:name="android.permission.CAMERA" />
 </manifest>

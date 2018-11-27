@@ -453,25 +453,36 @@ public class ViewController {
     }
 
     public void shipMovement(float x, float y) {
-        if((x!=0 && y!=0)) {
-            if (Math.abs(x) > Math.abs(y)) {
-                if (x > 0) {
-                    playerShip.setMovementState(2);
-                } else {
-                    playerShip.setMovementState(1);
-                }
-
+        float epsilon = 0.01f;
+        if (Math.abs(x - 0) > epsilon && (Math.abs(y - 0) > epsilon)) {
+            final double angle = Math.atan2(y, x);
+            final double halfPI = Math.PI / 2;
+            final double quarterPI = Math.PI / 4;
+            final double eighthPI = Math.PI / 8;
+            if (angle >= -eighthPI && angle < eighthPI) {
+                playerShip.setMovementState(2);
+            } else if (angle >= eighthPI && angle < (quarterPI + eighthPI)) {
+                playerShip.setMovementState(8);
+            } else if (angle >= (quarterPI + eighthPI) && angle < (halfPI + eighthPI)) {
+                playerShip.setMovementState(4);
+            } else if (angle >= (halfPI + eighthPI) && angle < (Math.PI - eighthPI)) {
+                playerShip.setMovementState(7);
+            } else if (angle >= (Math.PI - eighthPI) && angle <= Math.PI) {
+                playerShip.setMovementState(1);
+            } else if (angle >= -Math.PI && angle < (-Math.PI + eighthPI)) {
+                playerShip.setMovementState(1);
+            } else if (angle >= (-Math.PI + eighthPI) && angle < (-halfPI - eighthPI)) {
+                playerShip.setMovementState(5);
+            } else if (angle >= (-halfPI - eighthPI) && angle < (-halfPI + eighthPI)) {
+                playerShip.setMovementState(3);
+            } else if (angle >= (-halfPI + eighthPI) && angle < (-eighthPI)) {
+                playerShip.setMovementState(6);
             } else {
-                if (y > 0) {
-                    playerShip.setMovementState(4);
-                } else {
-                    playerShip.setMovementState(3);
-                }
+                playerShip.setMovementState(0);
             }
-        }else{
+        } else {
             playerShip.setMovementState(0);
         }
-
     }
 
     public int getScore() {
