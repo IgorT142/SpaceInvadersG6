@@ -1,6 +1,7 @@
 package es.urjc.jjve.spaceinvaders.controllers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 
@@ -20,121 +21,95 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URI;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import es.urjc.jjve.spaceinvaders.R;
 
 public class ScoreManager {
 
-    private final String FILE_PATH = "puntuaciones.txt";
+    private final String FILE_PATH = "puntuaciones.src";
     private final int MAX_SCORES = 10;
 
-    private FileWriter fw;
-    private PrintWriter pw;
     private BufferedReader br;
-
-    private int[] scores;
     private Context context;
 
     public ScoreManager(Context context) {
         this.context = context;
     }
 
-    public void saveScore(int score) {
-
-        int[] puntFichero = readFile();
-        int[] puntConActual = new int[MAX_SCORES + 1];
-
-        // Rellena el array de puntuaciones temporal con el obtenido en el fichero
-        for (int i = 0; i < puntFichero.length; i++) {
-            puntConActual[i] = puntFichero[i];
-        }
-
-        puntConActual[puntFichero.length] = score; //Añade la nueva puntuación al final del fichero.
-
-        //ordena la puntuación incluyendo la nueva
-        int temp = 0;
-        for (int i = 0; i < puntConActual.length; i++) {
-            for (int j = 1; j < (puntConActual.length - i); j++) {
-                if (puntConActual[j - 1] < puntConActual[j]) {
-                    temp = puntConActual[j - 1];
-                    puntConActual[j - 1] = puntConActual[j];
-                    puntConActual[j] = temp;
-                }
-            }
-        }
-
-        //Añade la puntuación recién ordenada al array que se guardará, eliminando la última posición
-        for (int i = 0; i < puntFichero.length; i++) {
-            puntFichero[i] = puntConActual[i];
-        }
-
-        scores = puntFichero;
-        saveFile(scores);
+    //Método público que permite guardar las puntuaciones en una colección ordenada
+    public void saveScore(int score,String name) {
+        TreeMap<Integer,String> puntFichero = readFile();
+        puntFichero.put(score,name);
+        saveFile(puntFichero);
     }
 
-    public int[] getScores() {
+    public TreeMap<Integer, String> getScores() {
         return readFile();
     }
 
 
-    private void saveFile(int[] scores) {
-        try {
+    //Método para almacenar las puntuaciones en un archivo
+    private void saveFile(TreeMap<Integer,String> scores) {
 
-            File archivo = new File(Environment.getExternalStorageDirectory(),"puntuaciones.txt");
-            if(!archivo.exists()){
+        try {
+            //Se busca el archivo en el almacenamiento externo del dispositivo
+            File archivo = new File(Environment.getExternalStorageDirectory(),FILE_PATH);
+            if(!archivo.exists()){  //Si el archivo no existe se genera de cero
                 archivo.createNewFile();
             }
 
+            //Se inicializan los buffers para escribir el archivo
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(archivo));
             BufferedWriter out = new BufferedWriter(outputStreamWriter);
+            PrintWriter writer = new PrintWriter(out);
 
-            String puntos = "";
-            for (int i = 0; i < MAX_SCORES; i++) {
-                puntos += scores[i] + "\n";
+            //Se escriben todos las puntuaciones siguiendo el orden 'Puntuacion:Nombre'
+            for(Map.Entry score:scores.entrySet()){
+                writer.println(score.getKey() + ": " + score.getValue());
             }
 
-            out.write(puntos);
-            out.newLine();
+            //Se cierran los buffers
+            writer.close();
             out.close();
+            outputStreamWriter.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private int[] readFile() {
+    //Lee los archivos de puntuaciones y los pasa a una colección de TreeMap
+    private TreeMap<Integer,String> readFile() {
 
-        int[] puntuaciones = null;
-
+        //Se inicializa el TreeMap
+        TreeMap<Integer,String> puntuaciones = new TreeMap<>(Collections.reverseOrder());
         try {
-            File archivo = new File(Environment.getExternalStorageDirectory(),"puntuaciones.txt");
-            if(!archivo.exists()){
+            //Busca el archivo en el almacenamiento externo del dispositivo
+            File archivo = new File(Environment.getExternalStorageDirectory(),FILE_PATH);
+            if(!archivo.exists()){      //Si el archivo no existe se genera de cero
                 archivo.createNewFile();
             }
 
+            //Prepara los buffers para leer el archivo
             InputStreamReader inputStream = new InputStreamReader(new FileInputStream(archivo));
             br = new BufferedReader(inputStream);
 
-            List<String> listaPuntuaciones = new LinkedList<>();
+            //Lee el archivo línea a línea y las divide en dos teniendo en cuenta el carácter ":".
+            // Después guarda la puntuación y el nombre en el TreeMap
             String linea = null;
-
             while ((linea = br.readLine()) != null) {
-                listaPuntuaciones.add(linea);
+                String[] cadena = linea.split(":");
+                puntuaciones.put(Integer.parseInt(cadena[0]),cadena[1]);
             }
 
-
-            puntuaciones = new int[MAX_SCORES];
-            Iterator<String> it = listaPuntuaciones.iterator();
-
-            int i = 0;
-            while (it.hasNext()) {
-                puntuaciones[i] = Integer.parseInt(it.next());
-                i++;
-            }
-
+            //Se cierran los buffers
             br.close();
 
         } catch (FileNotFoundException e) {
@@ -142,6 +117,7 @@ public class ScoreManager {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
+            //Por último, se devuelve el TreeMap con las puntuaciones
             return puntuaciones;
         }
     }

@@ -2,13 +2,22 @@ package es.urjc.jjve.spaceinvaders;
 
 import android.app.Activity;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Space;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
 
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
@@ -28,11 +37,11 @@ public class SpaceInvadersActivity extends Activity {
     ViewController spaceInvadersController;
     SpaceInvadersView spaceView;
     private boolean underage;
+    int songCount = R.raw.doom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Obtener un objeto de Display para acceder a los detalles de la pantalla
         Display display = getWindowManager().getDefaultDisplay();
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -59,6 +68,8 @@ public class SpaceInvadersActivity extends Activity {
                 finish();
             }
         });
+
+            spaceView.iniciarMusica(this);
     }
 
     // Este método se ejecuta cuando el jugador empieza el juego
