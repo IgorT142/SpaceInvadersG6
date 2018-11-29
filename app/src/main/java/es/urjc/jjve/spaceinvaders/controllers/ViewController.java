@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -13,8 +15,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 import java.util.regex.Pattern;
 
+import es.urjc.jjve.spaceinvaders.R;
 import es.urjc.jjve.spaceinvaders.entities.Bullet;
 import es.urjc.jjve.spaceinvaders.entities.DefenceBrick;
 import es.urjc.jjve.spaceinvaders.entities.Invader;
@@ -48,7 +52,7 @@ public class ViewController {
     // The player's shelters are built from bricks
     private List<DefenceBrick> bricks;
     private int numBricks;
-
+    private MediaPlayer media;
 
     private Invader specialInvader;
 
@@ -99,12 +103,12 @@ public class ViewController {
     private void paintBullets() {
 
         for (Bullet shipBull : this.playerBullets) {
-            view.drawGameObject(shipBull.getRect());
+            view.drawGameObject(shipBull.getBitmapBullet(),shipBull.getX(),shipBull.getY());
         }
 
         for (Bullet bullet : invadersBullets) {
             if (bullet.getStatus()) {
-                view.drawGameObject(bullet.getRect());
+                view.drawGameObject(bullet.getBitmapBullet(),bullet.getX(),bullet.getY());
             }
         }
     }
@@ -269,6 +273,9 @@ public class ViewController {
                     score = score + 250;
                 }else {
                     score = score + 100;
+                }
+                if(score%500==0){
+                    posicionRandom();
                 }
                 killedInvaders++;
             }
@@ -483,6 +490,7 @@ public class ViewController {
         } else {
             playerShip.setMovementState(0);
         }
+
     }
 
     public int getScore() {
@@ -493,4 +501,17 @@ public class ViewController {
         this.specialInvader = new Invader(context,0,0,screenX,screenY);
         this.specialInvader.setInvaderSpecial(context);
     }
+
+    public void changeTrack(MediaPlayer m){
+        m.selectTrack(m.getAudioSessionId()+1);
+    }
+
+    public void posicionRandom(){
+        float x =(float) (Math.random()*(screenX))+0;
+        float y =(float) (Math.random()*(screenY))+0;
+        playerShip.setX(x);
+        playerShip.setY(y);
+        paintShip();
+    }
+
 }
