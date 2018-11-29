@@ -294,6 +294,9 @@ public class ViewController {
                 if (currentBull.getImpactPointY() < 0) {
                     currentBull.changeDir();
                     currentBull.setGodBullet();
+                    //Recargar bala cuando rebote
+                    Bullet nextBull = new Bullet(screenY, this.getView().getContext());
+                    playerBullets.add(nextBull);
                 }
                 if (currentBull.getImpactPointY() > screenY){
                     currentBull.changeDir();
