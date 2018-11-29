@@ -296,6 +296,8 @@ public class ViewController {
                     currentBull.setGodBullet();
                     //Recargar bala cuando rebote
                     Bullet nextBull = new Bullet(screenY, this.getView().getContext());
+                    invadersBullets.add(playerBullets.get(0));
+                    playerBullets.remove(0);
                     playerBullets.add(nextBull);
                 }
                 if (currentBull.getImpactPointY() > screenY){
