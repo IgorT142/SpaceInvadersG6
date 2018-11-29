@@ -135,7 +135,7 @@ public class ViewController {
                 if(invadersBullets.size()<maxInvaderBullets) {
 
                     if (i.takeAim(playerShip.getX(), playerShip.getLength())) { // Does he want to take a shot?
-                        Bullet newBullet = new Bullet(screenY);
+                        Bullet newBullet = new Bullet(screenY,this.view.getContext());
                         invadersBullets.add(newBullet);
                         newBullet.shoot(i.getX() + i.getLength() / 2, i.getY(), bullet.DOWN); // If so try and spawn a bullet// Shot fired, Prepare for the next shot
                             // Loop back to the first one if we have reached the last
@@ -340,7 +340,7 @@ public class ViewController {
 
         if (!underage) {
             // Prepare the players bullet
-            bullet = new Bullet(screenY);
+            bullet = new Bullet(screenY,this.view.getContext());
 
             // Initialize the invadersBullets array
 
@@ -428,7 +428,7 @@ public class ViewController {
 
     public void notifyShoot() {
         if(playerBullets.size()<5) {
-            Bullet newBull = new Bullet(screenY);
+            Bullet newBull = new Bullet(screenY,this.view.getContext());
             this.playerBullets.add(newBull);
             newBull.shoot((playerShip.getX() + playerShip.getLength()/2), playerShip.getY(), 0);
         }
