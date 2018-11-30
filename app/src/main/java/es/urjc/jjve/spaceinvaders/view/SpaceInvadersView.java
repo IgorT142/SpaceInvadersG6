@@ -138,6 +138,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 }
                 controller.updateGame();
                 controller.removeBullets();
+                controller.changeBullets();
             }
 
             // Calculate the fps this frame.

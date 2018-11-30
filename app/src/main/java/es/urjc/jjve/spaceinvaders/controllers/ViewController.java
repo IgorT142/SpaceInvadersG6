@@ -137,8 +137,13 @@ public class ViewController {
 
         //moves the spaceship
         playerShip.update(fps);
+        shipColisionBrick();
 
         updateInvaders(fps);
+
+        if(!shipColisionInvaders()){
+            return false;
+        }
 
         if(specialInvader!= null) {
             specialInvader.update(fps);
@@ -153,33 +158,10 @@ public class ViewController {
 
 
 
-
-            // Has the player hit a shelter brick
-            for(DefenceBrick brick: bricks){
-                if(brick.getVisibility()){
-                    if(RectF.intersects(playerShip.getRect(),brick.getRect())){
-                        brick.setInvisible();
-                        playerShip.chColour();
-                    }
-                }
-            }
-
-            // Has an invader bullet hit the player ship
-            for (Bullet bullet : invadersBullets) {
-                if (bullet.getStatus()) {
-                    if (RectF.intersects(playerShip.getRect(), bullet.getRect())&& godMode==0) {
-                        bullet.setInactive();
-                        return false;
-                    }
-                }
-            }
-
-            // Has the player won
-            if (killedInvaders == numInvaders) {
-                return false;
-            }
+        // Has the player won
+        if (killedInvaders == numInvaders) {
+            return false; }
         return true;
-
 
     }
 
@@ -190,6 +172,23 @@ public class ViewController {
         }
     }
 
+
+    public boolean shipColisionInvaders(){
+        boolean lost=false;
+
+        for(Invader inv:invaders) {
+            if (inv.getVisibility()) {
+                if (!(godMode > 0)) {
+                    if (RectF.intersects(playerShip.getRect(), inv.getRect())) {
+                        // A collision has occurred
+                        inv.setInvisible();
+                        lost= true;
+                    }
+                }
+            }
+        }
+        return lost;
+    }
 
     /**
      *
