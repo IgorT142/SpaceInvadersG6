@@ -35,6 +35,8 @@ public class ViewController {
 
 
     private static final int MAX_INVADER_BULLETS = 300;
+
+
     // Up to 60 invaders
     List<Invader> invaders;
     int numInvaders = 0;
@@ -47,8 +49,11 @@ public class ViewController {
     // The player's bullet
     private Bullet bullet;
     // The invaders bullets
+
     private List<Bullet> invadersBullets;
     private List<Bullet> playerBullets;
+    private List<Bullet> godBullets;
+
     private int nextBullet;
     private int maxInvaderBullets = 10;
     // The player's shelters are built from bricks
@@ -288,7 +293,7 @@ public class ViewController {
                                 timer.cancel();
                             }
                         }
-                    }, 0, 1000);
+                    }, 0, 100);
                 }
                 killedInvaders++;
             }
@@ -525,7 +530,7 @@ public class ViewController {
         playerShip.setX(x);
         playerShip.setY(y);
         paintShip();
-        godMode=3;
+        godMode=10;
     }
 
 }
