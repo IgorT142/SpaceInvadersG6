@@ -214,11 +214,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         paint.setColor(Color.argb(255, 249, 129, 0));
     }
 
-    public void changeColor() {
-        //ToDo Add random paint generation to be called when a bullet impacts a screen limit
-
-    }
-
     public void drawJoystick() {
         canvas.drawCircle(joystick.getHatX(), joystick.getHatY(), joystick.getHatRadius(), joystick.getHatColor());
         canvas.drawCircle(joystick.getX(), joystick.getY(), joystick.getBaseRadius(), joystick.getBaseColor());
