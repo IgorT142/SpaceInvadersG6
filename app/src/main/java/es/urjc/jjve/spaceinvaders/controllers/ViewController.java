@@ -122,6 +122,11 @@ public class ViewController {
                 view.drawGameObject(bullet.getBitmapBullet(),bullet.getX(),bullet.getY());
             }
         }
+        for (Bullet bullet : godBullets) {
+            if (bullet.getStatus()) {
+                view.drawGameObject(bullet.getBitmapBullet(),bullet.getX(),bullet.getY());
+            }
+        }
     }
 
     /**
@@ -141,7 +146,7 @@ public class ViewController {
 
         updateInvaders(fps);
 
-        if(!shipColisionInvaders()){
+        if(shipColisionInvaders()){
             return false;
         }
 
@@ -623,7 +628,7 @@ public class ViewController {
         playerShip.setX(x);
         playerShip.setY(y);
         paintShip();
-        godMode=10;
+        godMode=15;
     }
 
 }
