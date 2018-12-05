@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import es.urjc.jjve.spaceinvaders.R;
@@ -53,6 +55,8 @@ public class ViewController {
     private List<DefenceBrick> bricks;
     private int numBricks;
     private MediaPlayer media;
+
+    private int godMode = 0;
 
     private Invader specialInvader;
 
@@ -239,7 +243,7 @@ public class ViewController {
             // Has an invader bullet hit the player ship
             for (Bullet bullet : invadersBullets) {
                 if (bullet.getStatus()) {
-                    if (RectF.intersects(playerShip.getRect(), bullet.getRect())) {
+                    if (RectF.intersects(playerShip.getRect(), bullet.getRect())&& godMode==0) {
                         bullet.setInactive();
                         return false;
                     }
@@ -281,6 +285,15 @@ public class ViewController {
                 }
                 if(score%500==0){
                     posicionRandom();
+                    final Timer timer = new Timer();
+                    timer.scheduleAtFixedRate(new TimerTask() {
+                        public void run() {
+                            godMode--;
+                            if (godMode== 0) {
+                                timer.cancel();
+                            }
+                        }
+                    }, 0, 1000);
                 }
                 killedInvaders++;
             }
@@ -522,6 +535,7 @@ public class ViewController {
         playerShip.setX(x);
         playerShip.setY(y);
         paintShip();
+        godMode=3;
     }
 
 }
