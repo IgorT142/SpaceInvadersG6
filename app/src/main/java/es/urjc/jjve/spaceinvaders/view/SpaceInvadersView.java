@@ -138,6 +138,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 }
                 controller.updateGame();
                 controller.removeBullets();
+                controller.changeBullets();
             }
 
             // Calculate the fps this frame.
@@ -212,11 +213,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     public void initPaintGameObject() {
         paint.setColor(Color.argb(255, 249, 129, 0));
-    }
-
-    public void changeColor() {
-        //ToDo Add random paint generation to be called when a bullet impacts a screen limit
-
     }
 
     public void drawJoystick() {
