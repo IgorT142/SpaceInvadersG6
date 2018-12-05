@@ -83,11 +83,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private final static int SPECIAL_TIMER = 550;
     int currentTime =0;
 
-    private Timer t = new Timer();
-
-    public Timer getT() {
-        return t;
-    }
 
     /*
      * CONTRUCTOR
@@ -132,13 +127,12 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                     i.putExtra("score", controller.getScore());
                     context.startActivity(i);
                 }
-                if(currentTime>SPECIAL_TIMER){
-                    currentTime=0;
+                if (currentTime > SPECIAL_TIMER) {
+                    currentTime = 0;
                     this.controller.specialInvader(context);
                 }
                 controller.updateGame();
                 controller.removeBullets();
-                controller.changeBullets();
             }
 
             // Calculate the fps this frame.
@@ -267,23 +261,23 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     int songCount = R.raw.doom;
     public void iniciarMusica(final Activity activityContext){  //Metodo para iniciar la música del juego y cambiarla cada 20 segundos
         //Declare the timer
+        Timer t = new Timer();
         //Set the schedule function and rate
-        t.scheduleAtFixedRate( new TimerTask() {
-                                   @Override
-                                   public void run() {
-                                       final int i = songCount++;
-                                       MediaPlayer mediaPlayer = MediaPlayer.create(activityContext.getApplicationContext(), i);
-                                       mediaPlayer.start();
-                                       mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                           @Override
-                                           public void onCompletion(MediaPlayer mediaPlayer) {
-                                               mediaPlayer.release();
-                                           }
-                                       });
-                                       if (i == R.raw.tauhubballad){
-                                           songCount = R.raw.doom;
-                                       }
-                                   }
-                               },500,21000);
+        t.scheduleAtFixedRate(new TimerTask() {
+                                  @Override
+                                  public void run() {
+                                      final int i = songCount++;
+                                      MediaPlayer mediaPlayer = MediaPlayer.create(activityContext.getApplicationContext(), i);
+                                      mediaPlayer.start();
+                                      mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                          @Override
+                                          public void onCompletion(MediaPlayer mediaPlayer) {
+                                              mediaPlayer.release();
+                                          }
+                                      });
+                                  }
+                              },
+                500,
+                21000);
     }
 }
