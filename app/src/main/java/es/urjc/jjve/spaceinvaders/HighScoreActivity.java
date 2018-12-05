@@ -25,9 +25,11 @@ import java.util.Random;
 import java.util.TreeMap;
 
 import java.io.File;
+import java.util.TreeSet;
 
 import es.urjc.jjve.spaceinvaders.R;
 import es.urjc.jjve.spaceinvaders.SpaceInvadersActivity;
+import es.urjc.jjve.spaceinvaders.controllers.Score;
 import es.urjc.jjve.spaceinvaders.controllers.ScoreManager;
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 
@@ -42,9 +44,6 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
-
-        takePicture(); //Toma una foto para almacenarla en el fichero de highScores
-        this.playerImageUri = getImageUri(this.getApplicationContext(),image);
 
         //Se inicializan los elementos de la pantalla
         View exit = findViewById(R.id.quitButton);
@@ -92,45 +91,15 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
     //Carga las puntuaciones almacenadas en el fichero
     public String cargarScores() {
         ScoreManager sm = new ScoreManager(this.getApplicationContext());
-        TreeMap<Integer,String> puntuaciones = sm.getScores();
+        TreeSet<Score> puntuaciones = sm.getScores();
         String scores = "";
-        for(Map.Entry punts: puntuaciones.entrySet()){
-            scores += punts.getKey() + "-" + punts.getValue() + "\n";
+
+        //Se genera las puntuaciones a mostrar "Nombre:Puntuación:URI"
+        for(Score punts: puntuaciones){
+            scores += punts.getName() + "-" + punts.getScore() + "\n";
         }
 
         return scores;
-    }
-
-    //Llama al activity para hacer fotos, el resultado se recoge en onActivityResult
-    public void takePicture(){
-        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(takePicture.resolveActivity(getPackageManager())!=null){
-            startActivityForResult(takePicture,1);
-        }
-    }
-    //Es el resultado de tomar la foto
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            Uri uri = (Uri) extras.get("data");
-            this.image = imageBitmap;
-            ImageView foto = findViewById(R.id.fotoLastGame);
-            foto.setImageBitmap(this.image);
-
-            //ToDo Reescalar el bitmap segun la pantalla
-            //ToDo Guardar referencia de la imagen en el fichero de puntos -> galleryAddPic();
-            //ToDo Mostrar el bitmap en la pantalla de puntuaciones
-        }
-    }
-
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        //File f = new File(mCurrentPhotoPath);//ToDo conocer el path the la foto
-        //Uri contentUri = Uri.fromFile(f);
-        //mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
     }
 
     // Genera un bitmap a partir de un URI
@@ -147,11 +116,4 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         return bitmap;
     }
 
-    //Genera un URI a partir de un bitmap
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
 }
