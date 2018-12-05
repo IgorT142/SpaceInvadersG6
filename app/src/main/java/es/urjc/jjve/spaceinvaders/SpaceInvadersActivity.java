@@ -84,7 +84,6 @@ public class SpaceInvadersActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        spaceView.getT().cancel();
         // Le dice al método de pausa del gameView que se ejecute
         spaceView.pause();
     }
