@@ -150,6 +150,11 @@ public class ViewController {
                 if (i.getX() > screenX - i.getLength() || i.getX() < 0) {
                     bumpedEntity = true;
                 }
+                if (i.getY() > screenY - i.getHeight() || i.getY() < 0) {
+                    return false;
+                }
+
+
             }
             //Checks if an invader has touched the playership
             if (bumpedEntity) {

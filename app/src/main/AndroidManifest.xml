@@ -29,7 +29,7 @@
 
         <activity
             android:name=".HighScoreActivity"
-            android:label="Puntuaciones"
+            android:label="puntuaciones"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
