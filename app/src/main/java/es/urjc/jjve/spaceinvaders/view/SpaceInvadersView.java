@@ -81,9 +81,9 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private ViewController controller;
 
     private final static int SPECIAL_TIMER = 550;
-    int currentTime =0;
+    int currentTime = 0;
 
-
+    private MediaPlayer mediaPlayer;
     /*
      * CONTRUCTOR
      */
@@ -126,17 +126,17 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                     Intent i = new Intent(context.getApplicationContext(), PlayerNameActivity.class);
                     i.putExtra("score", controller.getScore());
                     context.startActivity(i);
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
                 }
-                if(currentTime>SPECIAL_TIMER){
-                    currentTime=0;
+                if (currentTime > SPECIAL_TIMER) {
+                    currentTime = 0;
                     this.controller.specialInvader(context);
                 }
                 controller.updateGame();
                 controller.removeBullets();
             }
 
-            // Calculate the fps this frame.
-            // We can then use the result to time animations and more.
             timeThisFrame = System.currentTimeMillis() - startFrameTime;
             if (timeThisFrame >= 1) {
                 fps = 1000 / timeThisFrame;
@@ -153,6 +153,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             Log.e("Error:", "joining thread");
         }
     }
+
     public void resume() {
         playing = true;
         gameThread = new Thread(this);
@@ -162,26 +163,27 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     public void unpause() {
         this.paused = false;
     }
+
     /*
      * EVENT MANAGEMENT
      */
     @Override
-    public boolean onTouchEvent( MotionEvent event) {
-            if(BotonDisparo.contains((int) event.getX(),(int) event.getY())){   //Comprueba el jugador pulsa el boton de disparo
-                controller.notifyShoot();
-            }
-            if (event.getAction() != event.ACTION_UP) {
-                if(event.getX()<screenX/2) {
-                    this.joystick.setHat(event.getX(),event.getY());
-                    this.controller.shipMovement(event.getX()-joystick.getX(),event.getY()-joystick.getY());
+    public boolean onTouchEvent(MotionEvent event) {
+        if (BotonDisparo.contains((int) event.getX(), (int) event.getY())) {   //Comprueba el jugador pulsa el boton de disparo
+            controller.notifyShoot();
+        }
+        if (event.getAction() != event.ACTION_UP) {
+            if (event.getX() < screenX / 2) {
+                this.joystick.setHat(event.getX(), event.getY());
+                this.controller.shipMovement(event.getX() - joystick.getX(), event.getY() - joystick.getY());
 
-                }else{
-                    this.joystick.initHat();
-                }
             } else {
                 this.joystick.initHat();
-                this.controller.shipMovement(0,0);
             }
+        } else {
+            this.joystick.initHat();
+            this.controller.shipMovement(0, 0);
+        }
         return true;
     }
 
@@ -249,21 +251,23 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
 
-    public void drawButton(){       //Crea un rect para el boton de disparo y lo pone como atributo de la clase para las comprobaciones.
+    public void drawButton() {       //Crea un rect para el boton de disparo y lo pone como atributo de la clase para las comprobaciones.
         Rect rectangle;
         Paint color;
-        rectangle = new Rect(getWidth()-110,getHeight()-150,getWidth()-10,getHeight()-90);  //Rectangulo por coordenadas
+        rectangle = new Rect(getWidth() - 110, getHeight() - 150, getWidth() - 50, getHeight() - 90);  //Rectangulo por coordenadas
         color = new Paint();
-        color.setARGB(120,102,102,102);
+        color.setARGB(120, 102, 102, 102);
         Paint colorTexto = new Paint();
         colorTexto.setTextSize(15);
-        colorTexto.setARGB(150,255,255,255);
-        canvas.drawRect(rectangle,color);
-        canvas.drawText("O",getWidth()-60,getHeight()-120,colorTexto);
+        colorTexto.setARGB(150, 255, 255, 255);
+        canvas.drawRect(rectangle, color);
+        canvas.drawText("O", getWidth() - 60, getHeight() - 120, colorTexto);
         this.BotonDisparo = rectangle;
     }
+
     int songCount = R.raw.doom;
-    public void iniciarMusica(final Activity activityContext){  //Metodo para iniciar la música del juego y cambiarla cada 20 segundos
+
+    public void iniciarMusica(final Activity activityContext) {  //Metodo para iniciar la música del juego y cambiarla cada 20 segundos
         //Declare the timer
         Timer t = new Timer();
         //Set the schedule function and rate
@@ -271,7 +275,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                                   @Override
                                   public void run() {
                                       final int i = songCount++;
-                                      MediaPlayer mediaPlayer = MediaPlayer.create(activityContext.getApplicationContext(), i);
+                                      mediaPlayer = MediaPlayer.create(activityContext.getApplicationContext(), i);
                                       mediaPlayer.start();
                                       mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                           @Override

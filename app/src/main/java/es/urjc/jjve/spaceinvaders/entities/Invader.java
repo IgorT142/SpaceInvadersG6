@@ -194,11 +194,8 @@ public class Invader {
 
         // Si está disparando aleatoriamente (sin estar cerca del jugador) una probabilidad de 1 en 5000
         randomNumber = generator.nextInt(2000);
-        if(randomNumber == 0){
-            return true;
-        }
+        return randomNumber == 0;
 
-        return false;
     }
 
     public void setInvaderSpecial(Context context){
