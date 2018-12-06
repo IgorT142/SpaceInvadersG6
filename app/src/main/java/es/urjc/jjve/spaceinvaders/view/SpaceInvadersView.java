@@ -255,14 +255,14 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     public void drawButton(){       //Crea un rect para el boton de disparo y lo pone como atributo de la clase para las comprobaciones.
         Rect rectangle;
         Paint color;
-        rectangle = new Rect(getWidth()-110,getHeight()-150,getWidth()-10,getHeight()-90);  //Rectangulo por coordenadas
+        rectangle = new Rect(getWidth()-210,getHeight()-240,getWidth()-10,getHeight()-40);  //Rectangulo por coordenadas
         color = new Paint();
         color.setARGB(120,102,102,102);
         Paint colorTexto = new Paint();
         colorTexto.setTextSize(15);
-        colorTexto.setARGB(150,255,255,255);
+        colorTexto.setARGB(50,255,255,255);
         canvas.drawRect(rectangle,color);
-        canvas.drawText("O",getWidth()-60,getHeight()-120,colorTexto);
+        canvas.drawText("O",getWidth()-110,getHeight()-140,colorTexto);
         this.BotonDisparo = rectangle;
     }
     int songCount = R.raw.doom;

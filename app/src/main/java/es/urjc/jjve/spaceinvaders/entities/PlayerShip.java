@@ -26,7 +26,11 @@ public class PlayerShip {
 
 
     private int movement;
-   //Cantidad de disparos con los que cuenta la nave a la vez
+
+    public int getMovement() {
+        return movement;
+    }
+    //Cantidad de disparos con los que cuenta la nave a la vez
 
     // La nave espacial del jugador será representada por un Bitmap
     private Bitmap bitmap;
@@ -56,6 +60,10 @@ public class PlayerShip {
     // Esto va a mantener la rapidez de los pixeles por segundo a la que la nave espacial se moverá
     private float shipSpeed;
 
+    public float getShipSpeed() {
+        return shipSpeed;
+    }
+
     // Se esta moviendo la nave espacial y en que dirección
     private int shipMoving = STOPPED;
 
@@ -72,7 +80,7 @@ public class PlayerShip {
 
         // Inicia la nave en el centro de la pantalla aproximadamente
         x = screenX / 2;
-        y = screenY - 20;
+        y = screenY - 100;
 
         // Inicializa el bitmap
         bitmap = BitmapFactory.decodeResource(
@@ -122,6 +130,10 @@ public class PlayerShip {
         return length;
     }
 
+    public float getHeight() {
+        return height;
+    }
+
     // Este método será usado para cambiar/establecer si la nave
     // espacial va a la izquierda, la derecha o no se mueve
     public void setMovementState(int movement){
@@ -148,20 +160,28 @@ public class PlayerShip {
     // Este método de update será llamado desde el update en SpaceInvadersView
     // Determina si la nave espacial del jugador necesita moverse y cambiar las coordenadas
     // que están en x si es necesario
-    public void update(long fps){
+    public void update(long fps, boolean puedeMover){
 
         switch (this.movement){
             case LEFT:
-                x = x - shipSpeed/fps;
+                if(puedeMover) {
+                    x = x - shipSpeed / fps;
+                }
                 break;
             case RIGHT:
-                x = x + shipSpeed/fps;
+                if(puedeMover) {
+                    x = x + shipSpeed / fps;
+                }
                 break;
             case UP:
-                y = y + shipSpeed/fps;
+                if(puedeMover) {
+                    y = y + shipSpeed / fps;
+                }
                 break;
             case DOWN:
-                y = y - shipSpeed/fps;
+                if (puedeMover) {
+                    y = y - shipSpeed / fps;
+                }
                 break;
             default:
                 break;

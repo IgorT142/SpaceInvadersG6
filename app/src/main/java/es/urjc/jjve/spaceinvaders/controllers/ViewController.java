@@ -124,9 +124,8 @@ public class ViewController {
         boolean bumpedEntity = false;
 
         //moves the spaceship
-        playerShip.update(fps);
-
-        if(specialInvader!= null) {
+            playerShip.update(fps, spaceshipCanMove(playerShip.getMovement()));
+        if (specialInvader != null) {
             specialInvader.update(fps);
         }
 
@@ -135,13 +134,13 @@ public class ViewController {
         for (Invader i : invaders) {
             if (i.getVisibility()) {
                 i.update(fps); // Move the next invader
-                if(invadersBullets.size()<maxInvaderBullets) {
+                if (invadersBullets.size() < maxInvaderBullets) {
 
                     if (i.takeAim(playerShip.getX(), playerShip.getLength())) { // Does he want to take a shot?
                         Bullet newBullet = new Bullet(screenY);
                         invadersBullets.add(newBullet);
                         newBullet.shoot(i.getX() + i.getLength() / 2, i.getY(), bullet.DOWN); // If so try and spawn a bullet// Shot fired, Prepare for the next shot
-                            // Loop back to the first one if we have reached the last
+                        // Loop back to the first one if we have reached the last
                     }
                 }
 
@@ -164,10 +163,10 @@ public class ViewController {
             }
         }
 
-        if(!underage){
+        if (!underage) {
 
             // Update the players bullet
-            if(!updatePlayerBullet(fps)){
+            if (!updatePlayerBullet(fps)) {
                 return false;
             }
             // Has the player's bullet hit the top of the screen
@@ -189,10 +188,10 @@ public class ViewController {
                             }
                         }
                     }
-                    if(bullet.getGodBullet()){
-                        bulletCollisionInvader(specialInvader,bullet);
-                        for(Invader inv:invaders){
-                            bulletCollisionInvader(inv,bullet);
+                    if (bullet.getGodBullet()) {
+                        bulletCollisionInvader(specialInvader, bullet);
+                        for (Invader inv : invaders) {
+                            bulletCollisionInvader(inv, bullet);
                         }
                     }
                 }
@@ -200,10 +199,9 @@ public class ViewController {
             }
 
 
-
             // Has an alien hit a shelter brick
-            for (Invader invader : this.invaders){
-                if(invader.getVisibility()){
+            for (Invader invader : this.invaders) {
+                if (invader.getVisibility()) {
                     for (DefenceBrick brick : bricks) {
                         if (brick.getVisibility()) {
                             if (RectF.intersects(invader.getRect(), brick.getRect())) {
@@ -221,9 +219,9 @@ public class ViewController {
             }
 
             // Has the player hit a shelter brick
-            for(DefenceBrick brick: bricks){
-                if(brick.getVisibility()){
-                    if(RectF.intersects(playerShip.getRect(),brick.getRect())){
+            for (DefenceBrick brick : bricks) {
+                if (brick.getVisibility()) {
+                    if (RectF.intersects(playerShip.getRect(), brick.getRect())) {
                         brick.setInvisible();
                         playerShip.chColour();
                     }
@@ -252,7 +250,7 @@ public class ViewController {
     }
 
     // colision bala con barrera
-    public void bulletColisionBrick (DefenceBrick brick, Bullet currentBull) {
+    public void bulletColisionBrick(DefenceBrick brick, Bullet currentBull) {
         if (brick.getVisibility()) {
             if (RectF.intersects(currentBull.getRect(), brick.getRect())) {
                 // A collision has occurred
@@ -263,26 +261,27 @@ public class ViewController {
     }
 
     //colision bala con invader
-    public void bulletCollisionInvader(Invader inv, Bullet currentBull){
+    public void bulletCollisionInvader(Invader inv, Bullet currentBull) {
         if (inv.getVisibility()) {
             if (RectF.intersects(currentBull.getRect(), inv.getRect())) { //Has a bullet hit an invader?
                 inv.setInvisible();
                 currentBull.setInactive();
-                if(inv == specialInvader){
+                if (inv == specialInvader) {
                     score = score + 250;
-                }else {
+                } else {
                     score = score + 100;
                 }
                 killedInvaders++;
             }
         }
     }
-    public boolean updatePlayerBullet(long fps){
-        for (int i=0;i<playerBullets.size();i++) {
+
+    public boolean updatePlayerBullet(long fps) {
+        for (int i = 0; i < playerBullets.size(); i++) {
             Bullet currentBull = playerBullets.get(i);
             currentBull.update(fps);
             //Colisión de bala con invader
-            if(currentBull.getStatus()) {
+            if (currentBull.getStatus()) {
                 for (Invader inv : invaders) {
                     bulletCollisionInvader(inv, currentBull);
                 }
@@ -290,17 +289,17 @@ public class ViewController {
                 for (DefenceBrick brick : bricks) {
                     bulletColisionBrick(brick, currentBull);
                 }
-                bulletCollisionInvader(specialInvader,bullet);
+                bulletCollisionInvader(specialInvader, bullet);
                 //Colisión de bala con borde de pantalla
                 if (currentBull.getImpactPointY() < 0) {
                     currentBull.changeDir();
                     currentBull.setGodBullet();
                 }
-                if (currentBull.getImpactPointY() > screenY){
+                if (currentBull.getImpactPointY() > screenY) {
                     currentBull.changeDir();
                 }
-                if(currentBull.getGodBullet()){
-                    if(RectF.intersects(currentBull.getRect(),playerShip.getRect())){
+                if (currentBull.getGodBullet()) {
+                    if (RectF.intersects(currentBull.getRect(), playerShip.getRect())) {
                         return false;
                     }
                 }
@@ -310,7 +309,7 @@ public class ViewController {
         return true;
     }
 
-    public void updateInvadersBullet(long fps){
+    public void updateInvadersBullet(long fps) {
         for (Bullet bullet : invadersBullets) {
             if (bullet.getStatus()) {
                 bullet.update(fps);
@@ -394,7 +393,7 @@ public class ViewController {
                 this.view.drawGameObject(i.getBitmap(), i.getX(), i.getY());
             }
         }
-        if(specialInvader!=null) {
+        if (specialInvader != null) {
             this.view.drawGameObject(specialInvader.getBitmap(), specialInvader.getX(), specialInvader.getY());
         }
     }
@@ -430,10 +429,10 @@ public class ViewController {
     }
 
     public void notifyShoot() {
-        if(playerBullets.size()<5) {
+        if (playerBullets.size() < 5) {
             Bullet newBull = new Bullet(screenY);
             this.playerBullets.add(newBull);
-            newBull.shoot((playerShip.getX() + playerShip.getLength()/2), playerShip.getY(), 0);
+            newBull.shoot((playerShip.getX() + playerShip.getLength() / 2), playerShip.getY(), 0);
         }
     }
 
@@ -444,8 +443,8 @@ public class ViewController {
                 inactive.add(b);
             }
         }
-        for(Bullet b:invadersBullets){
-            if(!b.getStatus()){
+        for (Bullet b : invadersBullets) {
+            if (!b.getStatus()) {
                 inactive.add(b);
             }
         }
@@ -456,7 +455,7 @@ public class ViewController {
     }
 
     public void shipMovement(float x, float y) {
-        if((x!=0 && y!=0)) {
+        if ((x != 0 && y != 0)) {
             if (Math.abs(x) > Math.abs(y)) {
                 if (x > 0) {
                     playerShip.setMovementState(2);
@@ -471,7 +470,7 @@ public class ViewController {
                     playerShip.setMovementState(3);
                 }
             }
-        }else{
+        } else {
             playerShip.setMovementState(0);
         }
 
@@ -482,11 +481,40 @@ public class ViewController {
     }
 
     public void specialInvader(Context context) {
-        this.specialInvader = new Invader(context,0,0,screenX,screenY);
+        this.specialInvader = new Invader(context, 0, 0, screenX, screenY);
         this.specialInvader.setInvaderSpecial(context);
     }
 
-    public void changeTrack(MediaPlayer m){
-        m.selectTrack(m.getAudioSessionId()+1);
+    public boolean spaceshipCanMove(int direccion) {
+        switch (direccion) {
+            case 1: //Case LEFT
+                if (playerShip.getMovement() == 1 && playerShip.getX() - 1 < 0 ) {
+                    return false;
+                } else {
+                    return true;
+                }
+            case 2: //Case RIGHT
+                if (playerShip.getMovement() == 2 && playerShip.getX() + playerShip.getLength() > screenX ) {
+                    return false;
+                } else {
+                    return true;
+                }
+            //En los siguiente casos la Y no se mueve cuadrada con screenY, screenY va de 0 (por arriba) hasta el maximo (por abajo) y el programa
+            //toma de referencia el 0 donde el maximo y el maximo donde el 0
+            case 3: //Case DOWN (o deberia de serlo, en realidad toda el caso UP)
+                if (playerShip.getMovement() == 3 && playerShip.getY() - 5 < 0 ) {
+                    return false;
+                } else {
+                    return true;
+                }
+            case 4: //Case UP (o deberia de serlo, en realidad toda el caso DOWN)
+                if (playerShip.getMovement() == 4 && playerShip.getY() + +playerShip.getHeight() + 1 > screenY) {
+                    return false;
+                } else {
+                    return true;
+                }
+            default:
+                return true;
+        }
     }
 }
