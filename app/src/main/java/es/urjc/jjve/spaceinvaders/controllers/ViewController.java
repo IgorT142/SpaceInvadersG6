@@ -141,7 +141,7 @@ public class ViewController {
 
         updateInvaders(fps);
 
-        if(!shipColisionInvaders()){
+        if(shipColisionInvaders()){
             return false;
         }
 

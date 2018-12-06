@@ -9,14 +9,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -26,121 +31,64 @@ import es.urjc.jjve.spaceinvaders.R;
 import es.urjc.jjve.spaceinvaders.SpaceInvadersActivity;
 import es.urjc.jjve.spaceinvaders.controllers.ScoreManager;
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
+import es.urjc.jjve.spaceinvaders.view.CustomPagerAdapter;
+import es.urjc.jjve.spaceinvaders.view.PageFragment;
+import es.urjc.jjve.spaceinvaders.view.ViewPagerAdapter;
 
-public class HighScoreActivity extends AppCompatActivity implements OnClickListener  {
+public class HighScoreActivity extends AppCompatActivity {
 
-    private int score;
-    private String fileScores;
-    private Bitmap image;
+    private BitmapFactory.Options options;
+    private ViewPager viewPager;
+    private FragmentStatePagerAdapter adapter;
+    private final static int[] resourceIDs = new int[]{R.drawable.invader1, R.drawable.invader2,
+            R.drawable.invader12, R.drawable.invader22, R.drawable.special_invader};
 
-    @Override   //Este método se carga el primero en cuanto se llama a la activity
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        List<PageFragment> scores = new ArrayList<>();
+
+        //ToDo Añadir instancias de pageFragments con los scores leidos de fichero
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
 
-        takePicture();
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        //Se inicializan los elementos de la pantalla
-        View exit = findViewById(R.id.quitButton);
-        View reiniciar = findViewById(R.id.reiniciar);
-        reiniciar.setVisibility(View.INVISIBLE);
-
-        TextView highScoreField = findViewById(R.id.highScore);
-        TextView yourScore = findViewById(R.id.yourScore);
-
-        //Se obtienen las puntuaciones
-        score = getIntent().getExtras().getInt("score");
-        if (score>=500){
-            reiniciar.setVisibility(View.VISIBLE);
-        }
-        fileScores = cargarScores();
-
-        //Se pintan las listas de puntuaciones
-        yourScore.setText("Tu puntuación: " + score);
-        highScoreField.setText(fileScores);
-        //paintPicture();
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager.setAdapter(new CustomPagerAdapter(this,scores));
 
 
-        //Se agregan el OnClickListener para que el botón funcione al pulsarlo
-        exit.setOnClickListener(this);
-        reiniciar.setOnClickListener(this);
     }
 
-    @Override   //Permite agregar funcionalidad de click a los objeto que tenga agregados
-    public void onClick(View v) {
-
-        //Botón de salir de la aplicación (quizás haya que cambiar de salir de la aplicación a volver a la pantalla de título)
-        if(v.getId()== findViewById(R.id.quitButton).getId()) {
-            Intent inicio = new Intent(getApplicationContext(),Inicio.class);
-            startActivity(inicio);
-            this.finishActivity(0);
-        }
-        //Boton para reiniciar el juego
-        if(v.getId()== findViewById(R.id.reiniciar).getId()){
-            Intent juegoNuevo = new Intent(getApplicationContext(),SpaceInvadersActivity.class);
-            juegoNuevo.putExtra("underage",false); //TODO investigar esto
-            startActivity(juegoNuevo);
-            this.finishActivity(0);
-        }
+    private View.OnClickListener onClickListener(final int i) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (i > 0) {
+                    //next page
+                    if (viewPager.getCurrentItem() < viewPager.getAdapter().getCount() - 1) {
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                    }
+                } else {
+                    //previous page
+                    if (viewPager.getCurrentItem() > 0) {
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+                    }
+                }
+            }
+        };
     }
 
-    public String cargarScores() {
-        ScoreManager sm = new ScoreManager(this.getApplicationContext());
-        TreeMap<Integer,String> puntuaciones = sm.getScores();
-        String scores = "";
-        for(Map.Entry punts: puntuaciones.entrySet()){
-            scores += punts.getKey() + "-" + punts.getValue() + "\n";
-        }
 
-        return scores;
-    }
 
-    public void takePicture(){
-        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(takePicture.resolveActivity(getPackageManager())!=null){
-            startActivityForResult(takePicture,1);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-            this.image = imageBitmap;
-            paintPicture();
-
-            //ToDo Reescalar el bitmap segun la pantalla
-            //ToDo Guardar referencia de la imagen en el fichero de puntos -> galleryAddPic();
-            //ToDo Mostrar el bitmap en la pantalla de puntuaciones
-        }
-    }
-
-    private void paintPicture(){
-        ImageView foto = findViewById(R.id.fotoLastGame);
-        foto.setImageBitmap(this.image);
-    }
-
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        //File f = new File(mCurrentPhotoPath);//ToDo conocer el path the la foto
-        //Uri contentUri = Uri.fromFile(f);
-        //mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
-    }
-
-    // Genera un bitmap a partir de un URI
-    private Bitmap getBitmapFromUri(Uri contentUri) {
-        String path = null;
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(contentUri, projection, null, null, null);
-        if (cursor.moveToFirst()) {
-            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            path = cursor.getString(columnIndex);
-        }
-        cursor.close();
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
-        return bitmap;
+    private View.OnClickListener onChagePageClickListener(final int i) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(i);
+            }
+        };
     }
 }
