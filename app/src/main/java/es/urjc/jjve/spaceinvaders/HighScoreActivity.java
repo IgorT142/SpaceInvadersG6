@@ -1,63 +1,45 @@
 package es.urjc.jjve.spaceinvaders;
 
-import android.app.ActivityManager;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
-import java.io.File;
-
-import es.urjc.jjve.spaceinvaders.R;
-import es.urjc.jjve.spaceinvaders.SpaceInvadersActivity;
-import es.urjc.jjve.spaceinvaders.controllers.ScoreManager;
-import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 import es.urjc.jjve.spaceinvaders.view.CustomPagerAdapter;
 import es.urjc.jjve.spaceinvaders.view.PageFragment;
-import es.urjc.jjve.spaceinvaders.view.ViewPagerAdapter;
 
 public class HighScoreActivity extends AppCompatActivity {
 
     private BitmapFactory.Options options;
     private ViewPager viewPager;
-    private FragmentStatePagerAdapter adapter;
-    private final static int[] resourceIDs = new int[]{R.drawable.invader1, R.drawable.invader2,
-            R.drawable.invader12, R.drawable.invader22, R.drawable.special_invader};
+    private FragmentPagerAdapter adapter;
+    private List<Score> scores;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        List<PageFragment> scores = new ArrayList<>();
 
         //ToDo Añadir instancias de pageFragments con los scores leidos de fichero
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        List<Fragment> fragments = getFragments();
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(new CustomPagerAdapter(this,scores));
+        adapter = new CustomPagerAdapter(getSupportFragmentManager(), fragments);
+
+        ViewPager pager = (ViewPager)findViewById(R.id.viewPager);
+
+        pager.setAdapter(adapter);
+
 
 
     }
@@ -91,4 +73,31 @@ public class HighScoreActivity extends AppCompatActivity {
             }
         };
     }
+
+
+    private List<Fragment> getFragments(){
+
+        List<Fragment> fList = new ArrayList<Fragment>();
+
+        //ToDo For each score instantiate a new fragment, with the respective name score and picture
+
+        int i=0;
+        for(Score score:scores) {
+            PageFragment newFragment = PageFragment.newInstance("Fragment: "+i);
+            newFragment.initFragment(score.getName(), score.getScore(), score.getPicture());
+            fList.add(newFragment);
+            i++;
+        }
+
+        fList.add(PageFragment.newInstance("Fragment 2"));
+
+
+        fList.add(PageFragment.newInstance("Fragment 3"));
+
+
+
+        return fList;
+
+    }
+
 }
