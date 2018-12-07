@@ -2,12 +2,17 @@ package es.urjc.jjve.spaceinvaders.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import es.urjc.jjve.spaceinvaders.R;
 
@@ -44,20 +50,19 @@ public class ScoreManager {
     }
 
     //Método público que permite guardar las puntuaciones en una colección ordenada
-    public void saveScore(int score,String name) {
-        TreeMap<Integer,String> puntFichero = readFile();
-        puntFichero.put(score,name);
+    public void saveScore(Score punt) {
+        TreeSet<Score> puntFichero = readFile();
+        puntFichero.add(punt);
         saveFile(puntFichero);
     }
 
-    public TreeMap<Integer, String> getScores() {
+    public TreeSet<Score> getScores() {
         return readFile();
     }
 
 
     //Método para almacenar las puntuaciones en un archivo
-    private void saveFile(TreeMap<Integer,String> scores) {
-
+    private void saveFile(TreeSet<Score> scores) {
         try {
             //Se busca el archivo en el almacenamiento externo del dispositivo
             File archivo = new File(Environment.getExternalStorageDirectory(),FILE_PATH);
@@ -70,9 +75,9 @@ public class ScoreManager {
             BufferedWriter out = new BufferedWriter(outputStreamWriter);
             PrintWriter writer = new PrintWriter(out);
 
-            //Se escriben todos las puntuaciones siguiendo el orden 'Puntuacion:Nombre'
-            for(Map.Entry score:scores.entrySet()){
-                writer.println(score.getKey() + ": " + score.getValue());
+            //Se escriben todos las puntuaciones siguiendo el orden 'Nombre:Puntuación:URIimagen'
+            for(Score score:scores){
+                writer.println(score.getName() + ":" + score.getScore() + ":" + score.getUri());
             }
 
             //Se cierran los buffers
@@ -86,10 +91,10 @@ public class ScoreManager {
     }
 
     //Lee los archivos de puntuaciones y los pasa a una colección de TreeMap
-    private TreeMap<Integer,String> readFile() {
+    private TreeSet<Score> readFile() {
 
         //Se inicializa el TreeMap
-        TreeMap<Integer,String> puntuaciones = new TreeMap<>(Collections.reverseOrder());
+        TreeSet<Score> puntuaciones = new TreeSet<>(Collections.reverseOrder());
         try {
             //Busca el archivo en el almacenamiento externo del dispositivo
             File archivo = new File(Environment.getExternalStorageDirectory(),FILE_PATH);
@@ -106,7 +111,7 @@ public class ScoreManager {
             String linea = null;
             while ((linea = br.readLine()) != null) {
                 String[] cadena = linea.split(":");
-                puntuaciones.put(Integer.parseInt(cadena[0]),cadena[1]);
+                puntuaciones.add(new Score(cadena[0],Integer.parseInt(cadena[1]),Uri.parse(cadena[2]),this.context));
             }
 
             //Se cierran los buffers
@@ -122,5 +127,13 @@ public class ScoreManager {
         }
     }
 
-
+    public List<Score> getList(){
+        List<Score> scores = new LinkedList<>();
+        //Obtiene los scores y los pasa a la lista
+        Iterator<Score> it = getScores().iterator();
+        while (it.hasNext()){
+            scores.add(it.next());
+        }
+        return scores;
+    }
 }
