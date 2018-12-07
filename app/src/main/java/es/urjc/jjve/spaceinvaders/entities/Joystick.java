@@ -2,8 +2,6 @@ package es.urjc.jjve.spaceinvaders.entities;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.view.MotionEvent;
-import android.view.View;
 
 public class Joystick {
 

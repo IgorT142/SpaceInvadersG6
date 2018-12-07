@@ -83,6 +83,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private final static int SPECIAL_TIMER = 550;
     int currentTime =0;
 
+    private MediaPlayer mediaPlayer;
     private Timer t = new Timer();
 
     public Timer getT() {
@@ -131,9 +132,11 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                     Intent i = new Intent(context.getApplicationContext(), PlayerNameActivity.class);
                     i.putExtra("score", controller.getScore());
                     context.startActivity(i);
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
                 }
-                if(currentTime>SPECIAL_TIMER){
-                    currentTime=0;
+                if (currentTime > SPECIAL_TIMER) {
+                    currentTime = 0;
                     this.controller.specialInvader(context);
                 }
                 controller.updateGame();
@@ -172,22 +175,22 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
      * EVENT MANAGEMENT
      */
     @Override
-    public boolean onTouchEvent( MotionEvent event) {
-            if(BotonDisparo.contains((int) event.getX(),(int) event.getY())){   //Comprueba el jugador pulsa el boton de disparo
-                controller.notifyShoot();
-            }
-            if (event.getAction() != event.ACTION_UP) {
-                if(event.getX()<screenX/2) {
-                    this.joystick.setHat(event.getX(),event.getY());
-                    this.controller.shipMovement(event.getX()-joystick.getX(),event.getY()-joystick.getY());
+    public boolean onTouchEvent(MotionEvent event) {
+        if (BotonDisparo.contains((int) event.getX(), (int) event.getY())) {   //Comprueba el jugador pulsa el boton de disparo
+            controller.notifyShoot();
+        }
+        if (event.getAction() != event.ACTION_UP) {
+            if (event.getX() < screenX / 2) {
+                this.joystick.setHat(event.getX(), event.getY());
+                this.controller.shipMovement(event.getX() - joystick.getX(), event.getY() - joystick.getY());
 
-                }else{
-                    this.joystick.initHat();
-                }
             } else {
                 this.joystick.initHat();
-                this.controller.shipMovement(0,0);
             }
+        } else {
+            this.joystick.initHat();
+            this.controller.shipMovement(0, 0);
+        }
         return true;
     }
 
@@ -239,9 +242,10 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
       boolean surfValid = surface.isValid();
 
       if (canvas!=null && bitmap!=null && paint!=null){
-      if (surfValid) {
-          canvas.drawBitmap(bitmap, x, y, paint);
-      }}
+        if (surfValid) {
+            canvas.drawBitmap(bitmap, x, y, paint);
+        }
+      }
   }
 
     public void drawGameObject(String text, int x, int y) {
@@ -251,39 +255,39 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
 
-    public void drawButton(){       //Crea un rect para el boton de disparo y lo pone como atributo de la clase para las comprobaciones.
+    public void drawButton() {       //Crea un rect para el boton de disparo y lo pone como atributo de la clase para las comprobaciones.
         Rect rectangle;
         Paint color;
-        rectangle = new Rect(getWidth()-110,getHeight()-150,getWidth()-10,getHeight()-90);  //Rectangulo por coordenadas
+        rectangle = new Rect(getWidth() - 110, getHeight() - 150, getWidth() - 50, getHeight() - 90);  //Rectangulo por coordenadas
         color = new Paint();
-        color.setARGB(120,102,102,102);
+        color.setARGB(120, 102, 102, 102);
         Paint colorTexto = new Paint();
         colorTexto.setTextSize(15);
-        colorTexto.setARGB(150,255,255,255);
-        canvas.drawRect(rectangle,color);
-        canvas.drawText("O",getWidth()-60,getHeight()-120,colorTexto);
+        colorTexto.setARGB(150, 255, 255, 255);
+        canvas.drawRect(rectangle, color);
+        canvas.drawText("O", getWidth() - 60, getHeight() - 120, colorTexto);
         this.BotonDisparo = rectangle;
     }
     int songCount = R.raw.doom;
     public void iniciarMusica(final Activity activityContext){  //Metodo para iniciar la música del juego y cambiarla cada 20 segundos
         //Declare the timer
+        Timer t = new Timer();
         //Set the schedule function and rate
-        t.scheduleAtFixedRate( new TimerTask() {
-                                   @Override
-                                   public void run() {
-                                       final int i = songCount++;
-                                       MediaPlayer mediaPlayer = MediaPlayer.create(activityContext.getApplicationContext(), i);
-                                       mediaPlayer.start();
-                                       mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                           @Override
-                                           public void onCompletion(MediaPlayer mediaPlayer) {
-                                               mediaPlayer.release();
-                                           }
-                                       });
-                                       if (i == R.raw.tauhubballad){
-                                           songCount = R.raw.doom;
-                                       }
-                                   }
-                               },500,21000);
+        t.scheduleAtFixedRate(new TimerTask() {
+                                  @Override
+                                  public void run() {
+                                      final int i = songCount++;
+                                      mediaPlayer = MediaPlayer.create(activityContext.getApplicationContext(), i);
+                                      mediaPlayer.start();
+                                      mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                          @Override
+                                          public void onCompletion(MediaPlayer mediaPlayer) {
+                                              mediaPlayer.release();
+                                          }
+                                      });
+                                  }
+                              },
+                500,
+                21000);
     }
 }
