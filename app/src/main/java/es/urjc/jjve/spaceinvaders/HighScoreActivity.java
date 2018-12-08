@@ -64,7 +64,6 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         View reiniciar = findViewById(R.id.reiniciar);
         reiniciar.setVisibility(View.INVISIBLE);
 
-        TextView yourScore = findViewById(R.id.yourScore);
 
         //Se obtienen las puntuaciones
         score = getIntent().getExtras().getInt("score");
@@ -81,23 +80,18 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(adapter);
 
-        ImageView foto = findViewById(R.id.fotoLastGame);
-        foto.setImageBitmap(getBitmapFromUri(playerImageUri));
-
 
         if (score >= 500) {
             reiniciar.setVisibility(View.VISIBLE);
         }
         //fileScores = cargarScores();
 
-        //Se pintan las listas de puntuaciones
-        yourScore.setText("Tu puntuación: " + score);
-
 
         //Se agregan el OnClickListener para que el botón funcione al pulsarlo
         exit.setOnClickListener(this);
         reiniciar.setOnClickListener(this);
     }
+
 
     @Override   //Permite agregar funcionalidad de click a los objeto que tenga agregados
     public void onClick(View v) {
@@ -111,10 +105,40 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
             //Boton para reiniciar el juego
             if (v.getId() == findViewById(R.id.reiniciar).getId()) {
                 Intent juegoNuevo = new Intent(getApplicationContext(), SpaceInvadersActivity.class);
-                juegoNuevo.putExtra("underage", false); //TODO investigar esto
+                juegoNuevo.putExtra("underage", false);
                 startActivity(juegoNuevo);
                 this.finishActivity(0);
             }
+    }
+
+    private View.OnClickListener onClickListener(final int i) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (i > 0) {
+                    //next page
+                    if (viewPager.getCurrentItem() < viewPager.getAdapter().getCount() - 1) {
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                    }
+                } else {
+                    //previous page
+                    if (viewPager.getCurrentItem() > 0) {
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+                    }
+                }
+            }
+        };
+    }
+
+
+
+    private View.OnClickListener onChagePageClickListener(final int i) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(i);
+            }
+        };
     }
 
     //Carga las puntuaciones almacenadas en el fichero
@@ -130,7 +154,6 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
 
         return scores;
     }
-
 
     private List<Fragment> getFragments() {
 

@@ -26,6 +26,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -126,7 +127,7 @@ public class ScoreManager {
         }
     }
 
-    public List<Score> getList(){
-        return new LinkedList<>(getScores());
+    public ArrayList<Score> getList(){
+        return new ArrayList<>(getScores());
     }
 }
