@@ -2,6 +2,7 @@ package es.urjc.jjve.spaceinvaders.view;
 
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,7 @@ import es.urjc.jjve.spaceinvaders.entities.Joystick;
 /**
  * Clase utilizada para mostrar la interfaz del juego y manejar eventos dentro del juego, movimiento y disparo
  */
+@SuppressLint("ViewConstructor")
 public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     Context context;
@@ -142,12 +144,13 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     /*
      * EVENT MANAGEMENT
      */
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (BotonDisparo.contains((int) event.getX(), (int) event.getY())) {   //Comprueba el jugador pulsa el boton de disparo
             controller.notifyShoot();
         }
-        if (event.getAction() != event.ACTION_UP) {
+        if (event.getAction() != MotionEvent.ACTION_UP) {
             if (event.getX() < screenX / 2) {
                 this.joystick.setHat(event.getX(), event.getY());
                 this.controller.shipMovement(event.getX() - joystick.getX(), event.getY() - joystick.getY());
@@ -236,8 +239,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     //Metodo para iniciar la música del juego y cambiarla cada 20 segundos
-    public void iniciarMusica(final Activity activityContext) {
-        mediaPlayer = new MediaPlayer().create(context,R.raw.zgotg);
+    public void iniciarMusica() {
+        mediaPlayer = new MediaPlayer();
         Timer t = new Timer();
         t.scheduleAtFixedRate(new Temporizador(0,mediaPlayer,context),500,21000);
     }
