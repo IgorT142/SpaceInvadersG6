@@ -288,7 +288,7 @@ public class ViewController {
                                 timer.cancel();
                             }
                         }
-                    }, 0, 1000);
+                    }, 0, 100);
                 }
                 killedInvaders++;
             }
@@ -525,7 +525,7 @@ public class ViewController {
         playerShip.setX(x);
         playerShip.setY(y);
         paintShip();
-        godMode=3;
+        godMode=15;
     }
 
 }
