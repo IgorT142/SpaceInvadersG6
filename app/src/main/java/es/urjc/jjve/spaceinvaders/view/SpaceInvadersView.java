@@ -1,55 +1,30 @@
 package es.urjc.jjve.spaceinvaders.view;
 
-import es.urjc.jjve.spaceinvaders.HighScoreActivity;
+
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.SoundPool;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 
-import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
+
 import java.util.Timer;
-import java.util.TimerTask;
 
 import es.urjc.jjve.spaceinvaders.PlayerNameActivity;
 import es.urjc.jjve.spaceinvaders.R;
-import es.urjc.jjve.spaceinvaders.controllers.ScoreManager;
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
-import es.urjc.jjve.spaceinvaders.entities.Bullet;
-import es.urjc.jjve.spaceinvaders.entities.DefenceBrick;
-import es.urjc.jjve.spaceinvaders.entities.Invader;
 import es.urjc.jjve.spaceinvaders.entities.Joystick;
-import es.urjc.jjve.spaceinvaders.entities.PlayerShip;
 
 /**
  * Clase utilizada para mostrar la interfaz del juego y manejar eventos dentro del juego, movimiento y disparo
@@ -61,8 +36,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private Thread gameThread = null;
     private boolean paused = true;
     private volatile boolean playing;
-    private long timeThisFrame;
     private long fps = 20;
+
 
     // Our SurfaceHolder to lock the surface before we draw our graphics
     private SurfaceHolder ourHolder;
@@ -121,13 +96,13 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             long startFrameTime = System.nanoTime();
 
             if (!paused) {
-                if (!controller.updateEntities(fps)) {
+                if (!controller.updateEntities(fps*2)) {  //Controla la velocidad del juego
                     //Intenta acceder al highscore si se ha perdido
                     Intent i = new Intent(context.getApplicationContext(), PlayerNameActivity.class);
                     i.putExtra("score", controller.getScore());
-                    context.startActivity(i);
                     mediaPlayer.stop();
                     mediaPlayer.release();
+                    context.startActivity(i);
                 }
                 if (currentTime > SPECIAL_TIMER) {
                     currentTime = 0;
@@ -137,7 +112,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 controller.removeBullets();
             }
 
-            timeThisFrame = System.currentTimeMillis() - startFrameTime;
+            long timeThisFrame = System.currentTimeMillis() - startFrameTime;
             if (timeThisFrame >= 1) {
                 fps = 1000 / timeThisFrame;
             }
@@ -211,11 +186,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         paint.setColor(Color.argb(255, 249, 129, 0));
     }
 
-    public void changeColor() {
-        //ToDo Add random paint generation to be called when a bullet impacts a screen limit
-
-    }
-
     public void drawJoystick() {
         canvas.drawCircle(joystick.getHatX(), joystick.getHatY(), joystick.getHatRadius(), joystick.getHatColor());
         canvas.drawCircle(joystick.getX(), joystick.getY(), joystick.getBaseRadius(), joystick.getBaseColor());
@@ -250,42 +220,25 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     }
 
-
-    public void drawButton() {       //Crea un rect para el boton de disparo y lo pone como atributo de la clase para las comprobaciones.
+    //Crea un rect para el boton de disparo y lo pone como atributo de la clase para las comprobaciones.
+    public void drawButton() {
         Rect rectangle;
         Paint color;
-        rectangle = new Rect(getWidth() - 110, getHeight() - 150, getWidth() - 50, getHeight() - 90);  //Rectangulo por coordenadas
+        rectangle = new Rect(getWidth() - 180, getHeight() - 250, getWidth() - 10, getHeight() - 90);  //Rectangulo por coordenadas
         color = new Paint();
         color.setARGB(120, 102, 102, 102);
         Paint colorTexto = new Paint();
         colorTexto.setTextSize(15);
         colorTexto.setARGB(150, 255, 255, 255);
         canvas.drawRect(rectangle, color);
-        canvas.drawText("O", getWidth() - 60, getHeight() - 120, colorTexto);
+        canvas.drawText("SHOOT", getWidth() - 125, getHeight() - 180, colorTexto);
         this.BotonDisparo = rectangle;
     }
 
-    int songCount = R.raw.doom;
-
-    public void iniciarMusica(final Activity activityContext) {  //Metodo para iniciar la música del juego y cambiarla cada 20 segundos
-        //Declare the timer
+    //Metodo para iniciar la música del juego y cambiarla cada 20 segundos
+    public void iniciarMusica(final Activity activityContext) {
+        mediaPlayer = new MediaPlayer().create(context,R.raw.zgotg);
         Timer t = new Timer();
-        //Set the schedule function and rate
-        t.scheduleAtFixedRate(new TimerTask() {
-                                  @Override
-                                  public void run() {
-                                      final int i = songCount++;
-                                      mediaPlayer = MediaPlayer.create(activityContext.getApplicationContext(), i);
-                                      mediaPlayer.start();
-                                      mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                          @Override
-                                          public void onCompletion(MediaPlayer mediaPlayer) {
-                                              mediaPlayer.release();
-                                          }
-                                      });
-                                  }
-                              },
-                500,
-                21000);
+        t.scheduleAtFixedRate(new Temporizador(0,mediaPlayer,context),500,21000);
     }
 }

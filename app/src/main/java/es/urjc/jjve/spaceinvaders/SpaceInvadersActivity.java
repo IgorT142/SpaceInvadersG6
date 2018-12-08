@@ -36,8 +36,6 @@ public class SpaceInvadersActivity extends Activity {
     // y responderá a los toques a la pantalla (Event Handler)
     ViewController spaceInvadersController;
     SpaceInvadersView spaceView;
-    private boolean underage;
-    int songCount = R.raw.doom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +67,7 @@ public class SpaceInvadersActivity extends Activity {
             }
         });
 
-            spaceView.iniciarMusica(this);
+        spaceView.iniciarMusica(this);
     }
 
     // Este método se ejecuta cuando el jugador empieza el juego

@@ -42,9 +42,9 @@ public class Score implements Comparable<Score>{
     @Override
     public int compareTo(@NonNull Score o) {
         if(o.score > score){
-            return 1;
-        }else if(o.score < score){
             return -1;
+        }else if(o.score < score){
+            return 1;
         }else {
             return 0;
         }

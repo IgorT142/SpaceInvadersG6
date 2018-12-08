@@ -15,6 +15,8 @@ import es.urjc.jjve.spaceinvaders.R;
 
 public class Inicio extends AppCompatActivity implements OnClickListener {
 
+    MediaPlayer media;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +30,7 @@ public class Inicio extends AppCompatActivity implements OnClickListener {
             OPCIONAL
         */
         //Para la música de introducción
-        MediaPlayer media = new MediaPlayer().create(getApplicationContext(),R.raw.zgotg);
+        media = new MediaPlayer().create(getApplicationContext(),R.raw.zgotg);
         media.start();
         media.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -66,6 +68,7 @@ public class Inicio extends AppCompatActivity implements OnClickListener {
             Intent i = new Intent(getApplicationContext(),SpaceInvadersActivity.class);
             i.putExtra("underage",false);
             startActivity(i);
+            media.stop();
             //finish();
         }
         if(v.getId()== findViewById(R.id.no).getId()){

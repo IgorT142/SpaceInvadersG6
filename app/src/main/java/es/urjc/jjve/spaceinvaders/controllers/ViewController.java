@@ -1,20 +1,9 @@
 package es.urjc.jjve.spaceinvaders.controllers;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.media.SoundPool;
-import android.util.Log;
-import android.view.SurfaceHolder;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.regex.Pattern;
-
 import es.urjc.jjve.spaceinvaders.entities.Bullet;
 import es.urjc.jjve.spaceinvaders.entities.DefenceBrick;
 import es.urjc.jjve.spaceinvaders.entities.Invader;
@@ -28,30 +17,25 @@ import es.urjc.jjve.spaceinvaders.view.SpaceInvadersView;
 public class ViewController {
 
 
-    private static final int MAX_INVADER_BULLETS = 300;
     // Up to 60 invaders
-    List<Invader> invaders;
-    int numInvaders = 0;
-    int killedInvaders = 0;
+    private List<Invader> invaders;
+    private int numInvaders = 0;
+    private int killedInvaders = 0;
     private boolean underage;
     private SpaceInvadersView view;
     private PlayerShip playerShip;
-    private boolean lost;
     private int score;
     // The player's bullet
     private Bullet bullet;
     // The invaders bullets
     private List<Bullet> invadersBullets;
     private List<Bullet> playerBullets;
-    private int nextBullet;
     private int maxInvaderBullets = 10;
     // The player's shelters are built from bricks
     private List<DefenceBrick> bricks;
     private int numBricks;
 
-
     private Invader specialInvader;
-
 
     //Determines the game bounds
     private int screenX;
@@ -60,17 +44,13 @@ public class ViewController {
 
     public ViewController(Context context, int x, int y, SpaceInvadersView view) {
 
-
         this.screenX = x;
         this.screenY = y;
 
         this.view = view;
         this.playerBullets = new ArrayList<>();
 
-
-        // this.context = context;
         this.initGame(context);
-
     }
 
 
@@ -227,6 +207,15 @@ public class ViewController {
                 }
             }
 
+            // Has the player hit an invader
+            for(Invader invader: invaders){
+                if(invader.getVisibility()){
+                    if(RectF.intersects(playerShip.getRect(),invader.getRect())){
+                        return false;
+                    }
+                }
+            }
+
             // Has an invader bullet hit the player ship
             for (Bullet bullet : invadersBullets) {
                 if (bullet.getStatus()) {
@@ -238,7 +227,7 @@ public class ViewController {
             }
 
             // Has the player won
-            if (killedInvaders == numInvaders) {
+            if (killedInvaders >= numInvaders) {
                 return false;
             }
 
@@ -292,6 +281,11 @@ public class ViewController {
                 if (currentBull.getImpactPointY() < 0) {
                     currentBull.changeDir();
                     currentBull.setGodBullet();
+                    //Recargar bala cuando rebote
+                    Bullet nextBull = new Bullet(screenY, this.getView().getContext());
+                    invadersBullets.add(playerBullets.get(0));
+                    playerBullets.remove(0);
+                    playerBullets.add(nextBull);
                 }
                 if (currentBull.getImpactPointY() > screenY){
                     currentBull.changeDir();
@@ -302,7 +296,6 @@ public class ViewController {
                     }
                 }
             }
-
         }
         return true;
     }
@@ -366,20 +359,6 @@ public class ViewController {
         }
     }
 
-    private void checkInteresectionWInvader(Bullet bullet) {
-
-        int i = 0;
-        while (bullet.getStatus() && i < invaders.size()) {
-            i++;
-            if (invaders.get(i).getVisibility()) {
-                if (RectF.intersects(invaders.get(i).getRect(), bullet.getRect())) {
-                    bullet.setInactive();
-                    invaders.get(i).setInvisible();
-                    score += 100;
-                }
-            }
-        }
-    }
 
     private void paintShip() {
         view.drawGameObject(playerShip.getBitmap(), playerShip.getX(), playerShip.getY());
@@ -418,16 +397,12 @@ public class ViewController {
         this.view = view;
     }
 
-    public boolean isUnderage() {
-        return underage;
-    }
-
     public void setUnderage(boolean underage) {
         this.underage = underage;
     }
 
     public void notifyShoot() {
-        if(playerBullets.size()<5) {
+        if(playerBullets.size()<1) {
             Bullet newBull = new Bullet(screenY,this.view.getContext());
             this.playerBullets.add(newBull);
             newBull.shoot((playerShip.getX() + playerShip.getLength()/2), playerShip.getY(), 0);
