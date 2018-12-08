@@ -71,7 +71,6 @@ public class ViewController {
         // this.context = context;
         this.initGame(context);
 
-
     }
 
 
@@ -187,7 +186,8 @@ public class ViewController {
                         }
                     }
                     if(bullet.getGodBullet()){
-                        bulletCollisionInvader(specialInvader,bullet);
+                        if(specialInvader!=null)
+                            bulletCollisionInvader(specialInvader,bullet);
                         for(Invader inv:invaders){
                             bulletCollisionInvader(inv,bullet);
                         }
@@ -287,7 +287,7 @@ public class ViewController {
                 for (DefenceBrick brick : bricks) {
                     bulletColisionBrick(brick, currentBull);
                 }
-                bulletCollisionInvader(specialInvader,bullet);
+                //bulletCollisionInvader(specialInvader,bullet);
                 //Colisión de bala con borde de pantalla
                 if (currentBull.getImpactPointY() < 0) {
                     currentBull.changeDir();

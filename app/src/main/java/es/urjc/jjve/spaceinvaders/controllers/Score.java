@@ -1,8 +1,9 @@
 package es.urjc.jjve.spaceinvaders.controllers;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
-public class Score {
+public class Score implements Comparable<Score>{
 
     private int score;
     private String name;
@@ -36,5 +37,16 @@ public class Score {
 
     public void setUri(Uri uri) {
         this.uri = uri;
+    }
+
+    @Override
+    public int compareTo(@NonNull Score o) {
+        if(o.score > score){
+            return 1;
+        }else if(o.score < score){
+            return -1;
+        }else {
+            return 0;
+        }
     }
 }

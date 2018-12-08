@@ -32,7 +32,11 @@ public class PlayerShip {
 
 
     private int movement;
-   //Cantidad de disparos con los que cuenta la nave a la vez
+
+    public int getMovement() {
+        return movement;
+    }
+    //Cantidad de disparos con los que cuenta la nave a la vez
 
     // La nave espacial del jugador será representada por un Bitmap
     private Bitmap bitmap;
@@ -62,6 +66,10 @@ public class PlayerShip {
     // Esto va a mantener la rapidez de los pixeles por segundo a la que la nave espacial se moverá
     private float shipSpeed;
 
+    public float getShipSpeed() {
+        return shipSpeed;
+    }
+
     // Se esta moviendo la nave espacial y en que dirección
     private int shipMoving = STOPPED;
 
@@ -78,7 +86,7 @@ public class PlayerShip {
 
         // Inicia la nave en el centro de la pantalla aproximadamente
         x = screenX / 2;
-        y = screenY - 20;
+        y = screenY - 100;
 
         // Inicializa el bitmap
         bitmap = BitmapFactory.decodeResource(
@@ -126,6 +134,10 @@ public class PlayerShip {
 
     public float getLength(){
         return length;
+    }
+
+    public float getHeight() {
+        return height;
     }
 
     // Este método será usado para cambiar/establecer si la nave

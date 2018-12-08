@@ -77,7 +77,7 @@ public class ScoreManager {
 
             //Se escriben todos las puntuaciones siguiendo el orden 'Nombre:Puntuación:URIimagen'
             for(Score score:scores){
-                writer.println(score.getName() + ":" + score.getScore() + ":" + score.getUri());
+                writer.println(score.getName() + "|" + score.getScore() + "|" + score.getUri());
             }
 
             //Se cierran los buffers
@@ -110,10 +110,9 @@ public class ScoreManager {
             // Después guarda la puntuación y el nombre en el TreeMap
             String linea = null;
             while ((linea = br.readLine()) != null) {
-                String[] cadena = linea.split(":");
+                String[] cadena = linea.split("\\|");
                 puntuaciones.add(new Score(cadena[0],Integer.parseInt(cadena[1]),Uri.parse(cadena[2])));
             }
-
             //Se cierran los buffers
             br.close();
 
@@ -125,5 +124,9 @@ public class ScoreManager {
             //Por último, se devuelve el TreeMap con las puntuaciones
             return puntuaciones;
         }
+    }
+
+    public List<Score> getList(){
+        return new LinkedList<>(getScores());
     }
 }
