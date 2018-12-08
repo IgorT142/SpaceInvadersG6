@@ -4,85 +4,56 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.RectF;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import es.urjc.jjve.spaceinvaders.R;
 
 public class PlayerShip {
 
-    RectF rect;
+
 
     // En qué direcciones se puede mover la nave espacial
-    public final int STOPPED = 0;
-    public final int LEFT = 1;
-    public final int RIGHT = 2;
-    public final int DOWN = 3;
-    public final int UP=4;
-    public final int D_DL = 5;
-    public final int D_DR = 6;
-    public final int D_UL = 7;
-    public final int D_UR = 8;
-
-
-    public float dirX;
-    public float dirY;
-    public float dxdy;
+    private static final int LEFT = 1;
+    private static final int RIGHT = 2;
+    private static final int DOWN = 3;
+    private static final int UP = 4;
+    private static final int D_DL = 5;
+    private static final int D_DR = 6;
+    private static final int D_UL = 7;
+    private static final int D_UR = 8;
+    // Establecemos los esquemas de colores que vamos a usar
+    private static final int ESQUEMA_1 = 1;
+    private static final int ESQUEMA_2 = 2;
 
 
     private int movement;
+    private Bitmap bitmap;// La nave espacial del jugador será representada por un Bitmap
+    private Bitmap bitmap2;// Más otro para cambiar el esquema de color
 
-    public int getMovement() {
-        return movement;
-    }
-    //Cantidad de disparos con los que cuenta la nave a la vez
-
-    // La nave espacial del jugador será representada por un Bitmap
-    private Bitmap bitmap;
-
-    // Más otro para cambiar el esquema de color
-    private Bitmap bitmap2;
-
-    // Establecemos los esquemas de colores que vamos a usar
-    private final int ESQUEMA_1 = 1;
-    private final int ESQUEMA_2 = 2;
+    private RectF rect;
 
     // Variable para guardar el esquema actual, por defecto el primero de ellos.
     private int seleccionado = ESQUEMA_1;
-
-    private List<Bullet> activeBullets= new ArrayList<>();
 
     // Que tan ancho y alto puede llegar nuestra nave espacial
     private float length;
     private float height;
 
-    // X es la parte extrema a la izquierda del rectángulo el cual forma nuestra nave espacial
-    private float x;
-
-    // Y es la coordenada de a mero arriba
-    private float y;
+    private float x;// X es la parte extrema a la izquierda del rectángulo el cual forma nuestra nave espacial
+    private float y;// Y es la coordenada de a mero arriba
 
     // Esto va a mantener la rapidez de los pixeles por segundo a la que la nave espacial se moverá
     private float shipSpeed;
 
-    public float getShipSpeed() {
-        return shipSpeed;
-    }
-
-    // Se esta moviendo la nave espacial y en que dirección
-    private int shipMoving = STOPPED;
 
     // Este es el método del constructor
     // Cuando creamos un objeto de esta clase daremos
     // la anchura y la altura de la pantalla
-    public PlayerShip(Context context, int screenX, int screenY){
+    public PlayerShip(Context context, int screenX, int screenY) {
 
         // Inicializa un RectF vacío
         rect = new RectF();
 
-        length = screenX/10;
-        height = screenY/10;
+        length = screenX / 10;
+        height = screenY / 10;
 
         // Inicia la nave en el centro de la pantalla aproximadamente
         x = screenX / 2;
@@ -114,13 +85,13 @@ public class PlayerShip {
         shipSpeed = 350;
     }
 
-    public RectF getRect(){
+    public RectF getRect() {
         return rect;
     }
 
     // Este es un método de "get" para hacer el rectángulo que
     // define nuestra nave espacial disponible en la clase de SpaceInvadersView
-    public Bitmap getBitmap(){
+    public Bitmap getBitmap() {
         if (seleccionado == ESQUEMA_1) {
             return bitmap;
         } else {
@@ -128,11 +99,11 @@ public class PlayerShip {
         }
     }
 
-    public float getX(){
+    public float getX() {
         return x;
     }
 
-    public float getLength(){
+    public float getLength() {
         return length;
     }
 
@@ -142,13 +113,12 @@ public class PlayerShip {
 
     // Este método será usado para cambiar/establecer si la nave
     // espacial va a la izquierda, la derecha o no se mueve
-    public void setMovementState(int movement){
+    public void setMovementState(int movement) {
 
-        this.movement=movement;
+        this.movement = movement;
         //dirX = targetX/targetY; //Calculates the proportion of direction x
         //dirY = targetY/targetX; //Calculates the proportion of direction y
     }
-
 
 
     public void chColour() {
@@ -161,12 +131,10 @@ public class PlayerShip {
     }
 
 
-
-
     // Este método de update será llamado desde el update en SpaceInvadersView
     // Determina si la nave espacial del jugador necesita moverse y cambiar las coordenadas
     // que están en x si es necesario
-    public void update(long fps){
+    public void update(long fps) {
 
         switch (this.movement) {
             case LEFT:
@@ -211,8 +179,15 @@ public class PlayerShip {
     }
 
 
-
     public float getY() {
         return y;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }
