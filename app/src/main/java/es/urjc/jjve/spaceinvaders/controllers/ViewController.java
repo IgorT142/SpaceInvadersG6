@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.RectF;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import es.urjc.jjve.spaceinvaders.entities.Bullet;
 import es.urjc.jjve.spaceinvaders.entities.DefenceBrick;
 import es.urjc.jjve.spaceinvaders.entities.Invader;
@@ -39,6 +42,8 @@ public class ViewController {
     //Determines the game bounds
     private int screenX;
     private int screenY;
+
+    private int godMode = 0; //Modo invencible al teletransportarse
 
 
     public ViewController(Context context, int x, int y, SpaceInvadersView view) {
@@ -256,6 +261,19 @@ public class ViewController {
                 }else {
                     score = score + 100;
                 }
+                if(score%500==0){
+                    //Teleporta la nave aleatoriamente
+                    posicionRandom();
+                    final Timer timer = new Timer();
+                    timer.scheduleAtFixedRate(new TimerTask() {
+                        public void run() {
+                            godMode--;
+                            if (godMode== 0) {
+                                timer.cancel();
+                            }
+                        }
+                    }, 0, 100);
+                }
                 killedInvaders++;
             }
         }
@@ -462,5 +480,14 @@ public class ViewController {
     public void specialInvader(Context context) {
         this.specialInvader = new Invader(context,0,0,screenX,screenY);
         this.specialInvader.setInvaderSpecial(context);
+    }
+
+    private void posicionRandom(){
+        float x =(float) (Math.random()*(screenX))+0;
+        float y =(float) (Math.random()*(screenY))+0;
+        playerShip.setX(x);
+        playerShip.setY(y);
+        paintShip();
+        godMode=15;
     }
 }
