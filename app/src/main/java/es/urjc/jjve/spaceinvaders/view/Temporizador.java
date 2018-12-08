@@ -13,14 +13,8 @@ public class Temporizador extends TimerTask {
     private MediaPlayer mediaPlayer;
     private Context context;
 
-    private int doom = R.raw.doom;
-    private int spider = R.raw.idontfeelsogoodmrstark;
-    private int mk = R.raw.mktheme;
-    private int zgotg = R.raw.zgotg;
-    private int swduel = R.raw.swduel;
-    private int tau = R.raw.tauhubballad;
 
-    public Temporizador(int contador, MediaPlayer mediaPlayer, Context context) {
+    Temporizador(int contador, MediaPlayer mediaPlayer, Context context) {
         this.contador = contador;
         this.mediaPlayer = mediaPlayer;
         this.context = context;
@@ -29,25 +23,25 @@ public class Temporizador extends TimerTask {
 
     @Override
     public void run() {
-        int cancion = 0;
+        int cancion;
         contador = contador++;
         if(contador==0) {
-            cancion = doom;
+            cancion = R.raw.doom;
             contador++;
         }else if(contador==1){
-            cancion = spider;
+            cancion = R.raw.idontfeelsogoodmrstark;
             contador++;
         }else if(contador==2){
-            cancion = mk;
+            cancion = R.raw.mktheme;
             contador++;
         }else if(contador==3){
-            cancion = zgotg;
+            cancion = R.raw.zgotg;
             contador++;
         }else if(contador==4){
-            cancion = swduel;
+            cancion = R.raw.swduel;
             contador++;
         }else {
-            cancion = tau;
+            cancion = R.raw.tauhubballad;
             contador = 0;
         }
         mediaPlayer = MediaPlayer.create(context.getApplicationContext(), cancion);
