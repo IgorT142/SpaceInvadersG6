@@ -56,7 +56,7 @@ public class ViewController {
 
     /**
      * This method is used every game tick to update the positions of every entity and the score
-     * Should be called when the entity is modified only, ToDo for next sprint, update entities on screen only when they are modified
+     * Should be called when the entity is modified only
      */
     public void updateGame() {
 
@@ -238,7 +238,7 @@ public class ViewController {
     }
 
     // colision bala con barrera
-    public void bulletColisionBrick (DefenceBrick brick, Bullet currentBull) {
+    private void bulletColisionBrick(DefenceBrick brick, Bullet currentBull) {
         if (brick.getVisibility()) {
             if (RectF.intersects(currentBull.getRect(), brick.getRect())) {
                 // A collision has occurred
@@ -249,7 +249,7 @@ public class ViewController {
     }
 
     //colision bala con invader
-    public void bulletCollisionInvader(Invader inv, Bullet currentBull){
+    private void bulletCollisionInvader(Invader inv, Bullet currentBull){
         if (inv.getVisibility()) {
             if (RectF.intersects(currentBull.getRect(), inv.getRect())) { //Has a bullet hit an invader?
                 inv.setInvisible();
@@ -263,7 +263,7 @@ public class ViewController {
             }
         }
     }
-    public boolean updatePlayerBullet(long fps){
+    private boolean updatePlayerBullet(long fps){
         for (int i=0;i<playerBullets.size();i++) {
             Bullet currentBull = playerBullets.get(i);
             currentBull.update(fps);
@@ -300,7 +300,7 @@ public class ViewController {
         return true;
     }
 
-    public void updateInvadersBullet(long fps){
+    private void updateInvadersBullet(long fps){
         for (Bullet bullet : invadersBullets) {
             if (bullet.getStatus()) {
                 bullet.update(fps);
@@ -320,7 +320,7 @@ public class ViewController {
     // If SpaceInvadersActivity is started then
     // start our thread.
 
-    public void initGame(Context context) {
+    private void initGame(Context context) {
         // Make a new player space ship
         playerShip = new PlayerShip(context, screenX, screenY);
 
@@ -364,7 +364,7 @@ public class ViewController {
         view.drawGameObject(playerShip.getBitmap(), playerShip.getX(), playerShip.getY());
     }
 
-    public void paintInvaders() {
+    private void paintInvaders() {
         for (Invader i : invaders) {
             if (i.getVisibility()) {
                 this.view.drawGameObject(i.getBitmap(), i.getX(), i.getY());
@@ -375,7 +375,7 @@ public class ViewController {
         }
     }
 
-    public void paintBricks() {
+    private void paintBricks() {
         for (DefenceBrick b : bricks) {
             try {
                 if (b.getVisibility()) {
