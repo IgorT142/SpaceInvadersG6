@@ -30,10 +30,9 @@ public class ViewController {
     // The invaders bullets
     private List<Bullet> invadersBullets;
     private List<Bullet> playerBullets;
-    private int maxInvaderBullets = 10;
+    //private int maxInvaderBullets = 10;
     // The player's shelters are built from bricks
     private List<DefenceBrick> bricks;
-    private int numBricks;
 
     private Invader specialInvader;
 
@@ -111,7 +110,7 @@ public class ViewController {
         for (Invader i : invaders) {
             if (i.getVisibility()) {
                 i.update(fps); // Move the next invader
-                if(invadersBullets.size()<maxInvaderBullets) {
+                if(invadersBullets.size()<10) { //maxInvaderBullets
 
                     if (i.takeAim(playerShip.getX(), playerShip.getLength())) { // Does he want to take a shot?
                         Bullet newBullet = new Bullet(screenY,this.view.getContext());
@@ -227,9 +226,7 @@ public class ViewController {
             }
 
             // Has the player won
-            if (killedInvaders >= numInvaders) {
-                return false;
-            }
+            return killedInvaders < numInvaders;
 
         }
         return true;
@@ -348,12 +345,10 @@ public class ViewController {
         }
 
         // Build the shelters
-        numBricks = 0;
         for (int shelterNumber = 0; shelterNumber < 4; shelterNumber++) {
             for (int column = 0; column < 10; column++) {
                 for (int row = 0; row < 5; row++) {
                     bricks.add(new DefenceBrick(row, column, shelterNumber, screenX, screenY));
-                    numBricks++;
                 }
             }
         }
