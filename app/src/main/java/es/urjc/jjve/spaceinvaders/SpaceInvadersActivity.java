@@ -67,7 +67,7 @@ public class SpaceInvadersActivity extends Activity {
             }
         });
 
-        spaceView.iniciarMusica(this);
+        spaceView.iniciarMusica();
     }
 
     // Este método se ejecuta cuando el jugador empieza el juego

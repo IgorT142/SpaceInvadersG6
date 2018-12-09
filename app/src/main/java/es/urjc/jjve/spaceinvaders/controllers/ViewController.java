@@ -82,12 +82,12 @@ public class ViewController {
     private void paintBullets() {
 
         for (Bullet shipBull : this.playerBullets) {
-            view.drawGameObject(shipBull.getRect());
+            view.drawGameObject (shipBull.getBitmapBullet(),shipBull.getRect().centerX(),shipBull.getRect().centerY());
         }
 
         for (Bullet bullet : invadersBullets) {
             if (bullet.getStatus()) {
-                view.drawGameObject(bullet.getRect());
+                view.drawGameObject (bullet.getBitmapBullet(),bullet.getRect().centerX(),bullet.getRect().centerY());
             }
         }
     }
@@ -104,7 +104,7 @@ public class ViewController {
         boolean bumpedEntity = false;
 
         //moves the spaceship
-        playerShip.update(fps);
+        playerShip.update(fps, spaceshipCanMove(playerShip.getMovement()));
 
         if(specialInvader!= null) {
             specialInvader.update(fps);
@@ -120,7 +120,7 @@ public class ViewController {
                     if (i.takeAim(playerShip.getX(), playerShip.getLength())) { // Does he want to take a shot?
                         Bullet newBullet = new Bullet(screenY,this.view.getContext());
                         invadersBullets.add(newBullet);
-                        newBullet.shoot(i.getX() + i.getLength() / 2, i.getY(), bullet.DOWN); // If so try and spawn a bullet// Shot fired, Prepare for the next shot
+                        newBullet.shoot(i.getX() + i.getLength() / 2, i.getY(), Bullet.getDOWN()); // If so try and spawn a bullet// Shot fired, Prepare for the next shot
                             // Loop back to the first one if we have reached the last
                     }
                 }
@@ -214,7 +214,7 @@ public class ViewController {
             // Has the player hit an invader
             for(Invader invader: invaders){
                 if(invader.getVisibility()){
-                    if(RectF.intersects(playerShip.getRect(),invader.getRect())){
+                    if(RectF.intersects(playerShip.getRect(),invader.getRect())&& godMode <= 0){
                         return false;
                     }
                 }
@@ -451,20 +451,24 @@ public class ViewController {
                 playerShip.setMovementState(2);
             } else if (angle >= eighthPI && angle < (quarterPI + eighthPI)) {
                 playerShip.setMovementState(8);
+                System.out.println("es el 8");
             } else if (angle >= (quarterPI + eighthPI) && angle < (halfPI + eighthPI)) {
                 playerShip.setMovementState(4);
             } else if (angle >= (halfPI + eighthPI) && angle < (Math.PI - eighthPI)) {
                 playerShip.setMovementState(7);
+                System.out.println("es el 7");
             } else if (angle >= (Math.PI - eighthPI) && angle <= Math.PI) {
                 playerShip.setMovementState(1);
             } else if (angle >= -Math.PI && angle < (-Math.PI + eighthPI)) {
                 playerShip.setMovementState(1);
             } else if (angle >= (-Math.PI + eighthPI) && angle < (-halfPI - eighthPI)) {
                 playerShip.setMovementState(5);
+                System.out.println("es el 5");
             } else if (angle >= (-halfPI - eighthPI) && angle < (-halfPI + eighthPI)) {
                 playerShip.setMovementState(3);
             } else if (angle >= (-halfPI + eighthPI) && angle < (-eighthPI)) {
                 playerShip.setMovementState(6);
+                System.out.println("es el 6");
             } else {
                 playerShip.setMovementState(0);
             }
@@ -489,5 +493,32 @@ public class ViewController {
         playerShip.setY(y);
         paintShip();
         godMode=15;
+    }
+
+
+    //Bloquea el movimiento hacia afuera de la pantalla
+    private boolean spaceshipCanMove(int direccion) {
+        switch (direccion) {
+            case 1: //Case LEFT
+                return playerShip.getMovement() != 1 || !(playerShip.getX() - 1 < 0);
+            case 2: //Case RIGHT
+                return playerShip.getMovement() != 2 || !(playerShip.getX() + playerShip.getLength() > screenX);
+                //En los siguiente casos la Y no se mueve cuadrada con screenY, screenY va de 0 (por arriba) hasta el maximo (por abajo) y el programa
+                //toma de referencia el 0 donde el maximo y el maximo donde el 0
+            case 3: //Case DOWN (o deberia de serlo, en realidad toda el caso UP)
+                return playerShip.getMovement() != 3 || !(playerShip.getY() - 5 < 0);
+            case 4: //Case UP (o deberia de serlo, en realidad toda el caso DOWN)
+                return playerShip.getMovement() != 4 || !(playerShip.getY() + playerShip.getHeight() + 1 > screenY);
+            case 5: //Case DOWN LEFT
+                return playerShip.getMovement() != 5 || !(playerShip.getX() - 1 < 0) || !(playerShip.getY() - 5 < 0);
+            case 6: //CASE DOWN RIGHT
+                return (playerShip.getMovement() != 6 || !(playerShip.getY() - 5 < 0)) || (!(playerShip.getX() + playerShip.getLength() > screenX));
+            case 7: //CASE UP LEFT
+                return (playerShip.getMovement() != 7 || !(playerShip.getY() + +playerShip.getHeight() + 1 > screenY)) || (!(playerShip.getX() - 1 < 0));
+            case 8: //CASE UP RIGHT
+                return (playerShip.getMovement() != 8 || !(playerShip.getY() + +playerShip.getHeight() + 1 > screenY)) || (!(playerShip.getX() + playerShip.getLength() > screenX));
+            default:
+                return true;
+        }
     }
 }

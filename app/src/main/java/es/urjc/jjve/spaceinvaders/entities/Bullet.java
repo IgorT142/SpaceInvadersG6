@@ -11,22 +11,23 @@ import es.urjc.jjve.spaceinvaders.R;
 public class Bullet {
     private float x;
     private float y;
-    private boolean godBullet = false;
-    private Bitmap bitmapBullet;//Variable para implentar el bitmapBullet
+    private boolean godBullet;
 
 
     private RectF rect;
 
     // En qué dirección se está disparando
-    public final int UP = 0;
-    public final int DOWN = 1;
+    private static final int UP = 0;
 
-    int heading = -1;
-    float speed =  350;
+    private static final int DOWN = 1;
 
-    private int width =20;
+    private int heading = -1;
+    private static final float speed =  350;
+
+    private static final int width =20;
     private int height;
 
+    private Bitmap bitmapBullet;
 
     private boolean isActive;
 
@@ -38,7 +39,7 @@ public class Bullet {
         //incializamos el bitmap
         bitmapBullet = BitmapFactory.decodeResource(
                 context.getResources(),
-                R.drawable.balita);//cambiar este bitmap
+                R.drawable.balita);
         rect = new RectF();
     }
 
@@ -82,16 +83,13 @@ public class Bullet {
 
     }
 
-    public boolean shoot(float startX, float startY, int direction) {
+    public void shoot(float startX, float startY, int direction) {
         if (!isActive) {
             x = startX;
             y = startY;
             heading = direction;
             isActive = true;
-            return true;
         }
-        // La bala ya está activa
-        return false;
     }
 
     public void update(long fps){
@@ -113,15 +111,11 @@ public class Bullet {
         this.heading = 1-this.heading;
     }
 
+    public static int getDOWN() {
+        return DOWN;
+    }
+
     public Bitmap getBitmapBullet() {
         return bitmapBullet;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
     }
 }

@@ -3,7 +3,6 @@ package es.urjc.jjve.spaceinvaders.view;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,11 +18,9 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-
 import java.util.Timer;
 
 import es.urjc.jjve.spaceinvaders.PlayerNameActivity;
-import es.urjc.jjve.spaceinvaders.R;
 import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 import es.urjc.jjve.spaceinvaders.entities.Joystick;
 
@@ -231,7 +228,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         color = new Paint();
         color.setARGB(120, 102, 102, 102);
         Paint colorTexto = new Paint();
-        colorTexto.setTextSize(15);
+        colorTexto.setTextSize(30);
         colorTexto.setARGB(150, 255, 255, 255);
         canvas.drawRect(rectangle, color);
         canvas.drawText("SHOOT", getWidth() - 125, getHeight() - 180, colorTexto);

@@ -1,9 +1,8 @@
 package es.urjc.jjve.spaceinvaders.view;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,7 @@ public class PageFragment extends Fragment {
 
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
 
-    public static final PageFragment newInstance(String message) {
+    public static PageFragment newInstance(String message) {
 
         PageFragment f = new PageFragment();
 
@@ -37,15 +36,15 @@ public class PageFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        String message = getArguments().getString(EXTRA_MESSAGE);
+        //String message = getArguments().getString(EXTRA_MESSAGE);
 
         View v = inflater.inflate(R.layout.fragment_page, container, false);
 
-        TextView name = (TextView)v.findViewById(R.id.playerName);
-        TextView score = (TextView)v.findViewById(R.id.playerScore);
-        ImageView picture = (ImageView)v.findViewById(R.id.playerImage);
+        TextView name = v.findViewById(R.id.playerName);
+        TextView score = v.findViewById(R.id.playerScore);
+        ImageView picture = v.findViewById(R.id.playerImage);
 
         name.setText(this.name);
         score.setText(String.valueOf(this.score));

@@ -4,10 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.RectF;
+
 import es.urjc.jjve.spaceinvaders.R;
 
 public class PlayerShip {
-
 
 
     // En qué direcciones se puede mover la nave espacial
@@ -114,10 +114,7 @@ public class PlayerShip {
     // Este método será usado para cambiar/establecer si la nave
     // espacial va a la izquierda, la derecha o no se mueve
     public void setMovementState(int movement) {
-
         this.movement = movement;
-        //dirX = targetX/targetY; //Calculates the proportion of direction x
-        //dirY = targetY/targetX; //Calculates the proportion of direction y
     }
 
 
@@ -134,36 +131,48 @@ public class PlayerShip {
     // Este método de update será llamado desde el update en SpaceInvadersView
     // Determina si la nave espacial del jugador necesita moverse y cambiar las coordenadas
     // que están en x si es necesario
-    public void update(long fps) {
+    public void update(long fps, boolean puedeMover) {
 
         switch (this.movement) {
             case LEFT:
-                x = x - shipSpeed / fps;
+                if (puedeMover)
+                    x = x - shipSpeed / fps;
                 break;
             case RIGHT:
-                x = x + shipSpeed / fps;
+                if (puedeMover)
+                    x = x + shipSpeed / fps;
                 break;
             case UP:
-                y = y + shipSpeed / fps;
+                if (puedeMover)
+                    y = y + shipSpeed / fps;
                 break;
             case DOWN:
-                y = y - shipSpeed / fps;
+                if (puedeMover)
+                    y = y - shipSpeed / fps;
                 break;
             case D_DL:
-                y = y - shipSpeed / fps;
-                x = x - shipSpeed / fps;
+                if (puedeMover) {
+                    y = y - shipSpeed / fps;
+                    x = x - shipSpeed / fps;
+                }
                 break;
             case D_DR:
-                y = y - shipSpeed / fps;
-                x = x + shipSpeed / fps;
+                if (puedeMover) {
+                    y = y - shipSpeed / fps;
+                    x = x + shipSpeed / fps;
+                }
                 break;
             case D_UL:
-                y = y + shipSpeed / fps;
-                x = x - shipSpeed / fps;
+                if (puedeMover) {
+                    y = y + shipSpeed / fps;
+                    x = x - shipSpeed / fps;
+                }
                 break;
             case D_UR:
-                y = y + shipSpeed / fps;
-                x = x + shipSpeed / fps;
+                if (puedeMover) {
+                    y = y + shipSpeed / fps;
+                    x = x + shipSpeed / fps;
+                }
                 break;
             default:
                 break;
@@ -189,5 +198,9 @@ public class PlayerShip {
 
     public void setY(float y) {
         this.y = y;
+    }
+
+    public int getMovement() {
+        return movement;
     }
 }
