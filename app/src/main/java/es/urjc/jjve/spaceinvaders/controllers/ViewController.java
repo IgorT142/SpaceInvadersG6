@@ -512,13 +512,13 @@ public class ViewController {
             case 4: //Case UP (o deberia de serlo, en realidad toda el caso DOWN)
                 return playerShip.getMovement() != 4 || !(playerShip.getY() + playerShip.getHeight() + 1 > screenY);
             case 5: //Case DOWN RIGHT
-                return playerShip.getMovement() != 5 || !(playerShip.getX() + playerShip.getLength() > screenX) || !(playerShip.getY() - 5 < 0);
+                return playerShip.getMovement() != 5 || !(playerShip.getX() + playerShip.getLength() > screenX) || !(playerShip.getY() - 5 > screenY);
             case 6: //CASE UP RIGHT
                 return (playerShip.getMovement() != 6 || !(playerShip.getY() - 5 < 0)) || (!(playerShip.getX() + playerShip.getLength() > screenX));
             case 7: //CASE DOWN LEFT
                 return (playerShip.getMovement() != 7 || !(playerShip.getY() + +playerShip.getHeight() + 1 > screenY)) || (!(playerShip.getX() - 1 < 0));
             case 8: //CASE UP LEFT
-                return (playerShip.getMovement() != 8 || !(playerShip.getY() + +playerShip.getHeight() + 1 > screenY)) || (!(playerShip.getX() + playerShip.getLength() > screenX));
+                return (playerShip.getMovement() != 8 || !(playerShip.getY() + +playerShip.getHeight() + 1 < 0)) || (!(playerShip.getX() + playerShip.getLength() < 0));
             default:
                 return true;
         }
