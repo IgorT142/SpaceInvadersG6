@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:hardwareAccelerated="false"
         android:theme="@style/AppTheme"
-        android:fullBackupContent=""
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".Inicio"
@@ -32,7 +31,7 @@
 
         <activity
             android:name=".HighScoreActivity"
-            android:label="Puntuaciones"
+            android:label="puntuaciones"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>

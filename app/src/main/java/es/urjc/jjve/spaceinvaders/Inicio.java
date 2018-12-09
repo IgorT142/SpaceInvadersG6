@@ -65,7 +65,7 @@ public class Inicio extends AppCompatActivity implements OnClickListener {
             Intent i = new Intent(getApplicationContext(), SpaceInvadersActivity.class);
             i.putExtra("underage", false);
             startActivity(i);
-            media.stop();
+
             //finish();
         }
         if (v.getId() == findViewById(R.id.no).getId()) {

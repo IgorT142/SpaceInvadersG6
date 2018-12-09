@@ -22,16 +22,19 @@ public class PlayerShip {
     // Establecemos los esquemas de colores que vamos a usar
     private static final int ESQUEMA_1 = 1;
     private static final int ESQUEMA_2 = 2;
+    private static final int PARPADEO = 3;
 
 
     private int movement;
     private Bitmap bitmap;// La nave espacial del jugador será representada por un Bitmap
     private Bitmap bitmap2;// Más otro para cambiar el esquema de color
+    private Bitmap parpadeo;//Bitmap para representar parpadeo
 
     private RectF rect;
 
     // Variable para guardar el esquema actual, por defecto el primero de ellos.
     private int seleccionado = ESQUEMA_1;
+    private int lastSelect;
 
     // Que tan ancho y alto puede llegar nuestra nave espacial
     private float length;
@@ -68,6 +71,9 @@ public class PlayerShip {
         bitmap2 = BitmapFactory.decodeResource(
                 context.getResources(),
                 R.drawable.playership2);
+        parpadeo= BitmapFactory.decodeResource(
+                context.getResources(),
+                R.drawable.parpadeo);
 
         // ajusta el bitmap a un tamaño proporcionado a la resolución de la pantalla
         bitmap = Bitmap.createScaledBitmap(bitmap,
@@ -77,6 +83,10 @@ public class PlayerShip {
 
         // ajusta el bitmap a un tamaño proporcionado a la resolución de la pantalla
         bitmap2 = Bitmap.createScaledBitmap(bitmap2,
+                (int) (length),
+                (int) (height),
+                false);
+        bitmap2 = Bitmap.createScaledBitmap(parpadeo,
                 (int) (length),
                 (int) (height),
                 false);
@@ -94,8 +104,10 @@ public class PlayerShip {
     public Bitmap getBitmap() {
         if (seleccionado == ESQUEMA_1) {
             return bitmap;
-        } else {
+        } else if(seleccionado == ESQUEMA_2){
             return bitmap2;
+        }else{
+            return parpadeo;
         }
     }
 
@@ -202,5 +214,20 @@ public class PlayerShip {
 
     public int getMovement() {
         return movement;
+    }
+
+    public void blink() {
+
+
+        if (this.seleccionado==ESQUEMA_1||(this.seleccionado==ESQUEMA_2)){
+            this.lastSelect=seleccionado;
+            this.seleccionado=PARPADEO;
+        }else{
+            this.seleccionado=lastSelect;
+        }
+    }
+
+    public void resetImage() {
+        this.seleccionado=lastSelect;
     }
 }

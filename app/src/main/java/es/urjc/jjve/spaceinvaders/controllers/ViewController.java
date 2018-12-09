@@ -268,8 +268,10 @@ public class ViewController {
                     timer.scheduleAtFixedRate(new TimerTask() {
                         public void run() {
                             godMode--;
+                            playerShip.blink();
                             if (godMode== 0) {
                                 timer.cancel();
+                                playerShip.resetImage();
                             }
                         }
                     }, 0, 100);
