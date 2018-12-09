@@ -10,9 +10,9 @@ import java.util.Random;
 import es.urjc.jjve.spaceinvaders.R;
 
 public class Invader {
-    RectF rect;
+    private RectF rect;
 
-    Random generator = new Random();
+    private Random generator = new Random();
 
     // La nave espacial del jugador va a ser representada por un Bitmap
     private Bitmap bitmap1;
@@ -23,8 +23,8 @@ public class Invader {
     private Bitmap bitmap4;
 
     // Establecemos los esquemas de colores que vamos a usar
-    private final int ESQUEMA_1 = 1;
-    private final int ESQUEMA_2 = 2;
+    private static final int ESQUEMA_1 = 1;
+    private static final int ESQUEMA_2 = 2;
 
     // Variable para guardar el esquema actual, por defecto el primero de ellos.
     private int seleccionado = ESQUEMA_1;
@@ -42,13 +42,13 @@ public class Invader {
     // Esto mantendrá la rapidez de los pixeles por segundo a la que el invader se moverá.
     private float shipSpeed;
 
-    public final int LEFT = 1;
-    public final int RIGHT = 2;
+    private final int LEFT = 1;
+    private final int RIGHT = 2;
 
     // Se está moviendo la nave espacial y en qué dirección
     private int shipMoving = RIGHT;
 
-    boolean isVisible;
+    private boolean isVisible;
 
     public Invader(Context context, int row, int column, int screenX, int screenY) {
 
@@ -178,7 +178,7 @@ public class Invader {
 
     public boolean takeAim(float playerShipX, float playerShipLength){
 
-        int randomNumber = -1;
+        int randomNumber;
 
         // Si está cerca del jugador
         if((playerShipX + playerShipLength > x &&
