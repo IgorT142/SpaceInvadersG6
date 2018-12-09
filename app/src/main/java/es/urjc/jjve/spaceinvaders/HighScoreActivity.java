@@ -1,14 +1,10 @@
 package es.urjc.jjve.spaceinvaders;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,43 +12,22 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.TreeMap;
+import java.util.Objects;
 
-import java.io.File;
-import java.util.TreeSet;
-
-import es.urjc.jjve.spaceinvaders.R;
-import es.urjc.jjve.spaceinvaders.SpaceInvadersActivity;
 import es.urjc.jjve.spaceinvaders.controllers.Score;
 import es.urjc.jjve.spaceinvaders.controllers.ScoreManager;
-import es.urjc.jjve.spaceinvaders.controllers.ViewController;
 import es.urjc.jjve.spaceinvaders.view.CustomPagerAdapter;
 import es.urjc.jjve.spaceinvaders.view.PageFragment;
 
 public class HighScoreActivity extends AppCompatActivity implements OnClickListener {
 
-    private int score;
     private List<Score> scores;
-    private ViewPager viewPager;
-    private FragmentPagerAdapter adapter;
 
-    private String fileScores;
-    private String nombre;
-    private Uri playerImageUri;
 
     @Override   //Este método se carga el primero en cuanto se llama a la activity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,18 +41,18 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
 
 
         //Se obtienen las puntuaciones
-        score = getIntent().getExtras().getInt("score");
-        nombre = getIntent().getExtras().getString("nombre");
-        playerImageUri = (Uri) getIntent().getExtras().get("uri");
+        int score = Objects.requireNonNull(getIntent().getExtras()).getInt("score");
+        String nombre = getIntent().getExtras().getString("nombre");
+        Uri playerImageUri = (Uri) getIntent().getExtras().get("uri");
 
-        ScoreManager sm = new ScoreManager(getApplicationContext());
+        ScoreManager sm = new ScoreManager();
         sm.saveScore(new Score(nombre, score, playerImageUri));
 
         scores = sm.getList();
 
         List<Fragment> fragments = getFragments();
-        adapter = new CustomPagerAdapter(getSupportFragmentManager(), fragments);
-        ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
+        FragmentPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager(), fragments);
+        ViewPager pager = findViewById(R.id.viewPager);
         pager.setAdapter(adapter);
 
 
@@ -96,28 +71,28 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
     @Override   //Permite agregar funcionalidad de click a los objeto que tenga agregados
     public void onClick(View v) {
 
-            //Botón de salir de la aplicación (quizás haya que cambiar de salir de la aplicación a volver a la pantalla de título)
-            if (v.getId() == findViewById(R.id.quitButton).getId()) {
-                Intent inicio = new Intent(getApplicationContext(), Inicio.class);
-                startActivity(inicio);
-                this.finishActivity(0);
-            }
-            //Boton para reiniciar el juego
-            if (v.getId() == findViewById(R.id.reiniciar).getId()) {
-                Intent juegoNuevo = new Intent(getApplicationContext(), SpaceInvadersActivity.class);
-                juegoNuevo.putExtra("underage", false);
-                startActivity(juegoNuevo);
-                this.finishActivity(0);
-            }
+        //Botón de salir de la aplicación (quizás haya que cambiar de salir de la aplicación a volver a la pantalla de título)
+        if (v.getId() == findViewById(R.id.quitButton).getId()) {
+            Intent inicio = new Intent(getApplicationContext(), Inicio.class);
+            startActivity(inicio);
+            this.finishActivity(0);
+        }
+        //Boton para reiniciar el juego
+        if (v.getId() == findViewById(R.id.reiniciar).getId()) {
+            Intent juegoNuevo = new Intent(getApplicationContext(), SpaceInvadersActivity.class);
+            juegoNuevo.putExtra("underage", false);
+            startActivity(juegoNuevo);
+            this.finishActivity(0);
+        }
     }
 
-    private View.OnClickListener onClickListener(final int i) {
+    /*private View.OnClickListener onClickListener(final int i) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (i > 0) {
                     //next page
-                    if (viewPager.getCurrentItem() < viewPager.getAdapter().getCount() - 1) {
+                    if (viewPager.getCurrentItem() < Objects.requireNonNull(viewPager.getAdapter()).getCount() - 1) {
                         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
                     }
                 } else {
@@ -128,10 +103,10 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
                 }
             }
         };
-    }
+    }*/
 
 
-
+    /*
     private View.OnClickListener onChagePageClickListener(final int i) {
         return new View.OnClickListener() {
             @Override
@@ -139,11 +114,11 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
                 viewPager.setCurrentItem(i);
             }
         };
-    }
-
+    }*/
+    /*
     //Carga las puntuaciones almacenadas en el fichero
     public String cargarScores() {
-        ScoreManager sm = new ScoreManager(this.getApplicationContext());
+        ScoreManager sm = new ScoreManager();
         TreeSet<Score> puntuaciones = sm.getScores();
         String scores = "";
 
@@ -153,17 +128,17 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
         }
 
         return scores;
-    }
+    }*/
 
     private List<Fragment> getFragments() {
 
-        List<Fragment> fList = new ArrayList<Fragment>();
+        List<Fragment> fList = new ArrayList<>();
 
         int i = 0;
         for (Score score : scores) {
             PageFragment newFragment = PageFragment.newInstance("Fragment: " + i);
             Bitmap bit = getBitmapFromUri(score.getUri());
-            newFragment.initFragment(score.getName(), score.getScore(),bit);
+            newFragment.initFragment(score.getName(), score.getScore(), bit);
             fList.add(newFragment);
             i++;
         }
@@ -179,9 +154,11 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
 
             BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
             onlyBoundsOptions.inJustDecodeBounds = true;
+            //noinspection deprecation
             onlyBoundsOptions.inDither = true;//optional
             onlyBoundsOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;//optional
             BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
+            assert input != null;
             input.close();
 
             if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1)) {
@@ -194,19 +171,19 @@ public class HighScoreActivity extends AppCompatActivity implements OnClickListe
 
             BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
             bitmapOptions.inSampleSize = getPowerOfTwoForSampleRatio(ratio);
+            //noinspection deprecation
             bitmapOptions.inDither = true; //optional
             bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;//
             input = this.getContentResolver().openInputStream(uri);
             bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
 
+            assert input != null;
             input.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            return bitmap;
         }
+        return bitmap;
+
 
     }
 
