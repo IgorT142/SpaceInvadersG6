@@ -86,7 +86,7 @@ public class PlayerShip {
                 (int) (length),
                 (int) (height),
                 false);
-        bitmap2 = Bitmap.createScaledBitmap(parpadeo,
+        parpadeo = Bitmap.createScaledBitmap(parpadeo,
                 (int) (length),
                 (int) (height),
                 false);

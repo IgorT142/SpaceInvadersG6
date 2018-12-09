@@ -223,7 +223,7 @@ public class ViewController {
             // Has an invader bullet hit the player ship
             for (Bullet bullet : invadersBullets) {
                 if (bullet.getStatus()) {
-                    if (RectF.intersects(playerShip.getRect(), bullet.getRect())) {
+                    if (RectF.intersects(playerShip.getRect(), bullet.getRect())&& godMode <= 0) {
                         bullet.setInactive();
                         return false;
                     }
