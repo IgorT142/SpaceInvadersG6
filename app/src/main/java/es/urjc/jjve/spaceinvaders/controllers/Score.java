@@ -19,10 +19,6 @@ public class Score implements Comparable<Score>{
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public String getName() {
         return name;
     }
@@ -35,15 +31,11 @@ public class Score implements Comparable<Score>{
         return uri;
     }
 
-    public void setUri(Uri uri) {
-        this.uri = uri;
-    }
-
     @Override
     public int compareTo(@NonNull Score o) {
-        if(o.score > score){
-            return -1;
-        }else if(o.score < score){
+        //noinspection UseCompareMethod
+        if(o.score > score) return -1;
+        else if(o.score < score){
             return 1;
         }else {
             return 0;

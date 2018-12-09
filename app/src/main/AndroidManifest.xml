@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="es.urjc.jjve.spaceinvaders">
 
     <application
@@ -10,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:hardwareAccelerated="false"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent=""
+        tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".Inicio"
             android:screenOrientation="landscape"
@@ -46,6 +49,7 @@
             android:resource="@array/preloaded_fonts" />
 
     </application>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ManifestOrder" />
     <uses-permission-sdk-23 android:name="android.permission.CAMERA" />
 </manifest>
